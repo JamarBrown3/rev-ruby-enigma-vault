@@ -1,0 +1,10 @@
+{
+  "name": "rev-client",
+  "version": "1.0.0",
+  "description": "REV frontend placeholder; React setup follows backend verification",
+  "private": true,
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "type": "module"
+}

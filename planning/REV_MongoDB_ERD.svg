@@ -1,0 +1,155 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3000" height="2390" viewBox="0 0 3000 2390"><rect width="3000" height="2390" fill="#f5f7fb"/><style>text{font-family:Arial,Helvetica,sans-serif;fill:#18273d}.title{font-size:46px;font-weight:700}.subtitle{font-size:26px;fill:#4b5870}.head{font-size:30px;font-weight:700;fill:white}.row{font-size:25px}.note{font-size:23px;fill:#44536b}.edge{fill:none;stroke:#536982;stroke-width:3}.label{font-size:23px;font-weight:700;paint-order:stroke;stroke:#f5f7fb;stroke-width:8px;stroke-linejoin:round}</style>
+<text x="80" y="75" class="title">REV / The Ruby Enigma Vault</text>
+<text x="80" y="122" class="subtitle">MongoDB relationship diagram | Revision 2 | 22 October 2026</text>
+<text x="80" y="165" class="note">Account-only reactions, comments, password recovery, and session storage. References are NOT automatic SQL foreign keys.</text>
+<polyline class="edge" points="880,400 1100,400"/>
+<path d="M890,389L890,411" class="edge"/>
+<path d="M902,389L902,411" class="edge"/>
+<path d="M1100,413L1077,400" class="edge"/>
+<path d="M1100,387L1077,400" class="edge"/>
+<path d="M1100,400L1077,400" class="edge"/>
+<circle cx="1058" cy="400" r="8" fill="#f5f7fb" stroke="#536982" stroke-width="3"/>
+<text x="915" y="360" class="label">authors</text>
+<polyline class="edge" points="2120,400 1900,400"/>
+<path d="M2110,411L2110,389" class="edge"/>
+<circle cx="2088" cy="400" r="8" fill="#f5f7fb" stroke="#536982" stroke-width="3"/>
+<path d="M1900,387L1923,400" class="edge"/>
+<path d="M1900,413L1923,400" class="edge"/>
+<path d="M1900,400L1923,400" class="edge"/>
+<circle cx="1942" cy="400" r="8" fill="#f5f7fb" stroke="#536982" stroke-width="3"/>
+<text x="1960" y="360" class="label">about</text>
+<polyline class="edge" points="300,740 300,960"/>
+<path d="M311,750L289,750" class="edge"/>
+<path d="M311,762L289,762" class="edge"/>
+<path d="M287,960L300,937" class="edge"/>
+<path d="M313,960L300,937" class="edge"/>
+<path d="M300,960L300,937" class="edge"/>
+<circle cx="300" cy="918" r="8" fill="#f5f7fb" stroke="#536982" stroke-width="3"/>
+<text x="95" y="840" class="label">authors comments</text>
+<polyline class="edge" points="1300,740 1300,860 700,860 700,960"/>
+<path d="M1311,750L1289,750" class="edge"/>
+<path d="M1311,762L1289,762" class="edge"/>
+<path d="M687,960L700,937" class="edge"/>
+<path d="M713,960L700,937" class="edge"/>
+<path d="M700,960L700,937" class="edge"/>
+<circle cx="700" cy="918" r="8" fill="#f5f7fb" stroke="#536982" stroke-width="3"/>
+<text x="690" y="830" class="label">post has comments</text>
+<polyline class="edge" points="1570,740 1570,960"/>
+<path d="M1581,750L1559,750" class="edge"/>
+<path d="M1581,762L1559,762" class="edge"/>
+<path d="M1557,960L1570,937" class="edge"/>
+<path d="M1583,960L1570,937" class="edge"/>
+<path d="M1570,960L1570,937" class="edge"/>
+<circle cx="1570" cy="918" r="8" fill="#f5f7fb" stroke="#536982" stroke-width="3"/>
+<text x="1610" y="840" class="label">post has votes</text>
+<polyline class="edge" points="880,660 990,660 990,1150 1100,1150"/>
+<path d="M890,649L890,671" class="edge"/>
+<path d="M902,649L902,671" class="edge"/>
+<path d="M1100,1163L1077,1150" class="edge"/>
+<path d="M1100,1137L1077,1150" class="edge"/>
+<path d="M1100,1150L1077,1150" class="edge"/>
+<circle cx="1058" cy="1150" r="8" fill="#f5f7fb" stroke="#536982" stroke-width="3"/>
+<text x="895" y="930" class="label">casts votes</text>
+<polyline class="edge" points="2520,740 2520,960"/>
+<path d="M2533,740L2520,763" class="edge"/>
+<path d="M2507,740L2520,763" class="edge"/>
+<path d="M2520,740L2520,763" class="edge"/>
+<circle cx="2520" cy="782" r="8" fill="#f5f7fb" stroke="#536982" stroke-width="3"/>
+<path d="M2507,960L2520,937" class="edge"/>
+<path d="M2533,960L2520,937" class="edge"/>
+<path d="M2520,960L2520,937" class="edge"/>
+<circle cx="2520" cy="918" r="8" fill="#f5f7fb" stroke="#536982" stroke-width="3"/>
+<text x="2555" y="840" class="label">category membership</text>
+<rect x="80" y="230" width="800" height="510" rx="12" fill="white" stroke="#c9d2df" stroke-width="2"/><path d="M92,230H868Q880,230 880,242V294H80V242Q80,230 92,230" fill="#692341"/>
+<text x="105" y="273" class="head">users</text>
+<text x="105" y="334" class="row">_id : ObjectId</text>
+<text x="105" y="372" class="row">username, email : String [unique, normalized]</text>
+<text x="105" y="410" class="row">passwordHash : String [server only]</text>
+<text x="105" y="448" class="row">role : user | admin; status : active | banned</text>
+<text x="105" y="486" class="row">sessionVersion : Number [default 0]</text>
+<text x="105" y="524" class="row">profile : { bio?, avatarUrl? } [embedded]</text>
+<text x="105" y="562" class="row">createdAt, updatedAt : Date</text>
+<text x="105" y="683" class="note">Registration always assigns role=user.</text>
+<text x="105" y="715" class="note">Increment sessionVersion on password reset.</text>
+<rect x="1100" y="230" width="800" height="510" rx="12" fill="white" stroke="#c9d2df" stroke-width="2"/><path d="M1112,230H1888Q1900,230 1900,242V294H1100V242Q1100,230 1112,230" fill="#692341"/>
+<text x="1125" y="273" class="head">posts (reviews + discussions)</text>
+<text x="1125" y="334" class="row">_id : ObjectId; authorId : ObjectId -&gt; users</text>
+<text x="1125" y="372" class="row">gameId : ObjectId -&gt; games [optional]</text>
+<text x="1125" y="410" class="row">kind : review | discussion</text>
+<text x="1125" y="448" class="row">title, body : String; imageUrl? : String</text>
+<text x="1125" y="486" class="row">rating : Number 1..10 [reviews only]</text>
+<text x="1125" y="524" class="row">recommended : Boolean [reviews only]</text>
+<text x="1125" y="562" class="row">createdAt, updatedAt : Date</text>
+<text x="1125" y="683" class="note">A review requires gameId + rating.</text>
+<text x="1125" y="715" class="note">Only author edits/deletes; delete comments + votes.</text>
+<rect x="2120" y="230" width="800" height="510" rx="12" fill="white" stroke="#c9d2df" stroke-width="2"/><path d="M2132,230H2908Q2920,230 2920,242V294H2120V242Q2120,230 2132,230" fill="#692341"/>
+<text x="2145" y="273" class="head">games</text>
+<text x="2145" y="334" class="row">_id : ObjectId; title, description : String</text>
+<text x="2145" y="372" class="row">platform, genre : String; releaseYear : Number</text>
+<text x="2145" y="410" class="row">coverImage, headerImage : String</text>
+<text x="2145" y="448" class="row">categoryIds : ObjectId[] -&gt; categories</text>
+<text x="2145" y="486" class="row">playtimeHours : Number &gt;= 0</text>
+<text x="2145" y="524" class="row">createdAt, updatedAt : Date</text>
+<text x="2145" y="683" class="note">Average rating is derived from review posts.</text>
+<text x="2145" y="715" class="note">Catalog retained from REV revision 1.</text>
+<rect x="80" y="960" width="800" height="380" rx="12" fill="white" stroke="#c9d2df" stroke-width="2"/><path d="M92,960H868Q880,960 880,972V1024H80V972Q80,960 92,960" fill="#692341"/>
+<text x="105" y="1003" class="head">comments</text>
+<text x="105" y="1064" class="row">_id : ObjectId; postId : ObjectId -&gt; posts</text>
+<text x="105" y="1102" class="row">authorId : ObjectId -&gt; users [required]</text>
+<text x="105" y="1140" class="row">body : String</text>
+<text x="105" y="1178" class="row">createdAt, updatedAt : Date</text>
+<text x="105" y="1283" class="note">Flat comments; threaded replies are not in scope.</text>
+<text x="105" y="1315" class="note">Author-only edits/deletes proposed; public reads.</text>
+<rect x="1100" y="960" width="800" height="380" rx="12" fill="white" stroke="#c9d2df" stroke-width="2"/><path d="M1112,960H1888Q1900,960 1900,972V1024H1100V972Q1100,960 1112,960" fill="#692341"/>
+<text x="1125" y="1003" class="head">votes</text>
+<text x="1125" y="1064" class="row">_id : ObjectId; postId : ObjectId -&gt; posts</text>
+<text x="1125" y="1102" class="row">userId : ObjectId -&gt; users [required]</text>
+<text x="1125" y="1140" class="row">value : Number [1 = like; -1 = dislike]</text>
+<text x="1125" y="1178" class="row">createdAt, updatedAt : Date</text>
+<text x="1125" y="1283" class="note">UNIQUE compound index: { postId, userId }.</text>
+<text x="1125" y="1315" class="note">No guests. Switching sides updates the same vote.</text>
+<rect x="2120" y="960" width="800" height="300" rx="12" fill="white" stroke="#c9d2df" stroke-width="2"/><path d="M2132,960H2908Q2920,960 2920,972V1024H2120V972Q2120,960 2132,960" fill="#692341"/>
+<text x="2145" y="1003" class="head">categories</text>
+<text x="2145" y="1064" class="row">_id : ObjectId</text>
+<text x="2145" y="1102" class="row">name, slug : String [unique]</text>
+<text x="2145" y="1203" class="note">Games keep category IDs; no SQL join collection.</text>
+<text x="2145" y="1235" class="note">Both sides can have zero or many memberships.</text>
+<text x="80" y="1450" class="label">SUPPORTING COLLECTIONS + PORTFOLIO</text>
+<text x="80" y="1490" class="note">Account references below are listed in fields to keep the main diagram readable. Session layout is adapter-managed.</text>
+<rect x="80" y="1540" width="800" height="420" rx="12" fill="white" stroke="#c9d2df" stroke-width="2"/><path d="M92,1540H868Q880,1540 880,1552V1604H80V1552Q80,1540 92,1540" fill="#354b68"/>
+<text x="105" y="1583" class="head">sessions [connect-mongo infrastructure]</text>
+<text x="105" y="1644" class="row">_id : String [adapter-managed session ID]</text>
+<text x="105" y="1682" class="row">session : serialized session payload</text>
+<text x="105" y="1720" class="row">  userId -&gt; users._id [authenticated only]</text>
+<text x="105" y="1758" class="row">  sessionVersion : Number [authenticated only]</text>
+<text x="105" y="1796" class="row">expires : Date [adapter-managed TTL]</text>
+<text x="105" y="1871" class="note">Browser cookie contains a session ID, not a password.</text>
+<text x="105" y="1903" class="note">Stored payload is logical; adapter controls encoding.</text>
+<text x="105" y="1935" class="note">Check version/status on protected requests.</text>
+<rect x="1100" y="1540" width="800" height="420" rx="12" fill="white" stroke="#c9d2df" stroke-width="2"/><path d="M1112,1540H1888Q1900,1540 1900,1552V1604H1100V1552Q1100,1540 1112,1540" fill="#354b68"/>
+<text x="1125" y="1583" class="head">passwordResetTokens [authentication]</text>
+<text x="1125" y="1644" class="row">_id : ObjectId; userId : ObjectId -&gt; users</text>
+<text x="1125" y="1682" class="row">tokenHash : String [unique; never raw token]</text>
+<text x="1125" y="1720" class="row">expiresAt : Date [TTL index]</text>
+<text x="1125" y="1758" class="row">usedAt : Date | null</text>
+<text x="1125" y="1796" class="row">createdAt : Date</text>
+<text x="1125" y="1871" class="note">One user can have 0..many token records.</text>
+<text x="1125" y="1903" class="note">Short-lived, single-use; consume atomically.</text>
+<text x="1125" y="1935" class="note">Check expiry in code; TTL cleanup is not immediate.</text>
+<rect x="2120" y="1540" width="800" height="420" rx="12" fill="white" stroke="#c9d2df" stroke-width="2"/><path d="M2132,1540H2908Q2920,1540 2920,1552V1604H2120V1552Q2120,1540 2132,1540" fill="#692341"/>
+<text x="2145" y="1583" class="head">projects [portfolio content]</text>
+<text x="2145" y="1644" class="row">_id : ObjectId; title, description : String</text>
+<text x="2145" y="1682" class="row">techStack : String[]</text>
+<text x="2145" y="1720" class="row">imageUrl, liveUrl, githubUrl : String</text>
+<text x="2145" y="1758" class="row">createdAt, updatedAt : Date</text>
+<text x="2145" y="1871" class="note">Standalone content; admin-managed writes.</text>
+<text x="2145" y="1903" class="note">No dashboard collection: aggregate source data.</text>
+<text x="2145" y="1935" class="note">Public Services page stays public.</text>
+<rect x="80" y="2030" width="2840" height="290" rx="14" fill="#e8edf5"/>
+<text x="110" y="2078" class="label">LEGEND + SCOPE</text>
+<text x="110" y="2122" class="note">|| = exactly one; o| = zero or one; o&lt; = zero or many. Each comment/vote belongs to exactly one post and one account.</text>
+<text x="110" y="2163" class="note">Post/game link: a post references 0..1 game; a game has 0..many posts. Review posts require a game.</text>
+<text x="110" y="2204" class="note">Deletion is Express/Mongoose application logic, not automatic MongoDB cascading. See the companion plan for race-safe deletion.</text>
+<text x="110" y="2245" class="note">Dashboard endpoints: admin only. Password-reset email is in scope; marketing subscriptions are deferred to January 2027.</text>
+<text x="110" y="2286" class="note">Theme preferences stay in browser localStorage for now. Planning artifact only: no schemas, routes, or database changes made.</text>
+</svg>

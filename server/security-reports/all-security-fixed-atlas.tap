@@ -1,0 +1,4124 @@
+TAP version 13
+# Subtest: ATLAS AUTH: real controllers, session persistence, reset transaction and revocation
+    # Subtest: application uses only database-scoped readWrite
+    ok 1 - application uses only database-scoped readWrite
+      ---
+      duration_ms: 0.285084
+      type: 'test'
+      ...
+    # Subtest: CSRF bootstrap saves an anonymous session in the isolated Mongo store
+    ok 2 - CSRF bootstrap saves an anonymous session in the isolated Mongo store
+      ---
+      duration_ms: 788.369542
+      type: 'test'
+      ...
+    # Subtest: registration creates a normal user, never a client-selected admin
+    ok 3 - registration creates a normal user, never a client-selected admin
+      ---
+      duration_ms: 1559.865458
+      type: 'test'
+      ...
+    # Subtest: login rotates the session and does not expose password material
+    ok 4 - login rotates the session and does not expose password material
+      ---
+      duration_ms: 819.601083
+      type: 'test'
+      ...
+    # Subtest: a regular authenticated account cannot access dashboard routes
+    ok 5 - a regular authenticated account cannot access dashboard routes
+      ---
+      duration_ms: 142.309125
+      type: 'test'
+      ...
+    # Subtest: recovery queues delivery but never returns the secret in HTTP JSON
+    ok 6 - recovery queues delivery but never returns the secret in HTTP JSON
+      ---
+      duration_ms: 1548.586459
+      type: 'test'
+      ...
+    # Subtest: a second request uses a different high-entropy secret
+    ok 7 - a second request uses a different high-entropy secret
+      ---
+      duration_ms: 189.023083
+      type: 'test'
+      ...
+    # Subtest: actual reset transaction changes the password, advances the version and invalidates all requests
+    ok 8 - actual reset transaction changes the password, advances the version and invalidates all requests
+      ---
+      duration_ms: 795.963334
+      type: 'test'
+      ...
+    # Subtest: an old authenticated session is rejected after password reset
+    ok 9 - an old authenticated session is rejected after password reset
+      ---
+      duration_ms: 135.5195
+      type: 'test'
+      ...
+    # Subtest: the same exact token cannot reset the password twice
+    ok 10 - the same exact token cannot reset the password twice
+      ---
+      duration_ms: 456.079208
+      type: 'test'
+      ...
+    # Subtest: a second outstanding token was invalidated by the first successful reset
+    ok 11 - a second outstanding token was invalidated by the first successful reset
+      ---
+      duration_ms: 334.932208
+      type: 'test'
+      ...
+    # Subtest: the old password no longer signs in
+    ok 12 - the old password no longer signs in
+      ---
+      duration_ms: 305.916375
+      type: 'test'
+      ...
+    # Subtest: the new password signs in through the actual login controller
+    ok 13 - the new password signs in through the actual login controller
+      ---
+      duration_ms: 813.216333
+      type: 'test'
+      ...
+    # Subtest: expired records are rejected without depending on TTL cleanup
+    ok 14 - expired records are rejected without depending on TTL cleanup
+      ---
+      duration_ms: 1460.718041
+      type: 'test'
+      ...
+    # Subtest: logout revokes the session rather than merely deleting a browser cookie
+    ok 15 - logout revokes the session rather than merely deleting a browser cookie
+      ---
+      duration_ms: 117.098084
+      type: 'test'
+      ...
+    1..15
+ok 1 - ATLAS AUTH: real controllers, session persistence, reset transaction and revocation
+  ---
+  duration_ms: 10968.628917
+  type: 'test'
+  ...
+# Removed temporary collection _rev_auth_f43e1305a29e482dd0eb032b_users.
+# Removed temporary collection _rev_auth_f43e1305a29e482dd0eb032b_tokens.
+# Removed temporary collection _rev_auth_f43e1305a29e482dd0eb032b_sessions.
+# Subtest: AUTH INPUT: rejects non-string login email {"$ne":null}
+ok 2 - AUTH INPUT: rejects non-string login email {"$ne":null}
+  ---
+  duration_ms: 0.735417
+  type: 'test'
+  ...
+# Subtest: AUTH INPUT: rejects non-string login password {"$ne":null}
+ok 3 - AUTH INPUT: rejects non-string login password {"$ne":null}
+  ---
+  duration_ms: 0.088791
+  type: 'test'
+  ...
+# Subtest: AUTH INPUT: rejects non-string login email {"$gt":""}
+ok 4 - AUTH INPUT: rejects non-string login email {"$gt":""}
+  ---
+  duration_ms: 0.04325
+  type: 'test'
+  ...
+# Subtest: AUTH INPUT: rejects non-string login password {"$gt":""}
+ok 5 - AUTH INPUT: rejects non-string login password {"$gt":""}
+  ---
+  duration_ms: 0.041334
+  type: 'test'
+  ...
+# Subtest: AUTH INPUT: rejects non-string login email {"$regex":".*"}
+ok 6 - AUTH INPUT: rejects non-string login email {"$regex":".*"}
+  ---
+  duration_ms: 0.037084
+  type: 'test'
+  ...
+# Subtest: AUTH INPUT: rejects non-string login password {"$regex":".*"}
+ok 7 - AUTH INPUT: rejects non-string login password {"$regex":".*"}
+  ---
+  duration_ms: 0.036834
+  type: 'test'
+  ...
+# Subtest: AUTH INPUT: rejects non-string login email ["someone@example.invalid"]
+ok 8 - AUTH INPUT: rejects non-string login email ["someone@example.invalid"]
+  ---
+  duration_ms: 0.068917
+  type: 'test'
+  ...
+# Subtest: AUTH INPUT: rejects non-string login password ["someone@example.invalid"]
+ok 9 - AUTH INPUT: rejects non-string login password ["someone@example.invalid"]
+  ---
+  duration_ms: 0.057292
+  type: 'test'
+  ...
+# Subtest: AUTH INPUT: rejects non-string login email null
+ok 10 - AUTH INPUT: rejects non-string login email null
+  ---
+  duration_ms: 0.048209
+  type: 'test'
+  ...
+# Subtest: AUTH INPUT: rejects non-string login password null
+ok 11 - AUTH INPUT: rejects non-string login password null
+  ---
+  duration_ms: 0.098708
+  type: 'test'
+  ...
+# Subtest: AUTH INPUT: rejects non-string login email 123
+ok 12 - AUTH INPUT: rejects non-string login email 123
+  ---
+  duration_ms: 0.038459
+  type: 'test'
+  ...
+# Subtest: AUTH INPUT: rejects non-string login password 123
+ok 13 - AUTH INPUT: rejects non-string login password 123
+  ---
+  duration_ms: 0.026541
+  type: 'test'
+  ...
+# Subtest: AUTH INPUT: rejects non-string login email true
+ok 14 - AUTH INPUT: rejects non-string login email true
+  ---
+  duration_ms: 0.023833
+  type: 'test'
+  ...
+# Subtest: AUTH INPUT: rejects non-string login password true
+ok 15 - AUTH INPUT: rejects non-string login password true
+  ---
+  duration_ms: 0.020042
+  type: 'test'
+  ...
+# Subtest: AUTH INPUT: rejects non-string login email undefined
+ok 16 - AUTH INPUT: rejects non-string login email undefined
+  ---
+  duration_ms: 0.018042
+  type: 'test'
+  ...
+# Subtest: AUTH INPUT: rejects non-string login password undefined
+ok 17 - AUTH INPUT: rejects non-string login password undefined
+  ---
+  duration_ms: 0.018291
+  type: 'test'
+  ...
+# Subtest: REGISTRATION: rejects client-controlled role
+ok 18 - REGISTRATION: rejects client-controlled role
+  ---
+  duration_ms: 0.044583
+  type: 'test'
+  ...
+# Subtest: REGISTRATION: rejects client-controlled status
+ok 19 - REGISTRATION: rejects client-controlled status
+  ---
+  duration_ms: 0.01575
+  type: 'test'
+  ...
+# Subtest: REGISTRATION: rejects client-controlled sessionVersion
+ok 20 - REGISTRATION: rejects client-controlled sessionVersion
+  ---
+  duration_ms: 0.016375
+  type: 'test'
+  ...
+# Subtest: REGISTRATION: rejects client-controlled passwordHash
+ok 21 - REGISTRATION: rejects client-controlled passwordHash
+  ---
+  duration_ms: 0.015625
+  type: 'test'
+  ...
+# Subtest: REGISTRATION: rejects client-controlled _id
+ok 22 - REGISTRATION: rejects client-controlled _id
+  ---
+  duration_ms: 0.014125
+  type: 'test'
+  ...
+# Subtest: REGISTRATION: rejects client-controlled isAdmin
+ok 23 - REGISTRATION: rejects client-controlled isAdmin
+  ---
+  duration_ms: 0.015083
+  type: 'test'
+  ...
+# Subtest: RESET INPUT: rejects invalid raw token "1234"
+ok 24 - RESET INPUT: rejects invalid raw token "1234"
+  ---
+  duration_ms: 0.060166
+  type: 'test'
+  ...
+# Subtest: RESET INPUT: rejects invalid raw token "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+ok 25 - RESET INPUT: rejects invalid raw token "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  ---
+  duration_ms: 0.030791
+  type: 'test'
+  ...
+# Subtest: RESET INPUT: rejects invalid raw token "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+ok 26 - RESET INPUT: rejects invalid raw token "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  ---
+  duration_ms: 0.017166
+  type: 'test'
+  ...
+# Subtest: RESET INPUT: rejects invalid raw token "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+ok 27 - RESET INPUT: rejects invalid raw token "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+  ---
+  duration_ms: 0.013167
+  type: 'test'
+  ...
+# Subtest: RESET INPUT: rejects invalid raw token {"$ne":null}
+ok 28 - RESET INPUT: rejects invalid raw token {"$ne":null}
+  ---
+  duration_ms: 0.014833
+  type: 'test'
+  ...
+# Subtest: RESET INPUT: rejects invalid raw token ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"]
+ok 29 - RESET INPUT: rejects invalid raw token ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"]
+  ---
+  duration_ms: 0.01175
+  type: 'test'
+  ...
+# Subtest: RESET INPUT: rejects invalid raw token undefined
+ok 30 - RESET INPUT: rejects invalid raw token undefined
+  ---
+  duration_ms: 0.016875
+  type: 'test'
+  ...
+# Subtest: JSON GUARD: rejects nested dangerous key $ne
+ok 31 - JSON GUARD: rejects nested dangerous key $ne
+  ---
+  duration_ms: 0.030041
+  type: 'test'
+  ...
+# Subtest: JSON GUARD: rejects nested dangerous key $where
+ok 32 - JSON GUARD: rejects nested dangerous key $where
+  ---
+  duration_ms: 0.017083
+  type: 'test'
+  ...
+# Subtest: JSON GUARD: rejects nested dangerous key $function
+ok 33 - JSON GUARD: rejects nested dangerous key $function
+  ---
+  duration_ms: 0.014042
+  type: 'test'
+  ...
+# Subtest: JSON GUARD: rejects nested dangerous key user.role
+ok 34 - JSON GUARD: rejects nested dangerous key user.role
+  ---
+  duration_ms: 0.017541
+  type: 'test'
+  ...
+# Subtest: JSON GUARD: rejects nested dangerous key __proto__
+ok 35 - JSON GUARD: rejects nested dangerous key __proto__
+  ---
+  duration_ms: 0.013166
+  type: 'test'
+  ...
+# Subtest: JSON GUARD: rejects nested dangerous key constructor
+ok 36 - JSON GUARD: rejects nested dangerous key constructor
+  ---
+  duration_ms: 0.013125
+  type: 'test'
+  ...
+# Subtest: JSON GUARD: rejects nested dangerous key prototype
+ok 37 - JSON GUARD: rejects nested dangerous key prototype
+  ---
+  duration_ms: 0.013167
+  type: 'test'
+  ...
+# Subtest: PASSWORD: short passwords cannot be registered
+ok 38 - PASSWORD: short passwords cannot be registered
+  ---
+  duration_ms: 0.032417
+  type: 'test'
+  ...
+# Subtest: PASSWORD: spaces are preserved, not silently trimmed
+ok 39 - PASSWORD: spaces are preserved, not silently trimmed
+  ---
+  duration_ms: 0.042084
+  type: 'test'
+  ...
+# Subtest: PASSWORD: hashing uses a salted password KDF, verifies correctly, and rejects mismatches
+ok 40 - PASSWORD: hashing uses a salted password KDF, verifies correctly, and rejects mismatches
+  ---
+  duration_ms: 906.127917
+  type: 'test'
+  ...
+# Subtest: HTTP AUTH: injection/role attempts cannot reach user persistence
+ok 41 - HTTP AUTH: injection/role attempts cannot reach user persistence
+  ---
+  duration_ms: 28.390292
+  type: 'test'
+  ...
+# Subtest: HTTP AUTH: register, login rotation, public response, dashboard denial, session revocation
+ok 42 - HTTP AUTH: register, login rotation, public response, dashboard denial, session revocation
+  ---
+  duration_ms: 897.395334
+  type: 'test'
+  ...
+# Subtest: HTTP AUTH: missing/stale CSRF and foreign origins are rejected
+ok 43 - HTTP AUTH: missing/stale CSRF and foreign origins are rejected
+  ---
+  duration_ms: 3.680125
+  type: 'test'
+  ...
+# Subtest: HTTP AUTH: disabled recovery fails closed and never returns tokens
+ok 44 - HTTP AUTH: disabled recovery fails closed and never returns tokens
+  ---
+  duration_ms: 5.432542
+  type: 'test'
+  ...
+# Subtest: HTTP AUTH: repeated login attempts are rate limited
+ok 45 - HTTP AUTH: repeated login attempts are rate limited
+  ---
+  duration_ms: 4.600292
+  type: 'test'
+  ...
+# Subtest: PRODUCTION CONFIG: missing/weak secret and insecure origins fail closed
+ok 46 - PRODUCTION CONFIG: missing/weak secret and insecure origins fail closed
+  ---
+  duration_ms: 0.299917
+  type: 'test'
+  ...
+# Subtest: DATABASE PRIVILEGES: application refuses []
+ok 47 - DATABASE PRIVILEGES: application refuses []
+  ---
+  duration_ms: 0.040958
+  type: 'test'
+  ...
+# Subtest: DATABASE PRIVILEGES: application refuses [{"role":"atlasAdmin","db":"admin"}]
+ok 48 - DATABASE PRIVILEGES: application refuses [{"role":"atlasAdmin","db":"admin"}]
+  ---
+  duration_ms: 0.0135
+  type: 'test'
+  ...
+# Subtest: DATABASE PRIVILEGES: application refuses [{"role":"root","db":"admin"}]
+ok 49 - DATABASE PRIVILEGES: application refuses [{"role":"root","db":"admin"}]
+  ---
+  duration_ms: 0.010708
+  type: 'test'
+  ...
+# Subtest: DATABASE PRIVILEGES: application refuses [{"role":"readWriteAnyDatabase","db":"admin"}]
+ok 50 - DATABASE PRIVILEGES: application refuses [{"role":"readWriteAnyDatabase","db":"admin"}]
+  ---
+  duration_ms: 0.0095
+  type: 'test'
+  ...
+# Subtest: DATABASE PRIVILEGES: application refuses [{"role":"readWrite","db":"another-database"}]
+ok 51 - DATABASE PRIVILEGES: application refuses [{"role":"readWrite","db":"another-database"}]
+  ---
+  duration_ms: 0.009708
+  type: 'test'
+  ...
+# Subtest: DATABASE PRIVILEGES: application refuses [{"role":"readWrite","db":"rev"},{"role":"atlasAdmin","db":"admin"}]
+ok 52 - DATABASE PRIVILEGES: application refuses [{"role":"readWrite","db":"rev"},{"role":"atlasAdmin","db":"admin"}]
+  ---
+  duration_ms: 0.009125
+  type: 'test'
+  ...
+# Subtest: DATABASE PRIVILEGES: accepts readWrite only on the configured database
+ok 53 - DATABASE PRIVILEGES: accepts readWrite only on the configured database
+  ---
+  duration_ms: 0.039042
+  type: 'test'
+  ...
+# Subtest: PRODUCTION COOKIE: secure cookie requires real/trusted HTTPS (proxy trust false)
+ok 54 - PRODUCTION COOKIE: secure cookie requires real/trusted HTTPS (proxy trust false)
+  ---
+  duration_ms: 1.413416
+  type: 'test'
+  ...
+# Subtest: PRODUCTION COOKIE: secure cookie requires real/trusted HTTPS (proxy trust 1)
+ok 55 - PRODUCTION COOKIE: secure cookie requires real/trusted HTTPS (proxy trust 1)
+  ---
+  duration_ms: 0.903625
+  type: 'test'
+  ...
+# Subtest: liveness returns JSON and does not expose Express
+ok 56 - liveness returns JSON and does not expose Express
+  ---
+  duration_ms: 23.483166
+  type: 'test'
+  ...
+# Subtest: readiness checks a successful database dependency
+ok 57 - readiness checks a successful database dependency
+  ---
+  duration_ms: 4.64175
+  type: 'test'
+  ...
+# Subtest: database outage returns 503 without leaking diagnostic secrets
+ok 58 - database outage returns 503 without leaking diagnostic secrets
+  ---
+  duration_ms: 1.540792
+  type: 'test'
+  ...
+# Subtest: unknown routes return a JSON 404
+ok 59 - unknown routes return a JSON 404
+  ---
+  duration_ms: 1.331459
+  type: 'test'
+  ...
+# Subtest: malformed JSON returns 400 instead of an HTML error page
+ok 60 - malformed JSON returns 400 instead of an HTML error page
+  ---
+  duration_ms: 4.747125
+  type: 'test'
+  ...
+# Subtest: configured frontend receives credentialed CORS headers
+ok 61 - configured frontend receives credentialed CORS headers
+  ---
+  duration_ms: 1.323166
+  type: 'test'
+  ...
+# Subtest: unrecognized origin receives no CORS permission
+ok 62 - unrecognized origin receives no CORS permission
+  ---
+  duration_ms: 1.001208
+  type: 'test'
+  ...
+# Subtest: frontend JSON request preflight succeeds
+ok 63 - frontend JSON request preflight succeeds
+  ---
+  duration_ms: 1.011
+  type: 'test'
+  ...
+# Subtest: CONFIG: reset model targets the explicitly intended collection
+ok 64 - CONFIG: reset model targets the explicitly intended collection
+  ---
+  duration_ms: 5.553459
+  type: 'test'
+  ...
+# Subtest: CONFIG: user reference is required
+ok 65 - CONFIG: user reference is required
+  ---
+  duration_ms: 0.096125
+  type: 'test'
+  ...
+# Subtest: CONFIG: user reference targets User
+ok 66 - CONFIG: user reference targets User
+  ---
+  duration_ms: 0.038
+  type: 'test'
+  ...
+# Subtest: CONFIG: hash is excluded from ordinary query projections
+ok 67 - CONFIG: hash is excluded from ordinary query projections
+  ---
+  duration_ms: 0.034458
+  type: 'test'
+  ...
+# Subtest: CONFIG: password hash is excluded from ordinary user projections
+ok 68 - CONFIG: password hash is excluded from ordinary user projections
+  ---
+  duration_ms: 0.041417
+  type: 'test'
+  ...
+# Subtest: CONFIG: reset token unique index is declared
+ok 69 - CONFIG: reset token unique index is declared
+  ---
+  duration_ms: 0.372166
+  type: 'test'
+  ...
+# Subtest: CONFIG: absolute-expiration TTL index is declared
+ok 70 - CONFIG: absolute-expiration TTL index is declared
+  ---
+  duration_ms: 0.099292
+  type: 'test'
+  ...
+# Subtest: CONFIG: user lookup index is declared
+ok 71 - CONFIG: user lookup index is declared
+  ---
+  duration_ms: 0.066625
+  type: 'test'
+  ...
+# Subtest: CONFIG: usedAt defaults to null
+ok 72 - CONFIG: usedAt defaults to null
+  ---
+  duration_ms: 1.788166
+  type: 'test'
+  ...
+# Subtest: CONFIG: creation timestamp exists
+ok 73 - CONFIG: creation timestamp exists
+  ---
+  duration_ms: 0.061125
+  type: 'test'
+  ...
+# Subtest: CONFIG: no unnecessary update timestamp
+ok 74 - CONFIG: no unnecessary update timestamp
+  ---
+  duration_ms: 0.040375
+  type: 'test'
+  ...
+# Subtest: CONFIG: strict document fields enabled
+ok 75 - CONFIG: strict document fields enabled
+  ---
+  duration_ms: 0.024
+  type: 'test'
+  ...
+# Subtest: HASH: rejects length 0
+ok 76 - HASH: rejects length 0
+  ---
+  duration_ms: 0.988125
+  type: 'test'
+  ...
+# Subtest: HASH: rejects length 1
+ok 77 - HASH: rejects length 1
+  ---
+  duration_ms: 0.220542
+  type: 'test'
+  ...
+# Subtest: HASH: rejects length 2
+ok 78 - HASH: rejects length 2
+  ---
+  duration_ms: 0.170333
+  type: 'test'
+  ...
+# Subtest: HASH: rejects length 7
+ok 79 - HASH: rejects length 7
+  ---
+  duration_ms: 0.120584
+  type: 'test'
+  ...
+# Subtest: HASH: rejects length 15
+ok 80 - HASH: rejects length 15
+  ---
+  duration_ms: 0.108459
+  type: 'test'
+  ...
+# Subtest: HASH: rejects length 31
+ok 81 - HASH: rejects length 31
+  ---
+  duration_ms: 0.098041
+  type: 'test'
+  ...
+# Subtest: HASH: rejects length 32
+ok 82 - HASH: rejects length 32
+  ---
+  duration_ms: 0.095
+  type: 'test'
+  ...
+# Subtest: HASH: rejects length 40
+ok 83 - HASH: rejects length 40
+  ---
+  duration_ms: 0.081542
+  type: 'test'
+  ...
+# Subtest: HASH: rejects length 48
+ok 84 - HASH: rejects length 48
+  ---
+  duration_ms: 0.082
+  type: 'test'
+  ...
+# Subtest: HASH: rejects length 55
+ok 85 - HASH: rejects length 55
+  ---
+  duration_ms: 0.078958
+  type: 'test'
+  ...
+# Subtest: HASH: rejects length 60
+ok 86 - HASH: rejects length 60
+  ---
+  duration_ms: 0.066583
+  type: 'test'
+  ...
+# Subtest: HASH: rejects length 61
+ok 87 - HASH: rejects length 61
+  ---
+  duration_ms: 0.060667
+  type: 'test'
+  ...
+# Subtest: HASH: rejects length 62
+ok 88 - HASH: rejects length 62
+  ---
+  duration_ms: 0.057417
+  type: 'test'
+  ...
+# Subtest: HASH: rejects length 63
+ok 89 - HASH: rejects length 63
+  ---
+  duration_ms: 0.095333
+  type: 'test'
+  ...
+# Subtest: HASH: rejects length 65
+ok 90 - HASH: rejects length 65
+  ---
+  duration_ms: 0.070208
+  type: 'test'
+  ...
+# Subtest: HASH: rejects length 66
+ok 91 - HASH: rejects length 66
+  ---
+  duration_ms: 0.052167
+  type: 'test'
+  ...
+# Subtest: HASH: rejects length 67
+ok 92 - HASH: rejects length 67
+  ---
+  duration_ms: 0.056209
+  type: 'test'
+  ...
+# Subtest: HASH: rejects length 72
+ok 93 - HASH: rejects length 72
+  ---
+  duration_ms: 0.054083
+  type: 'test'
+  ...
+# Subtest: HASH: rejects length 80
+ok 94 - HASH: rejects length 80
+  ---
+  duration_ms: 0.049417
+  type: 'test'
+  ...
+# Subtest: HASH: rejects length 96
+ok 95 - HASH: rejects length 96
+  ---
+  duration_ms: 0.059041
+  type: 'test'
+  ...
+# Subtest: HASH: rejects length 128
+ok 96 - HASH: rejects length 128
+  ---
+  duration_ms: 0.050167
+  type: 'test'
+  ...
+# Subtest: HASH: rejects length 256
+ok 97 - HASH: rejects length 256
+  ---
+  duration_ms: 0.05025
+  type: 'test'
+  ...
+# Subtest: HASH: rejects length 1024
+ok 98 - HASH: rejects length 1024
+  ---
+  duration_ms: 0.048167
+  type: 'test'
+  ...
+# Subtest: HASH: rejects length 65536
+ok 99 - HASH: rejects length 65536
+  ---
+  duration_ms: 0.061208
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "g" at 0
+ok 100 - HASH: rejects character "g" at 0
+  ---
+  duration_ms: 0.071708
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "g" at 31
+ok 101 - HASH: rejects character "g" at 31
+  ---
+  duration_ms: 0.055334
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "g" at 63
+ok 102 - HASH: rejects character "g" at 63
+  ---
+  duration_ms: 0.05925
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "z" at 0
+ok 103 - HASH: rejects character "z" at 0
+  ---
+  duration_ms: 0.055042
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "z" at 31
+ok 104 - HASH: rejects character "z" at 31
+  ---
+  duration_ms: 0.05675
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "z" at 63
+ok 105 - HASH: rejects character "z" at 63
+  ---
+  duration_ms: 0.047375
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "A" at 0
+ok 106 - HASH: rejects character "A" at 0
+  ---
+  duration_ms: 0.04975
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "A" at 31
+ok 107 - HASH: rejects character "A" at 31
+  ---
+  duration_ms: 0.049416
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "A" at 63
+ok 108 - HASH: rejects character "A" at 63
+  ---
+  duration_ms: 0.051292
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "F" at 0
+ok 109 - HASH: rejects character "F" at 0
+  ---
+  duration_ms: 0.052083
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "F" at 31
+ok 110 - HASH: rejects character "F" at 31
+  ---
+  duration_ms: 0.050542
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "F" at 63
+ok 111 - HASH: rejects character "F" at 63
+  ---
+  duration_ms: 0.051708
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "-" at 0
+ok 112 - HASH: rejects character "-" at 0
+  ---
+  duration_ms: 0.04975
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "-" at 31
+ok 113 - HASH: rejects character "-" at 31
+  ---
+  duration_ms: 0.064792
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "-" at 63
+ok 114 - HASH: rejects character "-" at 63
+  ---
+  duration_ms: 0.051625
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "_" at 0
+ok 115 - HASH: rejects character "_" at 0
+  ---
+  duration_ms: 0.061208
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "_" at 31
+ok 116 - HASH: rejects character "_" at 31
+  ---
+  duration_ms: 0.04875
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "_" at 63
+ok 117 - HASH: rejects character "_" at 63
+  ---
+  duration_ms: 0.050583
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character " " at 0
+ok 118 - HASH: rejects character " " at 0
+  ---
+  duration_ms: 0.05675
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character " " at 31
+ok 119 - HASH: rejects character " " at 31
+  ---
+  duration_ms: 0.055084
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character " " at 63
+ok 120 - HASH: rejects character " " at 63
+  ---
+  duration_ms: 0.050167
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "\\t" at 0
+ok 121 - HASH: rejects character "\\t" at 0
+  ---
+  duration_ms: 0.051958
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "\\t" at 31
+ok 122 - HASH: rejects character "\\t" at 31
+  ---
+  duration_ms: 0.050416
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "\\t" at 63
+ok 123 - HASH: rejects character "\\t" at 63
+  ---
+  duration_ms: 0.053917
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "\\n" at 0
+ok 124 - HASH: rejects character "\\n" at 0
+  ---
+  duration_ms: 0.083667
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "\\n" at 31
+ok 125 - HASH: rejects character "\\n" at 31
+  ---
+  duration_ms: 0.05125
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "\\n" at 63
+ok 126 - HASH: rejects character "\\n" at 63
+  ---
+  duration_ms: 0.055333
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "\\u0000" at 0
+ok 127 - HASH: rejects character "\\u0000" at 0
+  ---
+  duration_ms: 0.051625
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "\\u0000" at 31
+ok 128 - HASH: rejects character "\\u0000" at 31
+  ---
+  duration_ms: 0.057042
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "\\u0000" at 63
+ok 129 - HASH: rejects character "\\u0000" at 63
+  ---
+  duration_ms: 0.044125
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "$" at 0
+ok 130 - HASH: rejects character "$" at 0
+  ---
+  duration_ms: 0.0445
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "$" at 31
+ok 131 - HASH: rejects character "$" at 31
+  ---
+  duration_ms: 0.107875
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "$" at 63
+ok 132 - HASH: rejects character "$" at 63
+  ---
+  duration_ms: 0.042917
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "." at 0
+ok 133 - HASH: rejects character "." at 0
+  ---
+  duration_ms: 0.049625
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "." at 31
+ok 134 - HASH: rejects character "." at 31
+  ---
+  duration_ms: 0.047958
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "." at 63
+ok 135 - HASH: rejects character "." at 63
+  ---
+  duration_ms: 0.045333
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "/" at 0
+ok 136 - HASH: rejects character "/" at 0
+  ---
+  duration_ms: 0.041833
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "/" at 31
+ok 137 - HASH: rejects character "/" at 31
+  ---
+  duration_ms: 0.0455
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "/" at 63
+ok 138 - HASH: rejects character "/" at 63
+  ---
+  duration_ms: 0.043584
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "é" at 0
+ok 139 - HASH: rejects character "é" at 0
+  ---
+  duration_ms: 0.044833
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "é" at 31
+ok 140 - HASH: rejects character "é" at 31
+  ---
+  duration_ms: 0.042292
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "é" at 63
+ok 141 - HASH: rejects character "é" at 63
+  ---
+  duration_ms: 0.054458
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "中" at 0
+ok 142 - HASH: rejects character "中" at 0
+  ---
+  duration_ms: 0.080667
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "中" at 31
+ok 143 - HASH: rejects character "中" at 31
+  ---
+  duration_ms: 0.049083
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "中" at 63
+ok 144 - HASH: rejects character "中" at 63
+  ---
+  duration_ms: 0.048458
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "​" at 0
+ok 145 - HASH: rejects character "​" at 0
+  ---
+  duration_ms: 0.048583
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "​" at 31
+ok 146 - HASH: rejects character "​" at 31
+  ---
+  duration_ms: 0.048792
+  type: 'test'
+  ...
+# Subtest: HASH: rejects character "​" at 63
+ok 147 - HASH: rejects character "​" at 63
+  ---
+  duration_ms: 0.059333
+  type: 'test'
+  ...
+# Subtest: HASH: rejects non-string/operator input 0
+ok 148 - HASH: rejects non-string/operator input 0
+  ---
+  duration_ms: 0.081333
+  type: 'test'
+  ...
+# Subtest: HASH: rejects non-string/operator input 1
+ok 149 - HASH: rejects non-string/operator input 1
+  ---
+  duration_ms: 0.058083
+  type: 'test'
+  ...
+# Subtest: HASH: rejects non-string/operator input 2
+ok 150 - HASH: rejects non-string/operator input 2
+  ---
+  duration_ms: 0.055584
+  type: 'test'
+  ...
+# Subtest: HASH: rejects non-string/operator input 3
+ok 151 - HASH: rejects non-string/operator input 3
+  ---
+  duration_ms: 0.050625
+  type: 'test'
+  ...
+# Subtest: HASH: rejects non-string/operator input 4
+ok 152 - HASH: rejects non-string/operator input 4
+  ---
+  duration_ms: 0.061
+  type: 'test'
+  ...
+# Subtest: HASH: rejects non-string/operator input 5
+ok 153 - HASH: rejects non-string/operator input 5
+  ---
+  duration_ms: 0.047291
+  type: 'test'
+  ...
+# Subtest: HASH: rejects non-string/operator input 6
+ok 154 - HASH: rejects non-string/operator input 6
+  ---
+  duration_ms: 0.046833
+  type: 'test'
+  ...
+# Subtest: HASH: rejects non-string/operator input 7
+ok 155 - HASH: rejects non-string/operator input 7
+  ---
+  duration_ms: 0.055208
+  type: 'test'
+  ...
+# Subtest: HASH: rejects non-string/operator input 8
+ok 156 - HASH: rejects non-string/operator input 8
+  ---
+  duration_ms: 0.048458
+  type: 'test'
+  ...
+# Subtest: HASH: rejects non-string/operator input 9
+ok 157 - HASH: rejects non-string/operator input 9
+  ---
+  duration_ms: 0.289625
+  type: 'test'
+  ...
+# Subtest: HASH: rejects non-string/operator input 10
+ok 158 - HASH: rejects non-string/operator input 10
+  ---
+  duration_ms: 0.153416
+  type: 'test'
+  ...
+# Subtest: HASH: rejects non-string/operator input 11
+ok 159 - HASH: rejects non-string/operator input 11
+  ---
+  duration_ms: 0.091208
+  type: 'test'
+  ...
+# Subtest: HASH: rejects non-string/operator input 12
+ok 160 - HASH: rejects non-string/operator input 12
+  ---
+  duration_ms: 0.119916
+  type: 'test'
+  ...
+# Subtest: HASH: rejects non-string/operator input 13
+ok 161 - HASH: rejects non-string/operator input 13
+  ---
+  duration_ms: 0.111417
+  type: 'test'
+  ...
+# Subtest: HASH: rejects non-string/operator input 14
+ok 162 - HASH: rejects non-string/operator input 14
+  ---
+  duration_ms: 0.088291
+  type: 'test'
+  ...
+# Subtest: HASH: rejects non-string/operator input 15
+ok 163 - HASH: rejects non-string/operator input 15
+  ---
+  duration_ms: 0.072708
+  type: 'test'
+  ...
+# Subtest: HASH: rejects non-string/operator input 16
+ok 164 - HASH: rejects non-string/operator input 16
+  ---
+  duration_ms: 0.070041
+  type: 'test'
+  ...
+# Subtest: HASH: rejects non-string/operator input 17
+ok 165 - HASH: rejects non-string/operator input 17
+  ---
+  duration_ms: 0.1205
+  type: 'test'
+  ...
+# Subtest: HASH: rejects non-string/operator input 18
+ok 166 - HASH: rejects non-string/operator input 18
+  ---
+  duration_ms: 0.088875
+  type: 'test'
+  ...
+# Subtest: HASH: rejects non-string/operator input 19
+ok 167 - HASH: rejects non-string/operator input 19
+  ---
+  duration_ms: 0.076125
+  type: 'test'
+  ...
+# Subtest: HASH: rejects non-string/operator input 20
+ok 168 - HASH: rejects non-string/operator input 20
+  ---
+  duration_ms: 0.081333
+  type: 'test'
+  ...
+# Subtest: HASH: rejects non-string/operator input 21
+ok 169 - HASH: rejects non-string/operator input 21
+  ---
+  duration_ms: 0.075875
+  type: 'test'
+  ...
+# Subtest: HASH: rejects non-string/operator input 22
+ok 170 - HASH: rejects non-string/operator input 22
+  ---
+  duration_ms: 0.079375
+  type: 'test'
+  ...
+# Subtest: HASH: does not silently trim token hash " "
+ok 171 - HASH: does not silently trim token hash " "
+  ---
+  duration_ms: 0.066042
+  type: 'test'
+  ...
+# Subtest: HASH: does not silently trim token hash "\\t"
+ok 172 - HASH: does not silently trim token hash "\\t"
+  ---
+  duration_ms: 0.054209
+  type: 'test'
+  ...
+# Subtest: HASH: does not silently trim token hash "\\n"
+ok 173 - HASH: does not silently trim token hash "\\n"
+  ---
+  duration_ms: 0.052167
+  type: 'test'
+  ...
+# Subtest: HASH: does not silently trim token hash "\\r"
+ok 174 - HASH: does not silently trim token hash "\\r"
+  ---
+  duration_ms: 0.0565
+  type: 'test'
+  ...
+# Subtest: HASH: does not silently trim token hash "\\r\\n"
+ok 175 - HASH: does not silently trim token hash "\\r\\n"
+  ---
+  duration_ms: 0.047416
+  type: 'test'
+  ...
+# Subtest: HASH: does not silently trim token hash " "
+ok 176 - HASH: does not silently trim token hash " "
+  ---
+  duration_ms: 0.048958
+  type: 'test'
+  ...
+# Subtest: HASH: does not silently trim token hash "​"
+ok 177 - HASH: does not silently trim token hash "​"
+  ---
+  duration_ms: 0.053625
+  type: 'test'
+  ...
+# Subtest: HASH: does not silently trim token hash "\\u0000"
+ok 178 - HASH: does not silently trim token hash "\\u0000"
+  ---
+  duration_ms: 0.049833
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong-length identifier 0
+ok 179 - USER-ID: rejects wrong-length identifier 0
+  ---
+  duration_ms: 0.142042
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong-length identifier 1
+ok 180 - USER-ID: rejects wrong-length identifier 1
+  ---
+  duration_ms: 0.068291
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong-length identifier 2
+ok 181 - USER-ID: rejects wrong-length identifier 2
+  ---
+  duration_ms: 0.065833
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong-length identifier 8
+ok 182 - USER-ID: rejects wrong-length identifier 8
+  ---
+  duration_ms: 0.069625
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong-length identifier 11
+ok 183 - USER-ID: rejects wrong-length identifier 11
+  ---
+  duration_ms: 0.066917
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong-length identifier 12
+ok 184 - USER-ID: rejects wrong-length identifier 12
+  ---
+  duration_ms: 0.073334
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong-length identifier 16
+ok 185 - USER-ID: rejects wrong-length identifier 16
+  ---
+  duration_ms: 0.067667
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong-length identifier 20
+ok 186 - USER-ID: rejects wrong-length identifier 20
+  ---
+  duration_ms: 0.06925
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong-length identifier 22
+ok 187 - USER-ID: rejects wrong-length identifier 22
+  ---
+  duration_ms: 0.080792
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong-length identifier 23
+ok 188 - USER-ID: rejects wrong-length identifier 23
+  ---
+  duration_ms: 0.077542
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong-length identifier 25
+ok 189 - USER-ID: rejects wrong-length identifier 25
+  ---
+  duration_ms: 0.067584
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong-length identifier 26
+ok 190 - USER-ID: rejects wrong-length identifier 26
+  ---
+  duration_ms: 0.064459
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong-length identifier 28
+ok 191 - USER-ID: rejects wrong-length identifier 28
+  ---
+  duration_ms: 0.064292
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong-length identifier 32
+ok 192 - USER-ID: rejects wrong-length identifier 32
+  ---
+  duration_ms: 0.065625
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong-length identifier 48
+ok 193 - USER-ID: rejects wrong-length identifier 48
+  ---
+  duration_ms: 0.146917
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong-length identifier 64
+ok 194 - USER-ID: rejects wrong-length identifier 64
+  ---
+  duration_ms: 0.061708
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong-length identifier 128
+ok 195 - USER-ID: rejects wrong-length identifier 128
+  ---
+  duration_ms: 0.093458
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong-length identifier 256
+ok 196 - USER-ID: rejects wrong-length identifier 256
+  ---
+  duration_ms: 0.077167
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong-length identifier 1024
+ok 197 - USER-ID: rejects wrong-length identifier 1024
+  ---
+  duration_ms: 0.0825
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects non-hex identifier at position 0
+ok 198 - USER-ID: rejects non-hex identifier at position 0
+  ---
+  duration_ms: 0.084291
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects non-hex identifier at position 1
+ok 199 - USER-ID: rejects non-hex identifier at position 1
+  ---
+  duration_ms: 0.072667
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects non-hex identifier at position 2
+ok 200 - USER-ID: rejects non-hex identifier at position 2
+  ---
+  duration_ms: 0.069292
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects non-hex identifier at position 3
+ok 201 - USER-ID: rejects non-hex identifier at position 3
+  ---
+  duration_ms: 0.076167
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects non-hex identifier at position 4
+ok 202 - USER-ID: rejects non-hex identifier at position 4
+  ---
+  duration_ms: 0.073875
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects non-hex identifier at position 5
+ok 203 - USER-ID: rejects non-hex identifier at position 5
+  ---
+  duration_ms: 0.070417
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects non-hex identifier at position 6
+ok 204 - USER-ID: rejects non-hex identifier at position 6
+  ---
+  duration_ms: 0.112209
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects non-hex identifier at position 7
+ok 205 - USER-ID: rejects non-hex identifier at position 7
+  ---
+  duration_ms: 0.065083
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects non-hex identifier at position 8
+ok 206 - USER-ID: rejects non-hex identifier at position 8
+  ---
+  duration_ms: 0.072
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects non-hex identifier at position 9
+ok 207 - USER-ID: rejects non-hex identifier at position 9
+  ---
+  duration_ms: 0.07475
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects non-hex identifier at position 10
+ok 208 - USER-ID: rejects non-hex identifier at position 10
+  ---
+  duration_ms: 0.064291
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects non-hex identifier at position 11
+ok 209 - USER-ID: rejects non-hex identifier at position 11
+  ---
+  duration_ms: 0.065917
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects non-hex identifier at position 12
+ok 210 - USER-ID: rejects non-hex identifier at position 12
+  ---
+  duration_ms: 0.064875
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects non-hex identifier at position 13
+ok 211 - USER-ID: rejects non-hex identifier at position 13
+  ---
+  duration_ms: 0.063083
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects non-hex identifier at position 14
+ok 212 - USER-ID: rejects non-hex identifier at position 14
+  ---
+  duration_ms: 0.078583
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects non-hex identifier at position 15
+ok 213 - USER-ID: rejects non-hex identifier at position 15
+  ---
+  duration_ms: 0.067667
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects non-hex identifier at position 16
+ok 214 - USER-ID: rejects non-hex identifier at position 16
+  ---
+  duration_ms: 0.064958
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects non-hex identifier at position 17
+ok 215 - USER-ID: rejects non-hex identifier at position 17
+  ---
+  duration_ms: 0.074791
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects non-hex identifier at position 18
+ok 216 - USER-ID: rejects non-hex identifier at position 18
+  ---
+  duration_ms: 0.068458
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects non-hex identifier at position 19
+ok 217 - USER-ID: rejects non-hex identifier at position 19
+  ---
+  duration_ms: 0.073
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects non-hex identifier at position 20
+ok 218 - USER-ID: rejects non-hex identifier at position 20
+  ---
+  duration_ms: 0.064417
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects non-hex identifier at position 21
+ok 219 - USER-ID: rejects non-hex identifier at position 21
+  ---
+  duration_ms: 0.064792
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects non-hex identifier at position 22
+ok 220 - USER-ID: rejects non-hex identifier at position 22
+  ---
+  duration_ms: 0.072459
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects non-hex identifier at position 23
+ok 221 - USER-ID: rejects non-hex identifier at position 23
+  ---
+  duration_ms: 0.071166
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong type/operator 0
+ok 222 - USER-ID: rejects wrong type/operator 0
+  ---
+  duration_ms: 0.078958
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong type/operator 1
+ok 223 - USER-ID: rejects wrong type/operator 1
+  ---
+  duration_ms: 0.053125
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong type/operator 2
+ok 224 - USER-ID: rejects wrong type/operator 2
+  ---
+  duration_ms: 0.069625
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong type/operator 3
+ok 225 - USER-ID: rejects wrong type/operator 3
+  ---
+  duration_ms: 0.069708
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong type/operator 4
+ok 226 - USER-ID: rejects wrong type/operator 4
+  ---
+  duration_ms: 0.093542
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong type/operator 5
+ok 227 - USER-ID: rejects wrong type/operator 5
+  ---
+  duration_ms: 0.063875
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong type/operator 6
+ok 228 - USER-ID: rejects wrong type/operator 6
+  ---
+  duration_ms: 0.064583
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong type/operator 7
+ok 229 - USER-ID: rejects wrong type/operator 7
+  ---
+  duration_ms: 0.060583
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong type/operator 8
+ok 230 - USER-ID: rejects wrong type/operator 8
+  ---
+  duration_ms: 0.067
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong type/operator 9
+ok 231 - USER-ID: rejects wrong type/operator 9
+  ---
+  duration_ms: 0.076166
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong type/operator 10
+ok 232 - USER-ID: rejects wrong type/operator 10
+  ---
+  duration_ms: 0.090792
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong type/operator 11
+ok 233 - USER-ID: rejects wrong type/operator 11
+  ---
+  duration_ms: 0.0685
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong type/operator 12
+ok 234 - USER-ID: rejects wrong type/operator 12
+  ---
+  duration_ms: 0.077459
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong type/operator 13
+ok 235 - USER-ID: rejects wrong type/operator 13
+  ---
+  duration_ms: 0.085208
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong type/operator 14
+ok 236 - USER-ID: rejects wrong type/operator 14
+  ---
+  duration_ms: 0.073709
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong type/operator 15
+ok 237 - USER-ID: rejects wrong type/operator 15
+  ---
+  duration_ms: 0.065875
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong type/operator 16
+ok 238 - USER-ID: rejects wrong type/operator 16
+  ---
+  duration_ms: 0.072541
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong type/operator 17
+ok 239 - USER-ID: rejects wrong type/operator 17
+  ---
+  duration_ms: 0.067708
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong type/operator 18
+ok 240 - USER-ID: rejects wrong type/operator 18
+  ---
+  duration_ms: 0.078334
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong type/operator 19
+ok 241 - USER-ID: rejects wrong type/operator 19
+  ---
+  duration_ms: 0.069417
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong type/operator 20
+ok 242 - USER-ID: rejects wrong type/operator 20
+  ---
+  duration_ms: 0.0685
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong type/operator 21
+ok 243 - USER-ID: rejects wrong type/operator 21
+  ---
+  duration_ms: 0.066667
+  type: 'test'
+  ...
+# Subtest: USER-ID: rejects wrong type/operator 22
+ok 244 - USER-ID: rejects wrong type/operator 22
+  ---
+  duration_ms: 0.095792
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid expiresAt 0
+ok 245 - DATE: rejects invalid expiresAt 0
+  ---
+  duration_ms: 0.063
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid expiresAt 1
+ok 246 - DATE: rejects invalid expiresAt 1
+  ---
+  duration_ms: 2.085083
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid expiresAt 2
+ok 247 - DATE: rejects invalid expiresAt 2
+  ---
+  duration_ms: 0.1945
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid expiresAt 3
+ok 248 - DATE: rejects invalid expiresAt 3
+  ---
+  duration_ms: 0.131
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid expiresAt 4
+ok 249 - DATE: rejects invalid expiresAt 4
+  ---
+  duration_ms: 0.108833
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid expiresAt 5
+ok 250 - DATE: rejects invalid expiresAt 5
+  ---
+  duration_ms: 0.112833
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid expiresAt 6
+ok 251 - DATE: rejects invalid expiresAt 6
+  ---
+  duration_ms: 0.112041
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid expiresAt 7
+ok 252 - DATE: rejects invalid expiresAt 7
+  ---
+  duration_ms: 0.110334
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid expiresAt 8
+ok 253 - DATE: rejects invalid expiresAt 8
+  ---
+  duration_ms: 0.119208
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid expiresAt 9
+ok 254 - DATE: rejects invalid expiresAt 9
+  ---
+  duration_ms: 0.303792
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid expiresAt 10
+ok 255 - DATE: rejects invalid expiresAt 10
+  ---
+  duration_ms: 0.215333
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid expiresAt 11
+ok 256 - DATE: rejects invalid expiresAt 11
+  ---
+  duration_ms: 0.1335
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid expiresAt 12
+ok 257 - DATE: rejects invalid expiresAt 12
+  ---
+  duration_ms: 0.123209
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid expiresAt 13
+ok 258 - DATE: rejects invalid expiresAt 13
+  ---
+  duration_ms: 0.115708
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid expiresAt 14
+ok 259 - DATE: rejects invalid expiresAt 14
+  ---
+  duration_ms: 0.128125
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid expiresAt 15
+ok 260 - DATE: rejects invalid expiresAt 15
+  ---
+  duration_ms: 0.118166
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid expiresAt 16
+ok 261 - DATE: rejects invalid expiresAt 16
+  ---
+  duration_ms: 0.244459
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid expiresAt 17
+ok 262 - DATE: rejects invalid expiresAt 17
+  ---
+  duration_ms: 0.113875
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid expiresAt 18
+ok 263 - DATE: rejects invalid expiresAt 18
+  ---
+  duration_ms: 0.103417
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid expiresAt 19
+ok 264 - DATE: rejects invalid expiresAt 19
+  ---
+  duration_ms: 0.094708
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid expiresAt 20
+ok 265 - DATE: rejects invalid expiresAt 20
+  ---
+  duration_ms: 0.096167
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid expiresAt 21
+ok 266 - DATE: rejects invalid expiresAt 21
+  ---
+  duration_ms: 0.112166
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid expiresAt 22
+ok 267 - DATE: rejects invalid expiresAt 22
+  ---
+  duration_ms: 0.107125
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid expiresAt 23
+ok 268 - DATE: rejects invalid expiresAt 23
+  ---
+  duration_ms: 0.131167
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid expiresAt 24
+ok 269 - DATE: rejects invalid expiresAt 24
+  ---
+  duration_ms: 0.109333
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid expiresAt 25
+ok 270 - DATE: rejects invalid expiresAt 25
+  ---
+  duration_ms: 0.106125
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid usedAt 1
+ok 271 - DATE: rejects invalid usedAt 1
+  ---
+  duration_ms: 0.120667
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid usedAt 2
+ok 272 - DATE: rejects invalid usedAt 2
+  ---
+  duration_ms: 0.10175
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid usedAt 3
+ok 273 - DATE: rejects invalid usedAt 3
+  ---
+  duration_ms: 0.133125
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid usedAt 4
+ok 274 - DATE: rejects invalid usedAt 4
+  ---
+  duration_ms: 0.091917
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid usedAt 5
+ok 275 - DATE: rejects invalid usedAt 5
+  ---
+  duration_ms: 0.094875
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid usedAt 6
+ok 276 - DATE: rejects invalid usedAt 6
+  ---
+  duration_ms: 0.126583
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid usedAt 7
+ok 277 - DATE: rejects invalid usedAt 7
+  ---
+  duration_ms: 2.043209
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid usedAt 8
+ok 278 - DATE: rejects invalid usedAt 8
+  ---
+  duration_ms: 0.164542
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid usedAt 9
+ok 279 - DATE: rejects invalid usedAt 9
+  ---
+  duration_ms: 0.118125
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid usedAt 10
+ok 280 - DATE: rejects invalid usedAt 10
+  ---
+  duration_ms: 0.091083
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid usedAt 11
+ok 281 - DATE: rejects invalid usedAt 11
+  ---
+  duration_ms: 0.080875
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid usedAt 12
+ok 282 - DATE: rejects invalid usedAt 12
+  ---
+  duration_ms: 0.071917
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid usedAt 13
+ok 283 - DATE: rejects invalid usedAt 13
+  ---
+  duration_ms: 0.08225
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid usedAt 14
+ok 284 - DATE: rejects invalid usedAt 14
+  ---
+  duration_ms: 0.07625
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid usedAt 15
+ok 285 - DATE: rejects invalid usedAt 15
+  ---
+  duration_ms: 0.084334
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid usedAt 16
+ok 286 - DATE: rejects invalid usedAt 16
+  ---
+  duration_ms: 0.072417
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid usedAt 17
+ok 287 - DATE: rejects invalid usedAt 17
+  ---
+  duration_ms: 0.07925
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid usedAt 18
+ok 288 - DATE: rejects invalid usedAt 18
+  ---
+  duration_ms: 0.079334
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid usedAt 19
+ok 289 - DATE: rejects invalid usedAt 19
+  ---
+  duration_ms: 0.081292
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid usedAt 20
+ok 290 - DATE: rejects invalid usedAt 20
+  ---
+  duration_ms: 0.084792
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid usedAt 21
+ok 291 - DATE: rejects invalid usedAt 21
+  ---
+  duration_ms: 0.075333
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid usedAt 22
+ok 292 - DATE: rejects invalid usedAt 22
+  ---
+  duration_ms: 0.068792
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid usedAt 23
+ok 293 - DATE: rejects invalid usedAt 23
+  ---
+  duration_ms: 0.070042
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid usedAt 24
+ok 294 - DATE: rejects invalid usedAt 24
+  ---
+  duration_ms: 0.063709
+  type: 'test'
+  ...
+# Subtest: DATE: rejects invalid usedAt 25
+ok 295 - DATE: rejects invalid usedAt 25
+  ---
+  duration_ms: 0.071583
+  type: 'test'
+  ...
+# Subtest: REQUIRED: cannot omit userId
+ok 296 - REQUIRED: cannot omit userId
+  ---
+  duration_ms: 0.073333
+  type: 'test'
+  ...
+# Subtest: REQUIRED: cannot omit tokenHash
+ok 297 - REQUIRED: cannot omit tokenHash
+  ---
+  duration_ms: 0.043458
+  type: 'test'
+  ...
+# Subtest: REQUIRED: cannot omit expiresAt
+ok 298 - REQUIRED: cannot omit expiresAt
+  ---
+  duration_ms: 0.055084
+  type: 'test'
+  ...
+# Subtest: VALID: accepts distinct cryptographic digest fixture 0
+ok 299 - VALID: accepts distinct cryptographic digest fixture 0
+  ---
+  duration_ms: 0.163458
+  type: 'test'
+  ...
+# Subtest: VALID: accepts distinct cryptographic digest fixture 1
+ok 300 - VALID: accepts distinct cryptographic digest fixture 1
+  ---
+  duration_ms: 0.043125
+  type: 'test'
+  ...
+# Subtest: VALID: accepts distinct cryptographic digest fixture 2
+ok 301 - VALID: accepts distinct cryptographic digest fixture 2
+  ---
+  duration_ms: 0.039958
+  type: 'test'
+  ...
+# Subtest: VALID: accepts distinct cryptographic digest fixture 3
+ok 302 - VALID: accepts distinct cryptographic digest fixture 3
+  ---
+  duration_ms: 0.034375
+  type: 'test'
+  ...
+# Subtest: VALID: accepts distinct cryptographic digest fixture 4
+ok 303 - VALID: accepts distinct cryptographic digest fixture 4
+  ---
+  duration_ms: 0.032292
+  type: 'test'
+  ...
+# Subtest: VALID: accepts distinct cryptographic digest fixture 5
+ok 304 - VALID: accepts distinct cryptographic digest fixture 5
+  ---
+  duration_ms: 0.030333
+  type: 'test'
+  ...
+# Subtest: VALID: accepts distinct cryptographic digest fixture 6
+ok 305 - VALID: accepts distinct cryptographic digest fixture 6
+  ---
+  duration_ms: 0.0335
+  type: 'test'
+  ...
+# Subtest: VALID: accepts distinct cryptographic digest fixture 7
+ok 306 - VALID: accepts distinct cryptographic digest fixture 7
+  ---
+  duration_ms: 0.036583
+  type: 'test'
+  ...
+# Subtest: VALID: accepts distinct cryptographic digest fixture 8
+ok 307 - VALID: accepts distinct cryptographic digest fixture 8
+  ---
+  duration_ms: 0.044167
+  type: 'test'
+  ...
+# Subtest: VALID: accepts distinct cryptographic digest fixture 9
+ok 308 - VALID: accepts distinct cryptographic digest fixture 9
+  ---
+  duration_ms: 0.048458
+  type: 'test'
+  ...
+# Subtest: VALID: accepts distinct cryptographic digest fixture 10
+ok 309 - VALID: accepts distinct cryptographic digest fixture 10
+  ---
+  duration_ms: 0.043458
+  type: 'test'
+  ...
+# Subtest: VALID: accepts distinct cryptographic digest fixture 11
+ok 310 - VALID: accepts distinct cryptographic digest fixture 11
+  ---
+  duration_ms: 0.039583
+  type: 'test'
+  ...
+# Subtest: VALID: accepts distinct cryptographic digest fixture 12
+ok 311 - VALID: accepts distinct cryptographic digest fixture 12
+  ---
+  duration_ms: 0.031167
+  type: 'test'
+  ...
+# Subtest: VALID: accepts distinct cryptographic digest fixture 13
+ok 312 - VALID: accepts distinct cryptographic digest fixture 13
+  ---
+  duration_ms: 0.030916
+  type: 'test'
+  ...
+# Subtest: VALID: accepts distinct cryptographic digest fixture 14
+ok 313 - VALID: accepts distinct cryptographic digest fixture 14
+  ---
+  duration_ms: 0.030167
+  type: 'test'
+  ...
+# Subtest: VALID: accepts distinct cryptographic digest fixture 15
+ok 314 - VALID: accepts distinct cryptographic digest fixture 15
+  ---
+  duration_ms: 0.030875
+  type: 'test'
+  ...
+# Subtest: STRICT FIELDS: reset model discards unknown key role
+ok 315 - STRICT FIELDS: reset model discards unknown key role
+  ---
+  duration_ms: 0.285
+  type: 'test'
+  ...
+# Subtest: STRICT FIELDS: reset model discards unknown key isAdmin
+ok 316 - STRICT FIELDS: reset model discards unknown key isAdmin
+  ---
+  duration_ms: 0.075459
+  type: 'test'
+  ...
+# Subtest: STRICT FIELDS: reset model discards unknown key password
+ok 317 - STRICT FIELDS: reset model discards unknown key password
+  ---
+  duration_ms: 0.05475
+  type: 'test'
+  ...
+# Subtest: STRICT FIELDS: reset model discards unknown key passwordHash
+ok 318 - STRICT FIELDS: reset model discards unknown key passwordHash
+  ---
+  duration_ms: 0.052125
+  type: 'test'
+  ...
+# Subtest: STRICT FIELDS: reset model discards unknown key email
+ok 319 - STRICT FIELDS: reset model discards unknown key email
+  ---
+  duration_ms: 0.05125
+  type: 'test'
+  ...
+# Subtest: STRICT FIELDS: reset model discards unknown key authVersion
+ok 320 - STRICT FIELDS: reset model discards unknown key authVersion
+  ---
+  duration_ms: 0.050958
+  type: 'test'
+  ...
+# Subtest: STRICT FIELDS: reset model discards unknown key $set
+ok 321 - STRICT FIELDS: reset model discards unknown key $set
+  ---
+  duration_ms: 0.042375
+  type: 'test'
+  ...
+# Subtest: STRICT FIELDS: reset model discards unknown key $where
+ok 322 - STRICT FIELDS: reset model discards unknown key $where
+  ---
+  duration_ms: 0.039083
+  type: 'test'
+  ...
+# Subtest: STRICT FIELDS: reset model discards unknown key $function
+ok 323 - STRICT FIELDS: reset model discards unknown key $function
+  ---
+  duration_ms: 0.053875
+  type: 'test'
+  ...
+# Subtest: STRICT FIELDS: reset model discards unknown key __proto__
+ok 324 - STRICT FIELDS: reset model discards unknown key __proto__
+  ---
+  duration_ms: 0.048375
+  type: 'test'
+  ...
+# Subtest: STRICT FIELDS: reset model discards unknown key constructor
+ok 325 - STRICT FIELDS: reset model discards unknown key constructor
+  ---
+  duration_ms: 0.038334
+  type: 'test'
+  ...
+# Subtest: STRICT FIELDS: reset model discards unknown key prototype
+ok 326 - STRICT FIELDS: reset model discards unknown key prototype
+  ---
+  duration_ms: 0.034042
+  type: 'test'
+  ...
+# Subtest: STRICT FIELDS: reset model discards unknown key user.role
+ok 327 - STRICT FIELDS: reset model discards unknown key user.role
+  ---
+  duration_ms: 0.04
+  type: 'test'
+  ...
+# Subtest: STRICT FIELDS: reset model discards unknown key tokenHash.$ne
+ok 328 - STRICT FIELDS: reset model discards unknown key tokenHash.$ne
+  ---
+  duration_ms: 0.045833
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.tokenHash rejects operator object 0
+ok 329 - DOCUMENT INJECTION: PasswordResetToken.tokenHash rejects operator object 0
+  ---
+  duration_ms: 0.086209
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.tokenHash rejects operator object 1
+ok 330 - DOCUMENT INJECTION: PasswordResetToken.tokenHash rejects operator object 1
+  ---
+  duration_ms: 0.069
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.tokenHash rejects operator object 2
+ok 331 - DOCUMENT INJECTION: PasswordResetToken.tokenHash rejects operator object 2
+  ---
+  duration_ms: 0.06225
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.tokenHash rejects operator object 3
+ok 332 - DOCUMENT INJECTION: PasswordResetToken.tokenHash rejects operator object 3
+  ---
+  duration_ms: 0.156792
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.tokenHash rejects operator object 4
+ok 333 - DOCUMENT INJECTION: PasswordResetToken.tokenHash rejects operator object 4
+  ---
+  duration_ms: 0.071333
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.tokenHash rejects operator object 5
+ok 334 - DOCUMENT INJECTION: PasswordResetToken.tokenHash rejects operator object 5
+  ---
+  duration_ms: 0.069959
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.tokenHash rejects operator object 6
+ok 335 - DOCUMENT INJECTION: PasswordResetToken.tokenHash rejects operator object 6
+  ---
+  duration_ms: 0.070041
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.tokenHash rejects operator object 7
+ok 336 - DOCUMENT INJECTION: PasswordResetToken.tokenHash rejects operator object 7
+  ---
+  duration_ms: 0.069458
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.tokenHash rejects operator object 8
+ok 337 - DOCUMENT INJECTION: PasswordResetToken.tokenHash rejects operator object 8
+  ---
+  duration_ms: 0.067125
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.tokenHash rejects operator object 9
+ok 338 - DOCUMENT INJECTION: PasswordResetToken.tokenHash rejects operator object 9
+  ---
+  duration_ms: 0.071125
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.tokenHash rejects operator object 10
+ok 339 - DOCUMENT INJECTION: PasswordResetToken.tokenHash rejects operator object 10
+  ---
+  duration_ms: 0.074
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.userId rejects operator object 0
+ok 340 - DOCUMENT INJECTION: PasswordResetToken.userId rejects operator object 0
+  ---
+  duration_ms: 0.078583
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.userId rejects operator object 1
+ok 341 - DOCUMENT INJECTION: PasswordResetToken.userId rejects operator object 1
+  ---
+  duration_ms: 0.073875
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.userId rejects operator object 2
+ok 342 - DOCUMENT INJECTION: PasswordResetToken.userId rejects operator object 2
+  ---
+  duration_ms: 0.063458
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.userId rejects operator object 3
+ok 343 - DOCUMENT INJECTION: PasswordResetToken.userId rejects operator object 3
+  ---
+  duration_ms: 0.063209
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.userId rejects operator object 4
+ok 344 - DOCUMENT INJECTION: PasswordResetToken.userId rejects operator object 4
+  ---
+  duration_ms: 0.070708
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.userId rejects operator object 5
+ok 345 - DOCUMENT INJECTION: PasswordResetToken.userId rejects operator object 5
+  ---
+  duration_ms: 0.069666
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.userId rejects operator object 6
+ok 346 - DOCUMENT INJECTION: PasswordResetToken.userId rejects operator object 6
+  ---
+  duration_ms: 0.074041
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.userId rejects operator object 7
+ok 347 - DOCUMENT INJECTION: PasswordResetToken.userId rejects operator object 7
+  ---
+  duration_ms: 0.066416
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.userId rejects operator object 8
+ok 348 - DOCUMENT INJECTION: PasswordResetToken.userId rejects operator object 8
+  ---
+  duration_ms: 0.0755
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.userId rejects operator object 9
+ok 349 - DOCUMENT INJECTION: PasswordResetToken.userId rejects operator object 9
+  ---
+  duration_ms: 0.063417
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.userId rejects operator object 10
+ok 350 - DOCUMENT INJECTION: PasswordResetToken.userId rejects operator object 10
+  ---
+  duration_ms: 0.086125
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.expiresAt rejects operator object 0
+ok 351 - DOCUMENT INJECTION: PasswordResetToken.expiresAt rejects operator object 0
+  ---
+  duration_ms: 0.1215
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.expiresAt rejects operator object 1
+ok 352 - DOCUMENT INJECTION: PasswordResetToken.expiresAt rejects operator object 1
+  ---
+  duration_ms: 0.102166
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.expiresAt rejects operator object 2
+ok 353 - DOCUMENT INJECTION: PasswordResetToken.expiresAt rejects operator object 2
+  ---
+  duration_ms: 0.112417
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.expiresAt rejects operator object 3
+ok 354 - DOCUMENT INJECTION: PasswordResetToken.expiresAt rejects operator object 3
+  ---
+  duration_ms: 0.104834
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.expiresAt rejects operator object 4
+ok 355 - DOCUMENT INJECTION: PasswordResetToken.expiresAt rejects operator object 4
+  ---
+  duration_ms: 0.097625
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.expiresAt rejects operator object 5
+ok 356 - DOCUMENT INJECTION: PasswordResetToken.expiresAt rejects operator object 5
+  ---
+  duration_ms: 0.095208
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.expiresAt rejects operator object 6
+ok 357 - DOCUMENT INJECTION: PasswordResetToken.expiresAt rejects operator object 6
+  ---
+  duration_ms: 0.091
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.expiresAt rejects operator object 7
+ok 358 - DOCUMENT INJECTION: PasswordResetToken.expiresAt rejects operator object 7
+  ---
+  duration_ms: 0.092834
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.expiresAt rejects operator object 8
+ok 359 - DOCUMENT INJECTION: PasswordResetToken.expiresAt rejects operator object 8
+  ---
+  duration_ms: 0.110791
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.expiresAt rejects operator object 9
+ok 360 - DOCUMENT INJECTION: PasswordResetToken.expiresAt rejects operator object 9
+  ---
+  duration_ms: 0.097416
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: PasswordResetToken.expiresAt rejects operator object 10
+ok 361 - DOCUMENT INJECTION: PasswordResetToken.expiresAt rejects operator object 10
+  ---
+  duration_ms: 0.109666
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: User.email rejects operator object 0
+ok 362 - DOCUMENT INJECTION: User.email rejects operator object 0
+  ---
+  duration_ms: 0.284709
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: User.email rejects operator object 1
+ok 363 - DOCUMENT INJECTION: User.email rejects operator object 1
+  ---
+  duration_ms: 0.094959
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: User.email rejects operator object 2
+ok 364 - DOCUMENT INJECTION: User.email rejects operator object 2
+  ---
+  duration_ms: 0.0795
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: User.email rejects operator object 3
+ok 365 - DOCUMENT INJECTION: User.email rejects operator object 3
+  ---
+  duration_ms: 0.075083
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: User.email rejects operator object 4
+ok 366 - DOCUMENT INJECTION: User.email rejects operator object 4
+  ---
+  duration_ms: 0.071584
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: User.email rejects operator object 5
+ok 367 - DOCUMENT INJECTION: User.email rejects operator object 5
+  ---
+  duration_ms: 0.073709
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: User.email rejects operator object 6
+ok 368 - DOCUMENT INJECTION: User.email rejects operator object 6
+  ---
+  duration_ms: 0.081459
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: User.email rejects operator object 7
+ok 369 - DOCUMENT INJECTION: User.email rejects operator object 7
+  ---
+  duration_ms: 0.076292
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: User.email rejects operator object 8
+ok 370 - DOCUMENT INJECTION: User.email rejects operator object 8
+  ---
+  duration_ms: 0.072542
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: User.email rejects operator object 9
+ok 371 - DOCUMENT INJECTION: User.email rejects operator object 9
+  ---
+  duration_ms: 0.068958
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: User.email rejects operator object 10
+ok 372 - DOCUMENT INJECTION: User.email rejects operator object 10
+  ---
+  duration_ms: 0.085709
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: User.passwordHash rejects operator object 0
+ok 373 - DOCUMENT INJECTION: User.passwordHash rejects operator object 0
+  ---
+  duration_ms: 0.120125
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: User.passwordHash rejects operator object 1
+ok 374 - DOCUMENT INJECTION: User.passwordHash rejects operator object 1
+  ---
+  duration_ms: 0.091667
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: User.passwordHash rejects operator object 2
+ok 375 - DOCUMENT INJECTION: User.passwordHash rejects operator object 2
+  ---
+  duration_ms: 0.07175
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: User.passwordHash rejects operator object 3
+ok 376 - DOCUMENT INJECTION: User.passwordHash rejects operator object 3
+  ---
+  duration_ms: 0.070625
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: User.passwordHash rejects operator object 4
+ok 377 - DOCUMENT INJECTION: User.passwordHash rejects operator object 4
+  ---
+  duration_ms: 0.072125
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: User.passwordHash rejects operator object 5
+ok 378 - DOCUMENT INJECTION: User.passwordHash rejects operator object 5
+  ---
+  duration_ms: 0.0695
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: User.passwordHash rejects operator object 6
+ok 379 - DOCUMENT INJECTION: User.passwordHash rejects operator object 6
+  ---
+  duration_ms: 0.077666
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: User.passwordHash rejects operator object 7
+ok 380 - DOCUMENT INJECTION: User.passwordHash rejects operator object 7
+  ---
+  duration_ms: 0.080291
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: User.passwordHash rejects operator object 8
+ok 381 - DOCUMENT INJECTION: User.passwordHash rejects operator object 8
+  ---
+  duration_ms: 0.07975
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: User.passwordHash rejects operator object 9
+ok 382 - DOCUMENT INJECTION: User.passwordHash rejects operator object 9
+  ---
+  duration_ms: 0.070958
+  type: 'test'
+  ...
+# Subtest: DOCUMENT INJECTION: User.passwordHash rejects operator object 10
+ok 383 - DOCUMENT INJECTION: User.passwordHash rejects operator object 10
+  ---
+  duration_ms: 0.09325
+  type: 'test'
+  ...
+# Subtest: LIMITATION: an expired reset document still validates
+ok 384 - LIMITATION: an expired reset document still validates
+  ---
+  duration_ms: 0.079958
+  type: 'test'
+  ...
+# Subtest: LIMITATION: a previously used reset document still validates
+ok 385 - LIMITATION: a previously used reset document still validates
+  ---
+  duration_ms: 0.06575
+  type: 'test'
+  ...
+# Subtest: LIMITATION: a 64-character raw token cannot be distinguished from a hash by regex
+ok 386 - LIMITATION: a 64-character raw token cannot be distinguished from a hash by regex
+  ---
+  duration_ms: 0.062375
+  type: 'test'
+  ...
+# Subtest: REDACTION: newly created reset documents do not expose token hashes in JSON
+ok 387 - REDACTION: newly created reset documents do not expose token hashes in JSON
+  ---
+  duration_ms: 0.051791
+  type: 'test'
+  ...
+# Subtest: LIMITATION: an ObjectId reference does not check account existence
+ok 388 - LIMITATION: an ObjectId reference does not check account existence
+  ---
+  duration_ms: 0.053916
+  type: 'test'
+  ...
+# Subtest: LIMITATION: a caller can choose another syntactically valid userId
+ok 389 - LIMITATION: a caller can choose another syntactically valid userId
+  ---
+  duration_ms: 0.038084
+  type: 'test'
+  ...
+# Subtest: LIMITATION: schema permits admin when trusted application code explicitly sets role
+ok 390 - LIMITATION: schema permits admin when trusted application code explicitly sets role
+  ---
+  duration_ms: 0.074083
+  type: 'test'
+  ...
+# Subtest: LIMITATION: schema does not hash password strings
+ok 391 - LIMITATION: schema does not hash password strings
+  ---
+  duration_ms: 0.052375
+  type: 'test'
+  ...
+# Subtest: USER HARDENING: malformed email is rejected
+ok 392 - USER HARDENING: malformed email is rejected
+  ---
+  duration_ms: 0.077375
+  type: 'test'
+  ...
+# Subtest: USER HARDENING: fractional session version is rejected
+ok 393 - USER HARDENING: fractional session version is rejected
+  ---
+  duration_ms: 0.0805
+  type: 'test'
+  ...
+# Subtest: LIMITATION: finite token TTL is a controller policy, not a schema maximum
+ok 394 - LIMITATION: finite token TTL is a controller policy, not a schema maximum
+  ---
+  duration_ms: 0.048375
+  type: 'test'
+  ...
+# Subtest: LIMITATION: Mongoose can cast a one-element identifier array to ObjectId
+ok 395 - LIMITATION: Mongoose can cast a one-element identifier array to ObjectId
+  ---
+  duration_ms: 0.090209
+  type: 'test'
+  ...
+# Subtest: LIMITATION: an empty optional usedAt string is cast to null
+ok 396 - LIMITATION: an empty optional usedAt string is cast to null
+  ---
+  duration_ms: 0.045959
+  type: 'test'
+  ...
+# Subtest: LIMITATION: schema permits a caller-supplied _id
+ok 397 - LIMITATION: schema permits a caller-supplied _id
+  ---
+  duration_ms: 0.041959
+  type: 'test'
+  ...
+# Subtest: LIMITATION: update validators must be requested by application code
+ok 398 - LIMITATION: update validators must be requested by application code
+  ---
+  duration_ms: 0.400334
+  type: 'test'
+  ...
+# Subtest: LIMITATION: sanitizeFilter is not enabled globally
+ok 399 - LIMITATION: sanitizeFilter is not enabled globally
+  ---
+  duration_ms: 0.017375
+  type: 'test'
+  ...
+# Subtest: QUERY LIMITATION: string-field query casting preserves operator 0
+ok 400 - QUERY LIMITATION: string-field query casting preserves operator 0
+  ---
+  duration_ms: 0.556708
+  type: 'test'
+  ...
+# Subtest: QUERY DEFENSE DEMO: explicitly sanitizing nested operator 0 prevents string casting
+ok 401 - QUERY DEFENSE DEMO: explicitly sanitizing nested operator 0 prevents string casting
+  ---
+  duration_ms: 0.141292
+  type: 'test'
+  ...
+# Subtest: QUERY LIMITATION: string-field query casting preserves operator 1
+ok 402 - QUERY LIMITATION: string-field query casting preserves operator 1
+  ---
+  duration_ms: 0.039125
+  type: 'test'
+  ...
+# Subtest: QUERY DEFENSE DEMO: explicitly sanitizing nested operator 1 prevents string casting
+ok 403 - QUERY DEFENSE DEMO: explicitly sanitizing nested operator 1 prevents string casting
+  ---
+  duration_ms: 0.045584
+  type: 'test'
+  ...
+# Subtest: QUERY LIMITATION: string-field query casting preserves operator 2
+ok 404 - QUERY LIMITATION: string-field query casting preserves operator 2
+  ---
+  duration_ms: 0.030791
+  type: 'test'
+  ...
+# Subtest: QUERY DEFENSE DEMO: explicitly sanitizing nested operator 2 prevents string casting
+ok 405 - QUERY DEFENSE DEMO: explicitly sanitizing nested operator 2 prevents string casting
+  ---
+  duration_ms: 0.048834
+  type: 'test'
+  ...
+# Subtest: QUERY LIMITATION: string-field query casting preserves operator 3
+ok 406 - QUERY LIMITATION: string-field query casting preserves operator 3
+  ---
+  duration_ms: 0.035666
+  type: 'test'
+  ...
+# Subtest: QUERY DEFENSE DEMO: explicitly sanitizing nested operator 3 prevents string casting
+ok 407 - QUERY DEFENSE DEMO: explicitly sanitizing nested operator 3 prevents string casting
+  ---
+  duration_ms: 0.049
+  type: 'test'
+  ...
+# Subtest: QUERY LIMITATION: string-field query casting preserves operator 4
+ok 408 - QUERY LIMITATION: string-field query casting preserves operator 4
+  ---
+  duration_ms: 0.042583
+  type: 'test'
+  ...
+# Subtest: QUERY DEFENSE DEMO: explicitly sanitizing nested operator 4 prevents string casting
+ok 409 - QUERY DEFENSE DEMO: explicitly sanitizing nested operator 4 prevents string casting
+  ---
+  duration_ms: 0.036834
+  type: 'test'
+  ...
+# Subtest: QUERY LIMITATION: string-field query casting preserves operator 5
+ok 410 - QUERY LIMITATION: string-field query casting preserves operator 5
+  ---
+  duration_ms: 0.034041
+  type: 'test'
+  ...
+# Subtest: QUERY DEFENSE DEMO: explicitly sanitizing nested operator 5 prevents string casting
+ok 411 - QUERY DEFENSE DEMO: explicitly sanitizing nested operator 5 prevents string casting
+  ---
+  duration_ms: 0.02975
+  type: 'test'
+  ...
+# Subtest: QUERY LIMITATION: string-field query casting preserves operator 6
+ok 412 - QUERY LIMITATION: string-field query casting preserves operator 6
+  ---
+  duration_ms: 0.046708
+  type: 'test'
+  ...
+# Subtest: QUERY DEFENSE DEMO: explicitly sanitizing nested operator 6 prevents string casting
+ok 413 - QUERY DEFENSE DEMO: explicitly sanitizing nested operator 6 prevents string casting
+  ---
+  duration_ms: 0.063583
+  type: 'test'
+  ...
+# Subtest: QUERY LIMITATION: string-field query casting preserves operator 7
+ok 414 - QUERY LIMITATION: string-field query casting preserves operator 7
+  ---
+  duration_ms: 0.036584
+  type: 'test'
+  ...
+# Subtest: QUERY DEFENSE DEMO: explicitly sanitizing nested operator 7 prevents string casting
+ok 415 - QUERY DEFENSE DEMO: explicitly sanitizing nested operator 7 prevents string casting
+  ---
+  duration_ms: 0.046625
+  type: 'test'
+  ...
+# Subtest: QUERY LIMITATION: string-field query casting preserves operator 8
+ok 416 - QUERY LIMITATION: string-field query casting preserves operator 8
+  ---
+  duration_ms: 0.025292
+  type: 'test'
+  ...
+# Subtest: QUERY DEFENSE DEMO: explicitly sanitizing nested operator 8 prevents string casting
+ok 417 - QUERY DEFENSE DEMO: explicitly sanitizing nested operator 8 prevents string casting
+  ---
+  duration_ms: 0.034708
+  type: 'test'
+  ...
+# Subtest: QUERY LIMITATION: raw top-level $where passes query casting; never execute client filters
+ok 418 - QUERY LIMITATION: raw top-level $where passes query casting; never execute client filters
+  ---
+  duration_ms: 0.024875
+  type: 'test'
+  ...
+# Subtest: STORAGE ONLY: Post body retains inert payload 0; NOT a browser XSS test
+ok 419 - STORAGE ONLY: Post body retains inert payload 0; NOT a browser XSS test
+  ---
+  duration_ms: 0.250042
+  type: 'test'
+  ...
+# Subtest: STORAGE ONLY: Comment body retains inert payload 0; output escaping still required
+ok 420 - STORAGE ONLY: Comment body retains inert payload 0; output escaping still required
+  ---
+  duration_ms: 0.06375
+  type: 'test'
+  ...
+# Subtest: STORAGE ONLY: Post body retains inert payload 1; NOT a browser XSS test
+ok 421 - STORAGE ONLY: Post body retains inert payload 1; NOT a browser XSS test
+  ---
+  duration_ms: 0.049375
+  type: 'test'
+  ...
+# Subtest: STORAGE ONLY: Comment body retains inert payload 1; output escaping still required
+ok 422 - STORAGE ONLY: Comment body retains inert payload 1; output escaping still required
+  ---
+  duration_ms: 0.036
+  type: 'test'
+  ...
+# Subtest: STORAGE ONLY: Post body retains inert payload 2; NOT a browser XSS test
+ok 423 - STORAGE ONLY: Post body retains inert payload 2; NOT a browser XSS test
+  ---
+  duration_ms: 0.045708
+  type: 'test'
+  ...
+# Subtest: STORAGE ONLY: Comment body retains inert payload 2; output escaping still required
+ok 424 - STORAGE ONLY: Comment body retains inert payload 2; output escaping still required
+  ---
+  duration_ms: 0.029042
+  type: 'test'
+  ...
+# Subtest: STORAGE ONLY: Post body retains inert payload 3; NOT a browser XSS test
+ok 425 - STORAGE ONLY: Post body retains inert payload 3; NOT a browser XSS test
+  ---
+  duration_ms: 0.039833
+  type: 'test'
+  ...
+# Subtest: STORAGE ONLY: Comment body retains inert payload 3; output escaping still required
+ok 426 - STORAGE ONLY: Comment body retains inert payload 3; output escaping still required
+  ---
+  duration_ms: 0.027333
+  type: 'test'
+  ...
+# Subtest: STORAGE ONLY: Post body retains inert payload 4; NOT a browser XSS test
+ok 427 - STORAGE ONLY: Post body retains inert payload 4; NOT a browser XSS test
+  ---
+  duration_ms: 0.045209
+  type: 'test'
+  ...
+# Subtest: STORAGE ONLY: Comment body retains inert payload 4; output escaping still required
+ok 428 - STORAGE ONLY: Comment body retains inert payload 4; output escaping still required
+  ---
+  duration_ms: 0.037333
+  type: 'test'
+  ...
+# Subtest: STORAGE ONLY: Post body retains inert payload 5; NOT a browser XSS test
+ok 429 - STORAGE ONLY: Post body retains inert payload 5; NOT a browser XSS test
+  ---
+  duration_ms: 0.043667
+  type: 'test'
+  ...
+# Subtest: STORAGE ONLY: Comment body retains inert payload 5; output escaping still required
+ok 430 - STORAGE ONLY: Comment body retains inert payload 5; output escaping still required
+  ---
+  duration_ms: 0.03025
+  type: 'test'
+  ...
+# Subtest: STORAGE ONLY: Post body retains inert payload 6; NOT a browser XSS test
+ok 431 - STORAGE ONLY: Post body retains inert payload 6; NOT a browser XSS test
+  ---
+  duration_ms: 0.043625
+  type: 'test'
+  ...
+# Subtest: STORAGE ONLY: Comment body retains inert payload 6; output escaping still required
+ok 432 - STORAGE ONLY: Comment body retains inert payload 6; output escaping still required
+  ---
+  duration_ms: 0.036958
+  type: 'test'
+  ...
+# Subtest: STORAGE ONLY: Post body retains inert payload 7; NOT a browser XSS test
+ok 433 - STORAGE ONLY: Post body retains inert payload 7; NOT a browser XSS test
+  ---
+  duration_ms: 0.048
+  type: 'test'
+  ...
+# Subtest: STORAGE ONLY: Comment body retains inert payload 7; output escaping still required
+ok 434 - STORAGE ONLY: Comment body retains inert payload 7; output escaping still required
+  ---
+  duration_ms: 0.031083
+  type: 'test'
+  ...
+# Subtest: STORAGE ONLY: Post body retains inert payload 8; NOT a browser XSS test
+ok 435 - STORAGE ONLY: Post body retains inert payload 8; NOT a browser XSS test
+  ---
+  duration_ms: 0.040041
+  type: 'test'
+  ...
+# Subtest: STORAGE ONLY: Comment body retains inert payload 8; output escaping still required
+ok 436 - STORAGE ONLY: Comment body retains inert payload 8; output escaping still required
+  ---
+  duration_ms: 0.033834
+  type: 'test'
+  ...
+# Subtest: STORAGE ONLY: Post body retains inert payload 9; NOT a browser XSS test
+ok 437 - STORAGE ONLY: Post body retains inert payload 9; NOT a browser XSS test
+  ---
+  duration_ms: 0.045125
+  type: 'test'
+  ...
+# Subtest: STORAGE ONLY: Comment body retains inert payload 9; output escaping still required
+ok 438 - STORAGE ONLY: Comment body retains inert payload 9; output escaping still required
+  ---
+  duration_ms: 0.031
+  type: 'test'
+  ...
+# Subtest: STORAGE ONLY: Post body retains inert payload 10; NOT a browser XSS test
+ok 439 - STORAGE ONLY: Post body retains inert payload 10; NOT a browser XSS test
+  ---
+  duration_ms: 0.043917
+  type: 'test'
+  ...
+# Subtest: STORAGE ONLY: Comment body retains inert payload 10; output escaping still required
+ok 440 - STORAGE ONLY: Comment body retains inert payload 10; output escaping still required
+  ---
+  duration_ms: 0.027792
+  type: 'test'
+  ...
+# Subtest: STORAGE ONLY: Post body retains inert payload 11; NOT a browser XSS test
+ok 441 - STORAGE ONLY: Post body retains inert payload 11; NOT a browser XSS test
+  ---
+  duration_ms: 0.034834
+  type: 'test'
+  ...
+# Subtest: STORAGE ONLY: Comment body retains inert payload 11; output escaping still required
+ok 442 - STORAGE ONLY: Comment body retains inert payload 11; output escaping still required
+  ---
+  duration_ms: 0.026333
+  type: 'test'
+  ...
+# Subtest: USER: rejects invalid role "superadmin"
+ok 443 - USER: rejects invalid role "superadmin"
+  ---
+  duration_ms: 0.092959
+  type: 'test'
+  ...
+# Subtest: USER: rejects invalid role "root"
+ok 444 - USER: rejects invalid role "root"
+  ---
+  duration_ms: 0.069833
+  type: 'test'
+  ...
+# Subtest: USER: rejects invalid role "administrator"
+ok 445 - USER: rejects invalid role "administrator"
+  ---
+  duration_ms: 0.056708
+  type: 'test'
+  ...
+# Subtest: USER: rejects invalid role "ADMIN"
+ok 446 - USER: rejects invalid role "ADMIN"
+  ---
+  duration_ms: 0.054292
+  type: 'test'
+  ...
+# Subtest: USER: rejects invalid role ""
+ok 447 - USER: rejects invalid role ""
+  ---
+  duration_ms: 0.062
+  type: 'test'
+  ...
+# Subtest: USER: rejects invalid role {"$ne":null}
+ok 448 - USER: rejects invalid role {"$ne":null}
+  ---
+  duration_ms: 0.094625
+  type: 'test'
+  ...
+# Subtest: USER: rejects invalid role ["admin"]
+ok 449 - USER: rejects invalid role ["admin"]
+  ---
+  duration_ms: 0.075375
+  type: 'test'
+  ...
+# Subtest: USER: rejects invalid role 1
+ok 450 - USER: rejects invalid role 1
+  ---
+  duration_ms: 0.059083
+  type: 'test'
+  ...
+# Subtest: USER: rejects invalid status "disabled"
+ok 451 - USER: rejects invalid status "disabled"
+  ---
+  duration_ms: 0.0665
+  type: 'test'
+  ...
+# Subtest: USER: rejects invalid status "root"
+ok 452 - USER: rejects invalid status "root"
+  ---
+  duration_ms: 0.064083
+  type: 'test'
+  ...
+# Subtest: USER: rejects invalid status "ACTIVE"
+ok 453 - USER: rejects invalid status "ACTIVE"
+  ---
+  duration_ms: 0.057042
+  type: 'test'
+  ...
+# Subtest: USER: rejects invalid status ""
+ok 454 - USER: rejects invalid status ""
+  ---
+  duration_ms: 0.054375
+  type: 'test'
+  ...
+# Subtest: USER: rejects invalid status {"$ne":null}
+ok 455 - USER: rejects invalid status {"$ne":null}
+  ---
+  duration_ms: 0.082167
+  type: 'test'
+  ...
+# Subtest: USER: rejects invalid status ["active"]
+ok 456 - USER: rejects invalid status ["active"]
+  ---
+  duration_ms: 0.081709
+  type: 'test'
+  ...
+# Subtest: USER: rejects invalid status 1
+ok 457 - USER: rejects invalid status 1
+  ---
+  duration_ms: 0.057834
+  type: 'test'
+  ...
+# Subtest: USER: rejects invalid sessionVersion -1
+ok 458 - USER: rejects invalid sessionVersion -1
+  ---
+  duration_ms: 0.064833
+  type: 'test'
+  ...
+# Subtest: USER: rejects invalid sessionVersion -100
+ok 459 - USER: rejects invalid sessionVersion -100
+  ---
+  duration_ms: 0.056083
+  type: 'test'
+  ...
+# Subtest: USER: rejects invalid sessionVersion "invalid"
+ok 460 - USER: rejects invalid sessionVersion "invalid"
+  ---
+  duration_ms: 0.095333
+  type: 'test'
+  ...
+# Subtest: USER: rejects invalid sessionVersion {}
+ok 461 - USER: rejects invalid sessionVersion {}
+  ---
+  duration_ms: 0.0755
+  type: 'test'
+  ...
+# Subtest: USER: rejects invalid sessionVersion {"$inc":1}
+ok 462 - USER: rejects invalid sessionVersion {"$inc":1}
+  ---
+  duration_ms: 0.07225
+  type: 'test'
+  ...
+# Subtest: USER: rejects invalid sessionVersion null
+ok 463 - USER: rejects invalid sessionVersion null
+  ---
+  duration_ms: 0.064834
+  type: 'test'
+  ...
+# Subtest: VOTE: rejects invalid vote 0
+ok 464 - VOTE: rejects invalid vote 0
+  ---
+  duration_ms: 0.097459
+  type: 'test'
+  ...
+# Subtest: VOTE: rejects invalid vote 2
+ok 465 - VOTE: rejects invalid vote 2
+  ---
+  duration_ms: 0.068584
+  type: 'test'
+  ...
+# Subtest: VOTE: rejects invalid vote -2
+ok 466 - VOTE: rejects invalid vote -2
+  ---
+  duration_ms: 0.048625
+  type: 'test'
+  ...
+# Subtest: VOTE: rejects invalid vote 10
+ok 467 - VOTE: rejects invalid vote 10
+  ---
+  duration_ms: 0.043292
+  type: 'test'
+  ...
+# Subtest: VOTE: rejects invalid vote -10
+ok 468 - VOTE: rejects invalid vote -10
+  ---
+  duration_ms: 0.046
+  type: 'test'
+  ...
+# Subtest: VOTE: rejects invalid vote "invalid"
+ok 469 - VOTE: rejects invalid vote "invalid"
+  ---
+  duration_ms: 0.069208
+  type: 'test'
+  ...
+# Subtest: VOTE: rejects invalid vote {}
+ok 470 - VOTE: rejects invalid vote {}
+  ---
+  duration_ms: 0.069708
+  type: 'test'
+  ...
+# Subtest: VOTE: rejects invalid vote {"$ne":null}
+ok 471 - VOTE: rejects invalid vote {"$ne":null}
+  ---
+  duration_ms: 0.068792
+  type: 'test'
+  ...
+# Subtest: VOTE: rejects invalid vote null
+ok 472 - VOTE: rejects invalid vote null
+  ---
+  duration_ms: 0.054917
+  type: 'test'
+  ...
+# Subtest: VOTE: rejects invalid vote undefined
+ok 473 - VOTE: rejects invalid vote undefined
+  ---
+  duration_ms: 0.057666
+  type: 'test'
+  ...
+# Subtest: VOTE: compound unique per-account per-post index declared
+ok 474 - VOTE: compound unique per-account per-post index declared
+  ---
+  duration_ms: 0.043375
+  type: 'test'
+  ...
+# Subtest: POST: review requires valid rating null
+ok 475 - POST: review requires valid rating null
+  ---
+  duration_ms: 0.097167
+  type: 'test'
+  ...
+# Subtest: POST: review requires valid rating 0
+ok 476 - POST: review requires valid rating 0
+  ---
+  duration_ms: 0.077375
+  type: 'test'
+  ...
+# Subtest: POST: review requires valid rating 11
+ok 477 - POST: review requires valid rating 11
+  ---
+  duration_ms: 0.074
+  type: 'test'
+  ...
+# Subtest: POST: review requires valid rating null
+ok 478 - POST: review requires valid rating null
+  ---
+  duration_ms: 0.090708
+  type: 'test'
+  ...
+# Subtest: POST: review requires valid rating {"$gt":1}
+ok 479 - POST: review requires valid rating {"$gt":1}
+  ---
+  duration_ms: 0.078125
+  type: 'test'
+  ...
+# Subtest: POST: review requires valid rating undefined
+ok 480 - POST: review requires valid rating undefined
+  ---
+  duration_ms: 0.070667
+  type: 'test'
+  ...
+# Subtest: POST: review requires a game
+ok 481 - POST: review requires a game
+  ---
+  duration_ms: 0.076417
+  type: 'test'
+  ...
+# Subtest: POST: discussion rejects review rating null
+ok 482 - POST: discussion rejects review rating null
+  ---
+  duration_ms: 0.083792
+  type: 'test'
+  ...
+# Subtest: POST: discussion rejects review rating 0
+ok 483 - POST: discussion rejects review rating 0
+  ---
+  duration_ms: 0.057292
+  type: 'test'
+  ...
+# Subtest: POST: discussion rejects review rating 1
+ok 484 - POST: discussion rejects review rating 1
+  ---
+  duration_ms: 0.05775
+  type: 'test'
+  ...
+# Subtest: POST: discussion rejects review rating 5
+ok 485 - POST: discussion rejects review rating 5
+  ---
+  duration_ms: 0.05575
+  type: 'test'
+  ...
+# Subtest: POST: discussion rejects review rating 10
+ok 486 - POST: discussion rejects review rating 10
+  ---
+  duration_ms: 0.058833
+  type: 'test'
+  ...
+# Subtest: POST: discussion rejects recommendation true
+ok 487 - POST: discussion rejects recommendation true
+  ---
+  duration_ms: 0.094375
+  type: 'test'
+  ...
+# Subtest: POST: discussion rejects recommendation false
+ok 488 - POST: discussion rejects recommendation false
+  ---
+  duration_ms: 0.055875
+  type: 'test'
+  ...
+# Subtest: HTTP: health JSON does not expose Express or set a login cookie
+ok 489 - HTTP: health JSON does not expose Express or set a login cookie
+  ---
+  duration_ms: 34.909584
+  type: 'test'
+  ...
+# Subtest: CHECKLIST ABSENT LOGIN: exact operator payload 0 to /api/login
+ok 490 - CHECKLIST ABSENT LOGIN: exact operator payload 0 to /api/login
+  ---
+  duration_ms: 4.653416
+  type: 'test'
+  ...
+# Subtest: CHECKLIST ABSENT LOGIN: exact operator payload 1 to /api/login
+ok 491 - CHECKLIST ABSENT LOGIN: exact operator payload 1 to /api/login
+  ---
+  duration_ms: 1.084625
+  type: 'test'
+  ...
+# Subtest: CHECKLIST ABSENT LOGIN: exact operator payload 2 to /api/login
+ok 492 - CHECKLIST ABSENT LOGIN: exact operator payload 2 to /api/login
+  ---
+  duration_ms: 0.715541
+  type: 'test'
+  ...
+# Subtest: CHECKLIST ABSENT LOGIN: exact operator payload 0 to /api/auth/login
+ok 493 - CHECKLIST ABSENT LOGIN: exact operator payload 0 to /api/auth/login
+  ---
+  duration_ms: 4.295417
+  type: 'test'
+  ...
+# Subtest: CHECKLIST ABSENT LOGIN: exact operator payload 1 to /api/auth/login
+ok 494 - CHECKLIST ABSENT LOGIN: exact operator payload 1 to /api/auth/login
+  ---
+  duration_ms: 0.680042
+  type: 'test'
+  ...
+# Subtest: CHECKLIST ABSENT LOGIN: exact operator payload 2 to /api/auth/login
+ok 495 - CHECKLIST ABSENT LOGIN: exact operator payload 2 to /api/auth/login
+  ---
+  duration_ms: 0.607
+  type: 'test'
+  ...
+# Subtest: CHECKLIST ABSENT REGISTER: client role=admin at /api/register
+ok 496 - CHECKLIST ABSENT REGISTER: client role=admin at /api/register
+  ---
+  duration_ms: 0.572125
+  type: 'test'
+  ...
+# Subtest: CHECKLIST ABSENT REGISTER: client role=admin at /api/auth/register
+ok 497 - CHECKLIST ABSENT REGISTER: client role=admin at /api/auth/register
+  ---
+  duration_ms: 0.566209
+  type: 'test'
+  ...
+# Subtest: CHECKLIST ABSENT RECOVERY: known-email-shaped request at /api/forgot-password sends no reset
+ok 498 - CHECKLIST ABSENT RECOVERY: known-email-shaped request at /api/forgot-password sends no reset
+  ---
+  duration_ms: 0.637167
+  type: 'test'
+  ...
+# Subtest: CHECKLIST ABSENT RECOVERY: known-email-shaped request at /api/auth/forgot-password sends no reset
+ok 499 - CHECKLIST ABSENT RECOVERY: known-email-shaped request at /api/auth/forgot-password sends no reset
+  ---
+  duration_ms: 0.507875
+  type: 'test'
+  ...
+# Subtest: CHECKLIST ABSENT RESET: repeated identical token at /api/reset-password is not an end-to-end replay test
+ok 500 - CHECKLIST ABSENT RESET: repeated identical token at /api/reset-password is not an end-to-end replay test
+  ---
+  duration_ms: 0.787791
+  type: 'test'
+  ...
+# Subtest: CHECKLIST ABSENT RESET: repeated identical token at /api/auth/reset-password is not an end-to-end replay test
+ok 501 - CHECKLIST ABSENT RESET: repeated identical token at /api/auth/reset-password is not an end-to-end replay test
+  ---
+  duration_ms: 0.634542
+  type: 'test'
+  ...
+# Subtest: CHECKLIST LIMITATION: mass-assigning role=admin satisfies the current User schema
+ok 502 - CHECKLIST LIMITATION: mass-assigning role=admin satisfies the current User schema
+  ---
+  duration_ms: 0.181417
+  type: 'test'
+  ...
+# Subtest: CHECKLIST LIMITATION: hashing a weak four-digit secret still passes hash-format validation
+ok 503 - CHECKLIST LIMITATION: hashing a weak four-digit secret still passes hash-format validation
+  ---
+  duration_ms: 0.079792
+  type: 'test'
+  ...
+# Subtest: CHECKLIST GIT: no real .env filenames are currently tracked
+ok 504 - CHECKLIST GIT: no real .env filenames are currently tracked
+  ---
+  duration_ms: 5.514125
+  type: 'test'
+  ...
+# Subtest: CHECKLIST GIT: no real .env filenames in reachable local history
+ok 505 - CHECKLIST GIT: no real .env filenames in reachable local history
+  ---
+  duration_ms: 4.780708
+  type: 'test'
+  ...
+# Subtest: CHECKLIST GIT: ignores secret filename server/.env
+ok 506 - CHECKLIST GIT: ignores secret filename server/.env
+  ---
+  duration_ms: 4.124542
+  type: 'test'
+  ...
+# Subtest: CHECKLIST GIT: ignores secret filename client/.env
+ok 507 - CHECKLIST GIT: ignores secret filename client/.env
+  ---
+  duration_ms: 4.228791
+  type: 'test'
+  ...
+# Subtest: CHECKLIST GIT: ignores secret filename analytics/.env
+ok 508 - CHECKLIST GIT: ignores secret filename analytics/.env
+  ---
+  duration_ms: 4.188084
+  type: 'test'
+  ...
+# Subtest: CHECKLIST GIT: ignores secret filename server/.env.production
+ok 509 - CHECKLIST GIT: ignores secret filename server/.env.production
+  ---
+  duration_ms: 4.071209
+  type: 'test'
+  ...
+# Subtest: CHECKLIST GIT: ignores secret filename client/.env.local
+ok 510 - CHECKLIST GIT: ignores secret filename client/.env.local
+  ---
+  duration_ms: 3.8805
+  type: 'test'
+  ...
+# Subtest: CHECKLIST GIT: placeholder .env.example stays eligible for tracking
+ok 511 - CHECKLIST GIT: placeholder .env.example stays eligible for tracking
+  ---
+  duration_ms: 3.979583
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): GET /api/auth/login
+ok 512 - ABSENT ROUTE (not auth protection): GET /api/auth/login
+  ---
+  duration_ms: 1.246667
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): POST /api/auth/login
+ok 513 - ABSENT ROUTE (not auth protection): POST /api/auth/login
+  ---
+  duration_ms: 0.566834
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): PUT /api/auth/login
+ok 514 - ABSENT ROUTE (not auth protection): PUT /api/auth/login
+  ---
+  duration_ms: 0.489209
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): PATCH /api/auth/login
+ok 515 - ABSENT ROUTE (not auth protection): PATCH /api/auth/login
+  ---
+  duration_ms: 0.456083
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): DELETE /api/auth/login
+ok 516 - ABSENT ROUTE (not auth protection): DELETE /api/auth/login
+  ---
+  duration_ms: 1.749542
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): HEAD /api/auth/login
+ok 517 - ABSENT ROUTE (not auth protection): HEAD /api/auth/login
+  ---
+  duration_ms: 0.885292
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): GET /api/auth/register
+ok 518 - ABSENT ROUTE (not auth protection): GET /api/auth/register
+  ---
+  duration_ms: 0.686416
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): POST /api/auth/register
+ok 519 - ABSENT ROUTE (not auth protection): POST /api/auth/register
+  ---
+  duration_ms: 0.662917
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): PUT /api/auth/register
+ok 520 - ABSENT ROUTE (not auth protection): PUT /api/auth/register
+  ---
+  duration_ms: 0.433458
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): PATCH /api/auth/register
+ok 521 - ABSENT ROUTE (not auth protection): PATCH /api/auth/register
+  ---
+  duration_ms: 0.380209
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): DELETE /api/auth/register
+ok 522 - ABSENT ROUTE (not auth protection): DELETE /api/auth/register
+  ---
+  duration_ms: 0.419042
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): HEAD /api/auth/register
+ok 523 - ABSENT ROUTE (not auth protection): HEAD /api/auth/register
+  ---
+  duration_ms: 0.332
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): GET /api/auth/forgot-password
+ok 524 - ABSENT ROUTE (not auth protection): GET /api/auth/forgot-password
+  ---
+  duration_ms: 0.406875
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): POST /api/auth/forgot-password
+ok 525 - ABSENT ROUTE (not auth protection): POST /api/auth/forgot-password
+  ---
+  duration_ms: 0.60875
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): PUT /api/auth/forgot-password
+ok 526 - ABSENT ROUTE (not auth protection): PUT /api/auth/forgot-password
+  ---
+  duration_ms: 0.471583
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): PATCH /api/auth/forgot-password
+ok 527 - ABSENT ROUTE (not auth protection): PATCH /api/auth/forgot-password
+  ---
+  duration_ms: 0.430667
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): DELETE /api/auth/forgot-password
+ok 528 - ABSENT ROUTE (not auth protection): DELETE /api/auth/forgot-password
+  ---
+  duration_ms: 0.432209
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): HEAD /api/auth/forgot-password
+ok 529 - ABSENT ROUTE (not auth protection): HEAD /api/auth/forgot-password
+  ---
+  duration_ms: 0.315917
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): GET /api/auth/reset-password
+ok 530 - ABSENT ROUTE (not auth protection): GET /api/auth/reset-password
+  ---
+  duration_ms: 0.424125
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): POST /api/auth/reset-password
+ok 531 - ABSENT ROUTE (not auth protection): POST /api/auth/reset-password
+  ---
+  duration_ms: 0.446708
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): PUT /api/auth/reset-password
+ok 532 - ABSENT ROUTE (not auth protection): PUT /api/auth/reset-password
+  ---
+  duration_ms: 0.372167
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): PATCH /api/auth/reset-password
+ok 533 - ABSENT ROUTE (not auth protection): PATCH /api/auth/reset-password
+  ---
+  duration_ms: 0.386917
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): DELETE /api/auth/reset-password
+ok 534 - ABSENT ROUTE (not auth protection): DELETE /api/auth/reset-password
+  ---
+  duration_ms: 0.423208
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): HEAD /api/auth/reset-password
+ok 535 - ABSENT ROUTE (not auth protection): HEAD /api/auth/reset-password
+  ---
+  duration_ms: 0.369458
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): GET /api/auth/change-email
+ok 536 - ABSENT ROUTE (not auth protection): GET /api/auth/change-email
+  ---
+  duration_ms: 0.469084
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): POST /api/auth/change-email
+ok 537 - ABSENT ROUTE (not auth protection): POST /api/auth/change-email
+  ---
+  duration_ms: 0.505
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): PUT /api/auth/change-email
+ok 538 - ABSENT ROUTE (not auth protection): PUT /api/auth/change-email
+  ---
+  duration_ms: 0.348041
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): PATCH /api/auth/change-email
+ok 539 - ABSENT ROUTE (not auth protection): PATCH /api/auth/change-email
+  ---
+  duration_ms: 0.436417
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): DELETE /api/auth/change-email
+ok 540 - ABSENT ROUTE (not auth protection): DELETE /api/auth/change-email
+  ---
+  duration_ms: 0.45875
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): HEAD /api/auth/change-email
+ok 541 - ABSENT ROUTE (not auth protection): HEAD /api/auth/change-email
+  ---
+  duration_ms: 0.397083
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): GET /api/admin
+ok 542 - ABSENT ROUTE (not auth protection): GET /api/admin
+  ---
+  duration_ms: 0.522458
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): POST /api/admin
+ok 543 - ABSENT ROUTE (not auth protection): POST /api/admin
+  ---
+  duration_ms: 0.503417
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): PUT /api/admin
+ok 544 - ABSENT ROUTE (not auth protection): PUT /api/admin
+  ---
+  duration_ms: 0.349875
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): PATCH /api/admin
+ok 545 - ABSENT ROUTE (not auth protection): PATCH /api/admin
+  ---
+  duration_ms: 0.348
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): DELETE /api/admin
+ok 546 - ABSENT ROUTE (not auth protection): DELETE /api/admin
+  ---
+  duration_ms: 0.409167
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): HEAD /api/admin
+ok 547 - ABSENT ROUTE (not auth protection): HEAD /api/admin
+  ---
+  duration_ms: 0.288875
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): GET /api/dashboard
+ok 548 - ABSENT ROUTE (not auth protection): GET /api/dashboard
+  ---
+  duration_ms: 0.348583
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): POST /api/dashboard
+ok 549 - ABSENT ROUTE (not auth protection): POST /api/dashboard
+  ---
+  duration_ms: 0.404958
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): PUT /api/dashboard
+ok 550 - ABSENT ROUTE (not auth protection): PUT /api/dashboard
+  ---
+  duration_ms: 0.327625
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): PATCH /api/dashboard
+ok 551 - ABSENT ROUTE (not auth protection): PATCH /api/dashboard
+  ---
+  duration_ms: 0.3555
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): DELETE /api/dashboard
+ok 552 - ABSENT ROUTE (not auth protection): DELETE /api/dashboard
+  ---
+  duration_ms: 0.514334
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): HEAD /api/dashboard
+ok 553 - ABSENT ROUTE (not auth protection): HEAD /api/dashboard
+  ---
+  duration_ms: 0.272541
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): GET /api/posts
+ok 554 - ABSENT ROUTE (not auth protection): GET /api/posts
+  ---
+  duration_ms: 0.330917
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): POST /api/posts
+ok 555 - ABSENT ROUTE (not auth protection): POST /api/posts
+  ---
+  duration_ms: 0.3805
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): PUT /api/posts
+ok 556 - ABSENT ROUTE (not auth protection): PUT /api/posts
+  ---
+  duration_ms: 0.308167
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): PATCH /api/posts
+ok 557 - ABSENT ROUTE (not auth protection): PATCH /api/posts
+  ---
+  duration_ms: 0.307709
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): DELETE /api/posts
+ok 558 - ABSENT ROUTE (not auth protection): DELETE /api/posts
+  ---
+  duration_ms: 0.322834
+  type: 'test'
+  ...
+# Subtest: ABSENT ROUTE (not auth protection): HEAD /api/posts
+ok 559 - ABSENT ROUTE (not auth protection): HEAD /api/posts
+  ---
+  duration_ms: 0.275
+  type: 'test'
+  ...
+# Subtest: HTTP: malformed/non-object JSON case 0 returns sanitized 400
+ok 560 - HTTP: malformed/non-object JSON case 0 returns sanitized 400
+  ---
+  duration_ms: 0.594208
+  type: 'test'
+  ...
+# Subtest: HTTP: malformed/non-object JSON case 1 returns sanitized 400
+ok 561 - HTTP: malformed/non-object JSON case 1 returns sanitized 400
+  ---
+  duration_ms: 0.614
+  type: 'test'
+  ...
+# Subtest: HTTP: malformed/non-object JSON case 2 returns sanitized 400
+ok 562 - HTTP: malformed/non-object JSON case 2 returns sanitized 400
+  ---
+  duration_ms: 0.444708
+  type: 'test'
+  ...
+# Subtest: HTTP: malformed/non-object JSON case 3 returns sanitized 400
+ok 563 - HTTP: malformed/non-object JSON case 3 returns sanitized 400
+  ---
+  duration_ms: 0.405625
+  type: 'test'
+  ...
+# Subtest: HTTP: malformed/non-object JSON case 4 returns sanitized 400
+ok 564 - HTTP: malformed/non-object JSON case 4 returns sanitized 400
+  ---
+  duration_ms: 0.402959
+  type: 'test'
+  ...
+# Subtest: HTTP: malformed/non-object JSON case 5 returns sanitized 400
+ok 565 - HTTP: malformed/non-object JSON case 5 returns sanitized 400
+  ---
+  duration_ms: 0.364041
+  type: 'test'
+  ...
+# Subtest: HTTP: malformed/non-object JSON case 6 returns sanitized 400
+ok 566 - HTTP: malformed/non-object JSON case 6 returns sanitized 400
+  ---
+  duration_ms: 0.35825
+  type: 'test'
+  ...
+# Subtest: HTTP: malformed/non-object JSON case 7 returns sanitized 400
+ok 567 - HTTP: malformed/non-object JSON case 7 returns sanitized 400
+  ---
+  duration_ms: 0.320667
+  type: 'test'
+  ...
+# Subtest: HTTP: malformed/non-object JSON case 8 returns sanitized 400
+ok 568 - HTTP: malformed/non-object JSON case 8 returns sanitized 400
+  ---
+  duration_ms: 0.328209
+  type: 'test'
+  ...
+# Subtest: HTTP: malformed/non-object JSON case 9 returns sanitized 400
+ok 569 - HTTP: malformed/non-object JSON case 9 returns sanitized 400
+  ---
+  duration_ms: 0.346084
+  type: 'test'
+  ...
+# Subtest: HTTP: malformed/non-object JSON case 10 returns sanitized 400
+ok 570 - HTTP: malformed/non-object JSON case 10 returns sanitized 400
+  ---
+  duration_ms: 0.319917
+  type: 'test'
+  ...
+# Subtest: HTTP: malformed/non-object JSON case 11 returns sanitized 400
+ok 571 - HTTP: malformed/non-object JSON case 11 returns sanitized 400
+  ---
+  duration_ms: 0.325666
+  type: 'test'
+  ...
+# Subtest: HTTP: JSON above 100 KiB by 1 bytes at /api/health returns 413
+ok 572 - HTTP: JSON above 100 KiB by 1 bytes at /api/health returns 413
+  ---
+  duration_ms: 2.40925
+  type: 'test'
+  ...
+# Subtest: HTTP: JSON above 100 KiB by 1 bytes at /api/auth/reset-password returns 413
+ok 573 - HTTP: JSON above 100 KiB by 1 bytes at /api/auth/reset-password returns 413
+  ---
+  duration_ms: 0.57275
+  type: 'test'
+  ...
+# Subtest: HTTP: JSON above 100 KiB by 100 bytes at /api/health returns 413
+ok 574 - HTTP: JSON above 100 KiB by 100 bytes at /api/health returns 413
+  ---
+  duration_ms: 0.488583
+  type: 'test'
+  ...
+# Subtest: HTTP: JSON above 100 KiB by 100 bytes at /api/auth/reset-password returns 413
+ok 575 - HTTP: JSON above 100 KiB by 100 bytes at /api/auth/reset-password returns 413
+  ---
+  duration_ms: 0.434084
+  type: 'test'
+  ...
+# Subtest: HTTP: JSON above 100 KiB by 1024 bytes at /api/health returns 413
+ok 576 - HTTP: JSON above 100 KiB by 1024 bytes at /api/health returns 413
+  ---
+  duration_ms: 0.429125
+  type: 'test'
+  ...
+# Subtest: HTTP: JSON above 100 KiB by 1024 bytes at /api/auth/reset-password returns 413
+ok 577 - HTTP: JSON above 100 KiB by 1024 bytes at /api/auth/reset-password returns 413
+  ---
+  duration_ms: 0.396333
+  type: 'test'
+  ...
+# Subtest: HTTP CORS: origin https://attacker.example
+ok 578 - HTTP CORS: origin https://attacker.example
+  ---
+  duration_ms: 0.38525
+  type: 'test'
+  ...
+# Subtest: HTTP CORS: origin http://localhost:5173.attacker.example
+ok 579 - HTTP CORS: origin http://localhost:5173.attacker.example
+  ---
+  duration_ms: 0.24025
+  type: 'test'
+  ...
+# Subtest: HTTP CORS: origin https://localhost:5173
+ok 580 - HTTP CORS: origin https://localhost:5173
+  ---
+  duration_ms: 0.233375
+  type: 'test'
+  ...
+# Subtest: HTTP CORS: origin http://localhost:5174
+ok 581 - HTTP CORS: origin http://localhost:5174
+  ---
+  duration_ms: 0.248917
+  type: 'test'
+  ...
+# Subtest: HTTP CORS: origin http://127.0.0.1:5173
+ok 582 - HTTP CORS: origin http://127.0.0.1:5173
+  ---
+  duration_ms: 0.235292
+  type: 'test'
+  ...
+# Subtest: HTTP CORS: origin null
+ok 583 - HTTP CORS: origin null
+  ---
+  duration_ms: 0.222541
+  type: 'test'
+  ...
+# Subtest: HTTP CORS: origin file://
+ok 584 - HTTP CORS: origin file://
+  ---
+  duration_ms: 0.201917
+  type: 'test'
+  ...
+# Subtest: HTTP CORS: origin http://localhost
+ok 585 - HTTP CORS: origin http://localhost
+  ---
+  duration_ms: 0.206958
+  type: 'test'
+  ...
+# Subtest: HTTP CORS: origin http://localhost:5173/
+ok 586 - HTTP CORS: origin http://localhost:5173/
+  ---
+  duration_ms: 0.216666
+  type: 'test'
+  ...
+# Subtest: HTTP CORS: origin http://LOCALHOST:5173
+ok 587 - HTTP CORS: origin http://LOCALHOST:5173
+  ---
+  duration_ms: 0.222
+  type: 'test'
+  ...
+# Subtest: HTTP CORS: origin http://localhost:5173@attacker.example
+ok 588 - HTTP CORS: origin http://localhost:5173@attacker.example
+  ---
+  duration_ms: 0.413792
+  type: 'test'
+  ...
+# Subtest: HTTP CORS: origin http://attacker.example:5173
+ok 589 - HTTP CORS: origin http://attacker.example:5173
+  ---
+  duration_ms: 0.289875
+  type: 'test'
+  ...
+# Subtest: HTTP CORS: origin https://sub.attacker.example
+ok 590 - HTTP CORS: origin https://sub.attacker.example
+  ---
+  duration_ms: 0.270917
+  type: 'test'
+  ...
+# Subtest: HTTP CORS: origin http://[::1]:5173
+ok 591 - HTTP CORS: origin http://[::1]:5173
+  ---
+  duration_ms: 0.269542
+  type: 'test'
+  ...
+# Subtest: HTTP CORS: origin http://localhost:80
+ok 592 - HTTP CORS: origin http://localhost:80
+  ---
+  duration_ms: 0.238916
+  type: 'test'
+  ...
+# Subtest: HTTP CORS: origin http://localhost:5173
+ok 593 - HTTP CORS: origin http://localhost:5173
+  ---
+  duration_ms: 0.419083
+  type: 'test'
+  ...
+# Subtest: HTTP: health query payload 0 cannot invoke a database operation
+ok 594 - HTTP: health query payload 0 cannot invoke a database operation
+  ---
+  duration_ms: 0.358084
+  type: 'test'
+  ...
+# Subtest: HTTP: health query payload 1 cannot invoke a database operation
+ok 595 - HTTP: health query payload 1 cannot invoke a database operation
+  ---
+  duration_ms: 0.245958
+  type: 'test'
+  ...
+# Subtest: HTTP: health query payload 2 cannot invoke a database operation
+ok 596 - HTTP: health query payload 2 cannot invoke a database operation
+  ---
+  duration_ms: 0.236875
+  type: 'test'
+  ...
+# Subtest: HTTP: health query payload 3 cannot invoke a database operation
+ok 597 - HTTP: health query payload 3 cannot invoke a database operation
+  ---
+  duration_ms: 0.237084
+  type: 'test'
+  ...
+# Subtest: HTTP: health query payload 4 cannot invoke a database operation
+ok 598 - HTTP: health query payload 4 cannot invoke a database operation
+  ---
+  duration_ms: 0.234125
+  type: 'test'
+  ...
+# Subtest: HTTP: health query payload 5 cannot invoke a database operation
+ok 599 - HTTP: health query payload 5 cannot invoke a database operation
+  ---
+  duration_ms: 0.238042
+  type: 'test'
+  ...
+# Subtest: HTTP: health query payload 6 cannot invoke a database operation
+ok 600 - HTTP: health query payload 6 cannot invoke a database operation
+  ---
+  duration_ms: 0.230875
+  type: 'test'
+  ...
+# Subtest: HTTP: health query payload 7 cannot invoke a database operation
+ok 601 - HTTP: health query payload 7 cannot invoke a database operation
+  ---
+  duration_ms: 0.215042
+  type: 'test'
+  ...
+# Subtest: HTTP: health query payload 8 cannot invoke a database operation
+ok 602 - HTTP: health query payload 8 cannot invoke a database operation
+  ---
+  duration_ms: 0.218208
+  type: 'test'
+  ...
+# Subtest: HTTP: health query payload 9 cannot invoke a database operation
+ok 603 - HTTP: health query payload 9 cannot invoke a database operation
+  ---
+  duration_ms: 0.254875
+  type: 'test'
+  ...
+# Subtest: HTTP: health query payload 10 cannot invoke a database operation
+ok 604 - HTTP: health query payload 10 cannot invoke a database operation
+  ---
+  duration_ms: 0.291875
+  type: 'test'
+  ...
+# Subtest: HTTP: health query payload 11 cannot invoke a database operation
+ok 605 - HTTP: health query payload 11 cannot invoke a database operation
+  ---
+  duration_ms: 0.274583
+  type: 'test'
+  ...
+# Subtest: HTTP: health query payload 12 cannot invoke a database operation
+ok 606 - HTTP: health query payload 12 cannot invoke a database operation
+  ---
+  duration_ms: 0.300417
+  type: 'test'
+  ...
+# Subtest: HTTP: health query payload 13 cannot invoke a database operation
+ok 607 - HTTP: health query payload 13 cannot invoke a database operation
+  ---
+  duration_ms: 0.242875
+  type: 'test'
+  ...
+# Subtest: HTTP: spoofed identity header fixture 0 cannot create an admin route
+ok 608 - HTTP: spoofed identity header fixture 0 cannot create an admin route
+  ---
+  duration_ms: 0.279917
+  type: 'test'
+  ...
+# Subtest: HTTP: spoofed identity header fixture 1 cannot create an admin route
+ok 609 - HTTP: spoofed identity header fixture 1 cannot create an admin route
+  ---
+  duration_ms: 0.244708
+  type: 'test'
+  ...
+# Subtest: HTTP: spoofed identity header fixture 2 cannot create an admin route
+ok 610 - HTTP: spoofed identity header fixture 2 cannot create an admin route
+  ---
+  duration_ms: 0.2235
+  type: 'test'
+  ...
+# Subtest: HTTP: spoofed identity header fixture 3 cannot create an admin route
+ok 611 - HTTP: spoofed identity header fixture 3 cannot create an admin route
+  ---
+  duration_ms: 0.234166
+  type: 'test'
+  ...
+# Subtest: HTTP: spoofed identity header fixture 4 cannot create an admin route
+ok 612 - HTTP: spoofed identity header fixture 4 cannot create an admin route
+  ---
+  duration_ms: 0.227375
+  type: 'test'
+  ...
+# Subtest: HTTP: spoofed identity header fixture 5 cannot create an admin route
+ok 613 - HTTP: spoofed identity header fixture 5 cannot create an admin route
+  ---
+  duration_ms: 0.246875
+  type: 'test'
+  ...
+# Subtest: HTTP: spoofed identity header fixture 6 cannot create an admin route
+ok 614 - HTTP: spoofed identity header fixture 6 cannot create an admin route
+  ---
+  duration_ms: 0.228708
+  type: 'test'
+  ...
+# Subtest: HTTP: spoofed identity header fixture 7 cannot create an admin route
+ok 615 - HTTP: spoofed identity header fixture 7 cannot create an admin route
+  ---
+  duration_ms: 0.260792
+  type: 'test'
+  ...
+# Subtest: HTTP: database error response redacts internal diagnostics
+ok 616 - HTTP: database error response redacts internal diagnostics
+  ---
+  duration_ms: 1.914125
+  type: 'test'
+  ...
+# Subtest: PENDING PRODUCT FEATURE: author-only post mutations (post routes not implemented)
+ok 617 - PENDING PRODUCT FEATURE: author-only post mutations (post routes not implemented) # SKIP Requires the corresponding product UI/routes or an email provider.
+  ---
+  duration_ms: 0.034834
+  type: 'test'
+  ...
+# Subtest: PENDING PRODUCT FEATURE: real email delivery, mailbox ownership, and future email-change confirmation
+ok 618 - PENDING PRODUCT FEATURE: real email delivery, mailbox ownership, and future email-change confirmation # SKIP Requires the corresponding product UI/routes or an email provider.
+  ---
+  duration_ms: 0.009667
+  type: 'test'
+  ...
+# Subtest: PENDING PRODUCT FEATURE: browser output escaping, CSP, and rendered XSS behavior
+ok 619 - PENDING PRODUCT FEATURE: browser output escaping, CSP, and rendered XSS behavior # SKIP Requires the corresponding product UI/routes or an email provider.
+  ---
+  duration_ms: 0.007834
+  type: 'test'
+  ...
+# Subtest: ATLAS: isolated database adversarial checks
+    # Subtest: real database unique token index exists
+    ok 1 - real database unique token index exists
+      ---
+      duration_ms: 0.117167
+      type: 'test'
+      ...
+    # Subtest: real database TTL index exists
+    ok 2 - real database TTL index exists
+      ---
+      duration_ms: 0.032458
+      type: 'test'
+      ...
+    # Subtest: real database user lookup index exists
+    ok 3 - real database user lookup index exists
+      ---
+      duration_ms: 0.021292
+      type: 'test'
+      ...
+    # Subtest: saved reset record receives createdAt
+    ok 4 - saved reset record receives createdAt
+      ---
+      duration_ms: 0.037
+      type: 'test'
+      ...
+    # Subtest: saved reset record has no updatedAt
+    ok 5 - saved reset record has no updatedAt
+      ---
+      duration_ms: 0.017792
+      type: 'test'
+      ...
+    # Subtest: ordinary token query omits hash
+    ok 6 - ordinary token query omits hash
+      ---
+      duration_ms: 459.037708
+      type: 'test'
+      ...
+    # Subtest: explicit token projection can include hash (trusted code only)
+    ok 7 - explicit token projection can include hash (trusted code only)
+      ---
+      duration_ms: 181.020375
+      type: 'test'
+      ...
+    # Subtest: ordinary user query omits password hash
+    ok 8 - ordinary user query omits password hash
+      ---
+      duration_ms: 179.043958
+      type: 'test'
+      ...
+    # Subtest: database rejects duplicate reset hash
+    ok 9 - database rejects duplicate reset hash
+      ---
+      duration_ms: 268.77725
+      type: 'test'
+      ...
+    # Subtest: LIMITATION: unique hash does not enforce one outstanding token per user
+    ok 10 - LIMITATION: unique hash does not enforce one outstanding token per user
+      ---
+      duration_ms: 153.309542
+      type: 'test'
+      ...
+    # Subtest: INJECTION DEMO: raw token query operator 0 can match a fixture
+    ok 11 - INJECTION DEMO: raw token query operator 0 can match a fixture
+      ---
+      duration_ms: 439.470125
+      type: 'test'
+      ...
+    # Subtest: DEFENSE DEMO: explicit nested filter sanitation rejects operator 0
+    ok 12 - DEFENSE DEMO: explicit nested filter sanitation rejects operator 0
+      ---
+      duration_ms: 0.899292
+      type: 'test'
+      ...
+    # Subtest: INJECTION DEMO: raw token query operator 1 can match a fixture
+    ok 13 - INJECTION DEMO: raw token query operator 1 can match a fixture
+      ---
+      duration_ms: 200.671958
+      type: 'test'
+      ...
+    # Subtest: DEFENSE DEMO: explicit nested filter sanitation rejects operator 1
+    ok 14 - DEFENSE DEMO: explicit nested filter sanitation rejects operator 1
+      ---
+      duration_ms: 0.648584
+      type: 'test'
+      ...
+    # Subtest: INJECTION DEMO: raw token query operator 2 can match a fixture
+    ok 15 - INJECTION DEMO: raw token query operator 2 can match a fixture
+      ---
+      duration_ms: 20.051083
+      type: 'test'
+      ...
+    # Subtest: DEFENSE DEMO: explicit nested filter sanitation rejects operator 2
+    ok 16 - DEFENSE DEMO: explicit nested filter sanitation rejects operator 2
+      ---
+      duration_ms: 0.455375
+      type: 'test'
+      ...
+    # Subtest: INJECTION DEMO: raw token query operator 3 can match a fixture
+    ok 17 - INJECTION DEMO: raw token query operator 3 can match a fixture
+      ---
+      duration_ms: 46.161375
+      type: 'test'
+      ...
+    # Subtest: DEFENSE DEMO: explicit nested filter sanitation rejects operator 3
+    ok 18 - DEFENSE DEMO: explicit nested filter sanitation rejects operator 3
+      ---
+      duration_ms: 0.531208
+      type: 'test'
+      ...
+    # Subtest: INJECTION DEMO: raw token query operator 4 can match a fixture
+    ok 19 - INJECTION DEMO: raw token query operator 4 can match a fixture
+      ---
+      duration_ms: 342.748834
+      type: 'test'
+      ...
+    # Subtest: DEFENSE DEMO: explicit nested filter sanitation rejects operator 4
+    ok 20 - DEFENSE DEMO: explicit nested filter sanitation rejects operator 4
+      ---
+      duration_ms: 0.527166
+      type: 'test'
+      ...
+    # Subtest: INJECTION DEMO: raw token query operator 5 can match a fixture
+    ok 21 - INJECTION DEMO: raw token query operator 5 can match a fixture
+      ---
+      duration_ms: 48.4295
+      type: 'test'
+      ...
+    # Subtest: DEFENSE DEMO: explicit nested filter sanitation rejects operator 5
+    ok 22 - DEFENSE DEMO: explicit nested filter sanitation rejects operator 5
+      ---
+      duration_ms: 0.487917
+      type: 'test'
+      ...
+    # Subtest: INJECTION DEMO: raw token query operator 6 can match a fixture
+    ok 23 - INJECTION DEMO: raw token query operator 6 can match a fixture
+      ---
+      duration_ms: 36.507917
+      type: 'test'
+      ...
+    # Subtest: DEFENSE DEMO: explicit nested filter sanitation rejects operator 6
+    ok 24 - DEFENSE DEMO: explicit nested filter sanitation rejects operator 6
+      ---
+      duration_ms: 0.677167
+      type: 'test'
+      ...
+    # Subtest: INJECTION DEMO: raw token query operator 7 can match a fixture
+    ok 25 - INJECTION DEMO: raw token query operator 7 can match a fixture
+      ---
+      duration_ms: 142.827041
+      type: 'test'
+      ...
+    # Subtest: DEFENSE DEMO: explicit nested filter sanitation rejects operator 7
+    ok 26 - DEFENSE DEMO: explicit nested filter sanitation rejects operator 7
+      ---
+      duration_ms: 0.183834
+      type: 'test'
+      ...
+    # Subtest: INJECTION DEMO: raw token query operator 8 can match a fixture
+    ok 27 - INJECTION DEMO: raw token query operator 8 can match a fixture
+      ---
+      duration_ms: 81.671083
+      type: 'test'
+      ...
+    # Subtest: DEFENSE DEMO: explicit nested filter sanitation rejects operator 8
+    ok 28 - DEFENSE DEMO: explicit nested filter sanitation rejects operator 8
+      ---
+      duration_ms: 0.172416
+      type: 'test'
+      ...
+    # Subtest: inert JavaScript/SQL string 0 stays data in MongoDB
+    ok 29 - inert JavaScript/SQL string 0 stays data in MongoDB
+      ---
+      duration_ms: 162.450083
+      type: 'test'
+      ...
+    # Subtest: inert JavaScript/SQL string 1 stays data in MongoDB
+    ok 30 - inert JavaScript/SQL string 1 stays data in MongoDB
+      ---
+      duration_ms: 54.483375
+      type: 'test'
+      ...
+    # Subtest: inert JavaScript/SQL string 2 stays data in MongoDB
+    ok 31 - inert JavaScript/SQL string 2 stays data in MongoDB
+      ---
+      duration_ms: 168.423708
+      type: 'test'
+      ...
+    # Subtest: inert JavaScript/SQL string 3 stays data in MongoDB
+    ok 32 - inert JavaScript/SQL string 3 stays data in MongoDB
+      ---
+      duration_ms: 84.872125
+      type: 'test'
+      ...
+    # Subtest: inert JavaScript/SQL string 4 stays data in MongoDB
+    ok 33 - inert JavaScript/SQL string 4 stays data in MongoDB
+      ---
+      duration_ms: 104.952292
+      type: 'test'
+      ...
+    # Subtest: inert JavaScript/SQL string 5 stays data in MongoDB
+    ok 34 - inert JavaScript/SQL string 5 stays data in MongoDB
+      ---
+      duration_ms: 84.197333
+      type: 'test'
+      ...
+    # Subtest: inert JavaScript/SQL string 6 stays data in MongoDB
+    ok 35 - inert JavaScript/SQL string 6 stays data in MongoDB
+      ---
+      duration_ms: 372.4955
+      type: 'test'
+      ...
+    # Subtest: inert JavaScript/SQL string 7 stays data in MongoDB
+    ok 36 - inert JavaScript/SQL string 7 stays data in MongoDB
+      ---
+      duration_ms: 78.547542
+      type: 'test'
+      ...
+    # Subtest: inert JavaScript/SQL string 8 stays data in MongoDB
+    ok 37 - inert JavaScript/SQL string 8 stays data in MongoDB
+      ---
+      duration_ms: 85.121833
+      type: 'test'
+      ...
+    # Subtest: inert JavaScript/SQL string 9 stays data in MongoDB
+    ok 38 - inert JavaScript/SQL string 9 stays data in MongoDB
+      ---
+      duration_ms: 784.218584
+      type: 'test'
+      ...
+    # Subtest: inert JavaScript/SQL string 10 stays data in MongoDB
+    ok 39 - inert JavaScript/SQL string 10 stays data in MongoDB
+      ---
+      duration_ms: 217.082417
+      type: 'test'
+      ...
+    # Subtest: inert JavaScript/SQL string 11 stays data in MongoDB
+    ok 40 - inert JavaScript/SQL string 11 stays data in MongoDB
+      ---
+      duration_ms: 145.184166
+      type: 'test'
+      ...
+    # Subtest: CONTRACT DEMO: explicit expiration filter excludes expired token
+    ok 41 - CONTRACT DEMO: explicit expiration filter excludes expired token
+      ---
+      duration_ms: 22.809042
+      type: 'test'
+      ...
+    # Subtest: CONTRACT DEMO: explicit unused filter excludes consumed token
+    ok 42 - CONTRACT DEMO: explicit unused filter excludes consumed token
+      ---
+      duration_ms: 17.428875
+      type: 'test'
+      ...
+    # Subtest: CONTRACT DEMO: explicit user binding excludes another account
+    ok 43 - CONTRACT DEMO: explicit user binding excludes another account
+      ---
+      duration_ms: 194.789708
+      type: 'test'
+      ...
+    # Subtest: CONTRACT DEMO: wrong literal hash matches no token
+    ok 44 - CONTRACT DEMO: wrong literal hash matches no token
+      ---
+      duration_ms: 21.631291
+      type: 'test'
+      ...
+    # Subtest: CONTRACT DEMO: operator text supplied as scalar cannot bypass hash equality
+    ok 45 - CONTRACT DEMO: operator text supplied as scalar cannot bypass hash equality
+      ---
+      duration_ms: 41.02325
+      type: 'test'
+      ...
+    # Subtest: CONTRACT DEMO: atomic consume permits exactly one of ten concurrent attempts
+    ok 46 - CONTRACT DEMO: atomic consume permits exactly one of ten concurrent attempts
+      ---
+      duration_ms: 387.256875
+      type: 'test'
+      ...
+    # Subtest: CONTRACT DEMO: atomic consume rejects replay
+    ok 47 - CONTRACT DEMO: atomic consume rejects replay
+      ---
+      duration_ms: 37.406333
+      type: 'test'
+      ...
+    # Subtest: CONTRACT DEMO: password/session-version changes roll back together on aborted transaction
+    ok 48 - CONTRACT DEMO: password/session-version changes roll back together on aborted transaction
+      ---
+      duration_ms: 172.191709
+      type: 'test'
+      ...
+    # Subtest: BOUNDARY: inspect connection roles without outputting identities or changing privileges
+    ok 49 - BOUNDARY: inspect connection roles without outputting identities or changing privileges
+      ---
+      duration_ms: 141.822833
+      type: 'test'
+      ...
+    1..49
+ok 620 - ATLAS: isolated database adversarial checks
+  ---
+  duration_ms: 7695.474833
+  type: 'test'
+  ...
+# Created exactly 3 temporary collections under _rev_security_02665a8d4cc9ba03c043a362.
+# No elevated role identified by connectionStatus; Atlas console/network/MFA/backups still require a separate configuration review.
+# Removed temporary collection _rev_security_02665a8d4cc9ba03c043a362_tokens.
+# Removed temporary collection _rev_security_02665a8d4cc9ba03c043a362_users.
+# Removed temporary collection _rev_security_02665a8d4cc9ba03c043a362_posts.
+1..620
+# tests 684
+# suites 0
+# pass 681
+# fail 0
+# cancelled 0
+# skipped 3
+# todo 0
+# duration_ms 11184.671583
