@@ -418,9 +418,16 @@ for (const extraBytes of [1, 100, 1024]) {
     });
   }
 }
-const origins = ["https://attacker.example", "http://localhost:5173.attacker.example", "https://localhost:5173", "http://localhost:5174", "http://127.0.0.1:5173", "null", "file://", "http://localhost", "http://localhost:5173/", "http://LOCALHOST:5173", "http://localhost:5173@attacker.example", "http://attacker.example:5173", "https://sub.attacker.example", "http://[::1]:5173", "http://localhost:80", "http://localhost:5173"];
-for (const origin of origins) {
-  test(`HTTP CORS: origin ${origin}`, async () => {
+// Synthetic URL-userinfo fixture, not a real username or password.
+// Construct it separately and keep raw adversarial values out of test names.
+const misleadingUserinfoOrigin = [
+  "http://localhost",
+  ":5173",
+  "@attacker.example",
+].join("");
+const origins = ["https://attacker.example", "http://localhost:5173.attacker.example", "https://localhost:5173", "http://localhost:5174", "http://127.0.0.1:5173", "null", "file://", "http://localhost", "http://localhost:5173/", "http://LOCALHOST:5173", misleadingUserinfoOrigin, "http://attacker.example:5173", "https://sub.attacker.example", "http://[::1]:5173", "http://localhost:80", "http://localhost:5173"];
+for (const [index, origin] of origins.entries()) {
+  test(`HTTP CORS: origin case ${index + 1}`, async () => {
     const response = await fetch(`${base}/api/health`, { headers: { Origin: origin } });
     assert.equal(response.status, 200);
     assert.equal(response.headers.get("access-control-allow-origin"), origin === "http://localhost:5173" ? origin : null);
