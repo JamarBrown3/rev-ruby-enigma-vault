@@ -9,7 +9,8 @@
     "start": "node server.js",
     "test": "node --test",
     "db:check": "node scripts/check-database.js",
-    "db:smoke": "node scripts/check-database.js --smoke"
+    "db:smoke": "node scripts/check-database.js --smoke",
+    "admin:create": "node scripts/create-admin.js"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +20,7 @@
     "node": ">=22"
   },
   "dependencies": {
+    "argon2": "^0.45.1",
     "connect-mongo": "^6.0.0",
     "cors": "^2.8.6",
     "dotenv": "^18.0.9",

@@ -38,7 +38,7 @@ playwright-report/
 test-results/
 # Generated security-test output can echo adversarial test fixtures.
 # Keep the hand-written review notes in this directory tracked.
-/server/security-reports/*.tap
+/server/security-reports/**/*.tap
 
 # Python analytics: environments, bytecode, and test caches
 .venv/

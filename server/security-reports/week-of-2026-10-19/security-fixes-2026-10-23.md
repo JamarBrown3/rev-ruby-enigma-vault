@@ -1,3 +1,5 @@
+> **Superseded on 26 October 2026** by [`../week-of-2026-10-26/security-hardening-2026-10-26.md`](../week-of-2026-10-26/security-hardening-2026-10-26.md). This report describes the scrypt version from before the switch to Argon2.
+
 # REV security fixes: verified current status
 
 Date: 23 October 2026. This supersedes the earlier pre-fix review/checklist.

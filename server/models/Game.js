@@ -1,4 +1,8 @@
 import mongoose from "mongoose";
+// REV-SEC-14: database-wide safety settings; must load before the schema below.
+import "../config/mongooseSecurity.js";
+// REV-SEC-17: only https:// links or the site's own /asset paths may be stored.
+import { safeUrl } from "./validators.js";
 
 const gameSchema = new mongoose.Schema(
   {
@@ -51,6 +55,8 @@ const gameSchema = new mongoose.Schema(
       required: true,
       trim: true,
       maxlength: 2000,
+      // REV-SEC-17: https:// address or a site path such as /images/cover.png.
+      validate: safeUrl({ allowRelative: true }),
     },
 
     // consistent identifier, such as "the-legend-of-zelda" or "call-of-duty", required and unique.
@@ -58,6 +64,8 @@ const gameSchema = new mongoose.Schema(
       type: String,
       trim: true,
       maxlength: 2000,
+      // REV-SEC-17: https:// address or a site path such as /images/header.png.
+      validate: safeUrl({ allowRelative: true }),
     },
 
     // One game can reference multiple Category documents.

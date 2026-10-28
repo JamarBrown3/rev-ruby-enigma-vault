@@ -1,4 +1,8 @@
 import mongoose from "mongoose";
+// REV-SEC-14: database-wide safety settings; must load before the schema below.
+import "../config/mongooseSecurity.js";
+// REV-SEC-17: only https:// links (or site /asset paths for images) may be stored.
+import { safeUrl } from "./validators.js";
 
 const projectSchema = new mongoose.Schema(
   {
@@ -53,18 +57,24 @@ const projectSchema = new mongoose.Schema(
       type: String,
       trim: true,
       maxlength: 2000,
+      // REV-SEC-17: https:// address or a site path such as /images/project.png.
+      validate: safeUrl({ allowRelative: true }),
     },
 
     liveUrl: {
       type: String,
       trim: true,
       maxlength: 2000,
+      // REV-SEC-17: a full https:// address (no javascript: links).
+      validate: safeUrl(),
     },
 
     githubUrl: {
       type: String,
       trim: true,
       maxlength: 2000,
+      // REV-SEC-17: a full https:// address (no javascript: links).
+      validate: safeUrl(),
     },
   },
   {

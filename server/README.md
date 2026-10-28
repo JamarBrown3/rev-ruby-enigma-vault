@@ -69,7 +69,9 @@ All auth URLs start with `/api/auth`; there are no duplicate `/api/login` aliase
    fields are rejected; the server always creates a normal user.
 3. `POST /api/auth/login`: JSON email/password with the cookie and CSRF header.
    Successful login rotates the session and returns a NEW CSRF token: replace
-   the old header value. Passwords use salted scrypt, not reversible encryption.
+   the old header value. Passwords use salted Argon2id (older scrypt hashes are
+   upgraded at the next sign-in), not reversible encryption. The owner's admin
+   account must also send its 6-digit authenticator `code` (see below).
 4. `GET /api/auth/me`: validates the current account status/session version and
    returns only id, username, and role.
 5. `POST /api/auth/logout`: include the current CSRF header. The server destroys
@@ -115,11 +117,32 @@ launch. The integration tests use a private in-memory mail sink, not real email.
 - `CLIENT_ORIGIN`: the exact frontend HTTPS origin in production.
 - `SESSION_SAME_SITE`: `strict` by default; `lax` or `none` must be chosen to match
   the real deployment. `none` requires Secure/HTTPS; CSRF checks remain required.
-- `TRUST_PROXY_HOPS`: set only for the known hosting proxy topology (for example
-  one trusted reverse proxy). Default is false: arbitrary forwarded headers are
-  not trusted. Secure cookies cannot be issued over an untrusted plain HTTP hop.
+- `TRUST_PROXY_HOPS`: **required in production** (1 on Render, 0 if there is no
+  proxy); the server refuses to start without it. Never set it higher than the
+  real number of proxies. Local development trusts no forwarded headers. Secure
+  cookies cannot be issued over an untrusted plain HTTP hop.
 
 Local development listens only on 127.0.0.1. Production listens on 0.0.0.0 for
 the hosting proxy. Keep secrets out of Git, restrict Atlas network access, enable
 owner MFA, and verify backups/recovery separately. These code changes are not a
 complete production-security certification.
+
+## Security hardening (26 October 2026)
+
+Read `security-reports/week-of-2026-10-26/security-hardening-2026-10-26.md` for
+what changed and why, the test results, and what is still open. Every change is
+tagged `REV-SEC-##` in the code (`grep -rn "REV-SEC-" --include=*.js .`).
+
+- `npm run admin:create -- --email you@example.com --username YourName` creates
+  the owner's admin account with two-step sign-in. `--promote` upgrades an
+  account you already registered; `--reset-mfa` replaces a lost authenticator.
+  No website route can create an administrator.
+- `REV_SECURITY_ATLAS=1 node --test test/security-database.test.js` runs the
+  database attack tests in temporary collections that are dropped afterwards.
+- New settings (add them yourself; `.env` was not edited):
+  - `TRUST_PROXY_HOPS`: required in production.
+  - `ADMIN_MFA_KEY`: 64 hex characters, needed for the admin account.
+  - Optional: `RESERVED_USERNAMES`, `AI_DAILY_LIMIT_PER_ACCOUNT`, `AI_DAILY_LIMIT_SITE`.
+- Future routes plug in with `createApp({ mountRoutes })`. Ideas for routes,
+  controllers and the dashboards are in
+  `security-reports/week-of-2026-10-26/route-and-dashboard-plan-2026-10-26.md`.

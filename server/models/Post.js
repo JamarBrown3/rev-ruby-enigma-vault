@@ -2,6 +2,10 @@
 // one to many relationship between user and post
 
 import mongoose from "mongoose";
+// REV-SEC-14: database-wide safety settings; must load before the schema below.
+import "../config/mongooseSecurity.js";
+// REV-SEC-17: only real https:// links may be stored.
+import { safeUrl } from "./validators.js";
 
 const postSchema = new mongoose.Schema(
   {
@@ -50,6 +54,9 @@ const postSchema = new mongoose.Schema(
       type: String,
       trim: true,
       maxlength: 2000,
+      // REV-SEC-17: members write posts, so this link is untrusted. Only
+      // https:// addresses are accepted: no javascript:, data:, or file: links.
+      validate: safeUrl(),
     },
     // Rating is required for reviews and not allowed for discussions.
     rating: {
@@ -91,6 +98,12 @@ postSchema.pre("validate", function () {
 // Supports displaying the newest posts first.
 // _id provides a consistent tie-breaker for identical timestamps.
 postSchema.index({ createdAt: -1, _id: -1 });
+
+// REV-SEC-14 (added 2026-10-26): indexes planned in the ERD for "a user's
+// posts" and "a game's reviews" pages. Without them, those future queries
+// scan the whole collection, which a bot can repeat to slow the database.
+postSchema.index({ authorId: 1, createdAt: -1 });
+postSchema.index({ gameId: 1, createdAt: -1 });
 
 const Post = mongoose.model("Post", postSchema);
 export default Post;

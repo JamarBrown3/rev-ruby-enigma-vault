@@ -10,6 +10,10 @@ import { createAuthService, tokenDigest } from "../services/authService.js";
 import { createAuth } from "../security/auth.js";
 import { assertApplicationRoles } from "../security/databaseAccess.js";
 
+// REV-SEC-10 (2026-10-26): reset links now carry the token after "#", where
+// browsers never send it to any server. Read it from the fragment.
+const tokenFrom = (resetUrl) => new URLSearchParams(new URL(resetUrl).hash.slice(1)).get("token");
+
 test("ATLAS AUTH: real controllers, session persistence, reset transaction and revocation", {
   skip: process.env.REV_SECURITY_ATLAS !== "1" ? "Explicit Atlas opt-in required." : false,
   timeout: 90000,
@@ -18,7 +22,7 @@ test("ATLAS AUTH: real controllers, session persistence, reset transaction and r
   const { createApp } = await import("../app.js");
   const { uri, dbName } = getDatabaseConfig();
   const prefix = `_rev_auth_${randomBytes(12).toString("hex")}`;
-  const names = [`${prefix}_users`, `${prefix}_tokens`, `${prefix}_sessions`];
+  const names = [`${prefix}_users`, `${prefix}_tokens`, `${prefix}_sessions`, `${prefix}_login_limits`];
   let connection;
   let server;
   const created = new Set();
@@ -32,6 +36,7 @@ test("ATLAS AUTH: real controllers, session persistence, reset transaction and r
       await Model.createCollection(); created.add(Model.collection.name); await Model.createIndexes();
     }
     await connection.db.createCollection(names[2]); created.add(names[2]);
+    await connection.db.createCollection(names[3]); created.add(names[3]);
     const store = MongoStore.create({ client: connection.getClient(), dbName, collectionName: names[2], ttl: 1800 });
     const deliveries = [];
     let onDelivery;
@@ -39,8 +44,11 @@ test("ATLAS AUTH: real controllers, session persistence, reset transaction and r
       UserModel: Users, TokenModel: Tokens, connection,
       resetOrigin: "https://rev.example",
       deliverResetEmail: async (message) => { deliveries.push(message); onDelivery?.(); },
+      // REV-SEC-10: this test deliberately asks for a second email right away,
+      // so the one-per-minute rule is switched off here (the hourly cap stays).
+      resetEmailMinGapMs: 0,
     });
-    const auth = createAuth({ connection, service, store, secret: randomBytes(32).toString("hex"), production: false, rateLimitMax: 100 });
+    const auth = createAuth({ connection, service, store, secret: randomBytes(32).toString("hex"), production: false, rateLimitMax: 100, loginAccountCollection: connection.db.collection(names[3]) });
     server = createApp({ auth, checkDatabase: async () => true }).listen(0, "127.0.0.1");
     await once(server, "listening");
     const base = `http://127.0.0.1:${server.address().port}`;
@@ -93,8 +101,10 @@ test("ATLAS AUTH: real controllers, session persistence, reset transaction and r
       assert.deepEqual(Object.keys(result.data), ["message"]);
       await Promise.race([delivered, new Promise((_, reject) => { const timer = setTimeout(() => reject(new Error("Fixture delivery timed out.")), 10000); timer.unref(); })]);
       onDelivery = undefined;
-      const token = new URL(deliveries[0].resetUrl).searchParams.get("token");
+      const token = tokenFrom(deliveries[0].resetUrl);
       assert.equal(typeof token, "string");
+      // REV-SEC-10: the secret must not appear in the query string (server logs).
+      assert.equal(new URL(deliveries[0].resetUrl).search, "");
       assert.equal(token.length, 64);
       const record = await Tokens.findOne({}).select("+tokenHash");
       assert.ok(record.tokenHash === tokenDigest(token));
@@ -107,7 +117,7 @@ test("ATLAS AUTH: real controllers, session persistence, reset transaction and r
       assert.ok(deliveries[0].resetUrl !== deliveries[1].resetUrl);
       assert.equal(await Tokens.countDocuments({}), 2);
     });
-    const token = new URL(deliveries[0].resetUrl).searchParams.get("token");
+    const token = tokenFrom(deliveries[0].resetUrl);
     await t.test("actual reset transaction changes the password, advances the version and invalidates all requests", async () => {
       const result = await request("/api/auth/reset-password", { token, newPassword });
       assert.equal(result.response.status, 200);
@@ -119,14 +129,14 @@ test("ATLAS AUTH: real controllers, session persistence, reset transaction and r
     await request("/api/auth/csrf");
     await t.test("the same exact token cannot reset the password twice", async () => assert.equal((await request("/api/auth/reset-password", { token, newPassword })).response.status, 400));
     await t.test("a second outstanding token was invalidated by the first successful reset", async () => {
-      const second = new URL(deliveries[1].resetUrl).searchParams.get("token");
+      const second = tokenFrom(deliveries[1].resetUrl);
       assert.equal((await request("/api/auth/reset-password", { token: second, newPassword })).response.status, 400);
     });
     await t.test("the old password no longer signs in", async () => assert.equal((await request("/api/auth/login", { email, password })).response.status, 401));
     await t.test("the new password signs in through the actual login controller", async () => assert.equal((await request("/api/auth/login", { email, password: newPassword })).response.status, 200));
     await t.test("expired records are rejected without depending on TTL cleanup", async () => {
       await service.requestReset({ email });
-      const expiredToken = new URL(deliveries[2].resetUrl).searchParams.get("token");
+      const expiredToken = tokenFrom(deliveries[2].resetUrl);
       await Tokens.updateOne({ tokenHash: tokenDigest(expiredToken) }, { $set: { expiresAt: new Date(0) } });
       assert.equal((await request("/api/auth/reset-password", { token: expiredToken, newPassword })).response.status, 400);
       assert.equal((await Users.findOne({ email })).sessionVersion, 1);

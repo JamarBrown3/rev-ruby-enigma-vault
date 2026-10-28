@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+// REV-SEC-14: database-wide safety settings; must load before the schema below.
+import "../config/mongooseSecurity.js";
 
 // The Comment model represents a comment made by a user on a post. Each comment is associated with a specific post and has an author. The body of the comment is required and can be up to 10,000 characters long. Comments are timestamped and stored in the "comments" collection.
 const commentSchema = new mongoose.Schema(

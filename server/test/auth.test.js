@@ -7,7 +7,8 @@ import session from "express-session";
 import User from "../models/User.js";
 import { createAuth } from "../security/auth.js";
 import { createAuthService } from "../services/authService.js";
-import { hashPassword, verifyPassword } from "../security/passwords.js";
+// REV-SEC-01 (2026-10-26): the hashing function is now hashNewPassword (Argon2id).
+import { hashNewPassword, verifyPassword } from "../security/passwords.js";
 import { parseLogin, parseRegistration, parseReset, assertSafeObject } from "../security/input.js";
 import { assertApplicationRoles } from "../security/databaseAccess.js";
 
@@ -43,9 +44,20 @@ async function fixture(run, { max = 100 } = {}) {
       return { select: async () => user };
     },
     async findById(id) { reads++; return users.get(id) || null; },
+    // REV-SEC-08 (2026-10-26): registration now asks whether a username is
+    // taken (ignoring capital letters) before hashing the password.
+    exists(filter) {
+      reads++;
+      assert.equal(typeof filter.username, "string", "An operator object must never reach the repository.");
+      const hit = [...users.values()].find((value) => value.username.toLowerCase() === filter.username.toLowerCase());
+      return { collation: async () => (hit ? { _id: hit._id } : null) };
+    },
   };
   const service = createAuthService({ UserModel: repository, connection: { startSession() { throw new Error("Unexpected database access in offline test."); } } });
-  const auth = createAuth({ service, store: new session.MemoryStore(), secret, production: false, rateLimitMax: max });
+  // This file isolates the older auth flows; shared-account limits have their
+  // own regression tests in auth-boundaries.test.js (including real MongoDB).
+  const accountLoginLimiter = { consume: async () => ({ allowed: true }) };
+  const auth = createAuth({ service, store: new session.MemoryStore(), secret, production: false, rateLimitMax: max, accountLoginLimiter });
   const server = createApp({ auth, checkDatabase: async () => true }).listen(0, "127.0.0.1");
   await once(server, "listening");
   const base = `http://127.0.0.1:${server.address().port}`;
@@ -83,10 +95,12 @@ for (const key of ["$ne", "$where", "$function", "user.role", "__proto__", "cons
 test("PASSWORD: short passwords cannot be registered", () => assert.throws(() => parseRegistration({ username: "fixture", email: "fixture@example.invalid", password: "short" }), { status: 400 }));
 test("PASSWORD: spaces are preserved, not silently trimmed", () => assert.equal(parseRegistration({ username: " fixture ", email: " FIXTURE@EXAMPLE.INVALID ", password: ` ${password} ` }).password, ` ${password} `));
 test("PASSWORD: hashing uses a salted password KDF, verifies correctly, and rejects mismatches", async () => {
-  const first = await hashPassword(password);
-  const second = await hashPassword(password);
+  const first = await hashNewPassword(password);
+  const second = await hashNewPassword(password);
   assert.notEqual(first, second);
-  assert.match(first, /^\$scrypt\$131072\$8\$1\$/);
+  // REV-SEC-01 (2026-10-26): new hashes are Argon2id with REV's exact cost
+  // settings. The library writes them as "m=19456,p=1,t=2" (order can vary).
+  assert.match(first, /^\$argon2id\$v=19\$(?=[^$]*\bm=19456\b)(?=[^$]*\bt=2\b)(?=[^$]*\bp=1\b)[mtp=0-9,]+\$/);
   assert.equal(await verifyPassword(password, first), true);
   assert.equal(await verifyPassword("wrong password", first), false);
   assert.equal(await verifyPassword(password, undefined), false);
@@ -124,9 +138,15 @@ test("HTTP AUTH: register, login rotation, public response, dashboard denial, se
   assert.notEqual(user.passwordHash, password);
   assert.equal(user.toJSON().passwordHash, undefined);
   assert.equal(user.toJSON().sessionVersion, undefined);
-  const duplicate = await request("/api/auth/register", { method: "POST", body });
-  assert.equal(duplicate.response.status, 202);
-  assert.deepEqual(duplicate.data, registration.data);
+  // REV-SEC-08 (2026-10-26): a taken USERNAME (public information, shown on
+  // posts) now gets a clear 409, even with different capital letters...
+  const duplicate = await request("/api/auth/register", { method: "POST", body: { ...body, username: "FIXTURE" } });
+  assert.equal(duplicate.response.status, 409);
+  assert.deepEqual(duplicate.data, { error: "That username is not available." });
+  // ...but a taken EMAIL (private) still gets exactly the same 202 as a new account.
+  const duplicateEmail = await request("/api/auth/register", { method: "POST", body: { ...body, username: "someone-else" } });
+  assert.equal(duplicateEmail.response.status, 202);
+  assert.deepEqual(duplicateEmail.data, registration.data);
   assert.equal(users.size, 1);
   const wrong = await request("/api/auth/login", { method: "POST", body: { email: body.email, password: "wrong password" } });
   const nonexistent = await request("/api/auth/login", { method: "POST", body: { email: "missing@example.invalid", password: "wrong password" } });

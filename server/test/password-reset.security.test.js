@@ -202,7 +202,9 @@ test("LIMITATION: an empty optional usedAt string is cast to null", async () => 
 });
 test("LIMITATION: schema permits a caller-supplied _id", () => assert.equal(new Reset(validReset({ _id: anotherId }))._id.toString(), anotherId.toString()));
 test("LIMITATION: update validators must be requested by application code", () => assert.equal(Reset.updateOne({ _id: ownerId }, { $set: { tokenHash: "invalid" } }).getOptions().runValidators, undefined));
-test("LIMITATION: sanitizeFilter is not enabled globally", () => assert.notEqual(mongoose.get("sanitizeFilter"), true));
+// REV-SEC-14 (2026-10-26): this used to be a LIMITATION check. Every model now
+// imports config/mongooseSecurity.js, which turns sanitizeFilter on.
+test("DEFENSE: sanitizeFilter is enabled globally by the models", () => assert.equal(mongoose.get("sanitizeFilter"), true));
 
 for (const [index, operator] of operators.slice(0, 9).entries()) {
   test(`QUERY LIMITATION: string-field query casting preserves operator ${index}`, () => {
@@ -527,9 +529,11 @@ test("ATLAS: isolated database adversarial checks", {
     });
 
     for (const [index, operator] of operators.slice(0, 9).entries()) {
-      await t.test(`INJECTION DEMO: raw token query operator ${index} can match a fixture`, async () => {
-        const result = await Tokens.findOne({ tokenHash: structuredClone(operator) }).maxTimeMS(2000);
-        assert.ok(result, "Unsafe client-controlled query was expected to match fixture");
+      // REV-SEC-14 (2026-10-26): this was an "INJECTION DEMO" showing a raw
+      // operator filter matching a token. With sanitizeFilter on, the same
+      // raw filter is now neutralized and fails instead of matching.
+      await t.test(`DEFENSE: raw token query operator ${index} is neutralized by sanitizeFilter`, async () => {
+        await assert.rejects(Tokens.findOne({ tokenHash: structuredClone(operator) }).maxTimeMS(2000).exec(), { name: "CastError" });
       });
       await t.test(`DEFENSE DEMO: explicit nested filter sanitation rejects operator ${index}`, async () => {
         const filter = mongoose.sanitizeFilter({ tokenHash: structuredClone(operator) });
@@ -546,16 +550,18 @@ test("ATLAS: isolated database adversarial checks", {
     const expired = await Tokens.create(validReset({ userId: account._id, tokenHash: digest("expired-fixture"), expiresAt: new Date(Date.now() - 60000) }));
     const used = await Tokens.create(validReset({ userId: account._id, tokenHash: digest("used-fixture"), usedAt: new Date() }));
     // These filters demonstrate the future contract; there is no reset controller.
-    await t.test("CONTRACT DEMO: explicit expiration filter excludes expired token", async () => assert.equal(await Tokens.findOne({ _id: expired._id, usedAt: null, expiresAt: { $gt: new Date() } }), null));
-    await t.test("CONTRACT DEMO: explicit unused filter excludes consumed token", async () => assert.equal(await Tokens.findOne({ _id: used._id, usedAt: null, expiresAt: { $gt: new Date() } }), null));
-    await t.test("CONTRACT DEMO: explicit user binding excludes another account", async () => assert.equal(await Tokens.findOne({ _id: fixture._id, userId: anotherId, usedAt: null, expiresAt: { $gt: new Date() } }), null));
+    // REV-SEC-14: operators written by SERVER code are wrapped in mongoose.trusted().
+    const trusted = mongoose.trusted;
+    await t.test("CONTRACT DEMO: explicit expiration filter excludes expired token", async () => assert.equal(await Tokens.findOne({ _id: expired._id, usedAt: null, expiresAt: trusted({ $gt: new Date() }) }), null));
+    await t.test("CONTRACT DEMO: explicit unused filter excludes consumed token", async () => assert.equal(await Tokens.findOne({ _id: used._id, usedAt: null, expiresAt: trusted({ $gt: new Date() }) }), null));
+    await t.test("CONTRACT DEMO: explicit user binding excludes another account", async () => assert.equal(await Tokens.findOne({ _id: fixture._id, userId: anotherId, usedAt: null, expiresAt: trusted({ $gt: new Date() }) }), null));
     await t.test("CONTRACT DEMO: wrong literal hash matches no token", async () => assert.equal(await Tokens.findOne({ tokenHash: digest("wrong-fixture") }), null));
     await t.test("CONTRACT DEMO: operator text supplied as scalar cannot bypass hash equality", async () => assert.equal(await Tokens.findOne({ tokenHash: JSON.stringify({ $ne: null }) }), null));
     await t.test("CONTRACT DEMO: atomic consume permits exactly one of ten concurrent attempts", async () => {
-      const attempts = await Promise.all(Array.from({ length: 10 }, () => Tokens.findOneAndUpdate({ _id: fixture._id, tokenHash: validHash, userId: account._id, usedAt: null, expiresAt: { $gt: new Date() } }, { $set: { usedAt: new Date() } }, { returnDocument: "after", runValidators: true })));
+      const attempts = await Promise.all(Array.from({ length: 10 }, () => Tokens.findOneAndUpdate({ _id: fixture._id, tokenHash: validHash, userId: account._id, usedAt: null, expiresAt: trusted({ $gt: new Date() }) }, { $set: { usedAt: new Date() } }, { returnDocument: "after", runValidators: true })));
       assert.equal(attempts.filter(Boolean).length, 1);
     });
-    await t.test("CONTRACT DEMO: atomic consume rejects replay", async () => assert.equal(await Tokens.findOneAndUpdate({ _id: fixture._id, usedAt: null, expiresAt: { $gt: new Date() } }, { $set: { usedAt: new Date() } }), null));
+    await t.test("CONTRACT DEMO: atomic consume rejects replay", async () => assert.equal(await Tokens.findOneAndUpdate({ _id: fixture._id, usedAt: null, expiresAt: trusted({ $gt: new Date() }) }, { $set: { usedAt: new Date() } }), null));
     await t.test("CONTRACT DEMO: password/session-version changes roll back together on aborted transaction", async () => {
       const session = await connection.startSession();
       try {

@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+// REV-SEC-14: database-wide safety settings; must load before the schema below.
+import "../config/mongooseSecurity.js";
 
 const voteSchema = new mongoose.Schema(
   {
