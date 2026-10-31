@@ -1,10 +1,24 @@
 {
   "name": "rev-client",
   "version": "1.0.0",
-  "description": "REV frontend placeholder; React setup follows backend verification",
+  "description": "REV frontend (React + Vite): pages, character reels, dashboards. Dev-only route tester in src/devtest.",
   "private": true,
-  "keywords": [],
-  "author": "",
-  "license": "UNLICENSED",
-  "type": "module"
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@fontsource/gloock": "5.3.0",
+    "@fontsource/schibsted-grotesk": "5.3.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-router-dom": "7.18.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "6.1.2",
+    "vite": "8.3.4"
+  },
+  "license": "UNLICENSED"
 }

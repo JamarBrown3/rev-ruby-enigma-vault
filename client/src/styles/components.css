@@ -1,0 +1,527 @@
+/* Reusable pieces: panels, slider, cards, toolbar, tabs, ratings, confirm box, editor. */
+
+.panel {
+  padding: var(--space-6);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+/* ---------- Home slider ---------- */
+
+.slider {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.slider__viewport {
+  position: relative;
+  height: clamp(360px, 32vw, 430px);
+  touch-action: pan-y; /* vertical scrolling still works on phones; sideways swipes change slides */
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
+  align-items: center;
+  gap: var(--space-6);
+  padding: var(--space-7) var(--space-7) calc(var(--space-8) + var(--space-3));
+  background-position: center;
+  background-size: cover;
+  opacity: 0;
+  transition: opacity 700ms ease;
+}
+
+.slide.is-active {
+  z-index: 1;
+  opacity: 1;
+}
+
+.slide__title {
+  font-size: clamp(2rem, 1.2rem + 2.4vw, 3.4rem);
+}
+
+.slide__text {
+  max-width: 44ch;
+  margin: var(--space-4) 0 var(--space-5);
+  color: var(--text-2);
+  font-size: 1.125rem;
+}
+
+.slide__art {
+  justify-self: center;
+  width: auto;
+  height: 100%;
+  max-height: 320px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+/* Banner photo slides: a dark shade on the left keeps the text readable. */
+.slide--photo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--shade) 0%, var(--shade) 50%, transparent 85%);
+}
+
+.slide--photo .slide__copy {
+  position: relative;
+}
+
+.slide--photo .slide__title,
+.slide--photo .slide__text {
+  color: #ffffff;
+}
+
+.slider__controls {
+  position: absolute;
+  left: var(--space-7);
+  bottom: var(--space-4);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.slider__dots {
+  display: flex;
+  gap: 2px;
+}
+
+.slider__dot {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.slider__dot::before {
+  content: "";
+  display: block;
+  width: 10px;
+  height: 10px;
+  margin: auto;
+  border: 2px solid var(--text-2);
+  border-radius: 50%;
+}
+
+.slider__dot[aria-current="true"]::before {
+  border-color: var(--ruby);
+  background: var(--ruby);
+}
+
+.slider__count {
+  min-width: 3.5em;
+  color: var(--muted);
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide {
+    transition: none;
+  }
+}
+
+@media (max-width: 699px) {
+  .slider__viewport {
+    height: 420px;
+  }
+
+  .slide {
+    grid-template-columns: 1fr;
+    align-items: start;
+    padding: var(--space-6) var(--space-5) var(--space-8);
+  }
+
+  .slide__art {
+    display: none;
+  }
+
+  .slider__controls {
+    left: var(--space-4);
+  }
+}
+
+/* ---------- Toolbar: search, filters, sort ---------- */
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+  padding: var(--space-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.toolbar .field {
+  flex: 1 1 170px;
+  margin: 0;
+}
+
+.toolbar .field--grow {
+  flex: 3 1 260px;
+}
+
+.results-note {
+  margin-bottom: var(--space-5);
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+
+.load-more {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-6);
+}
+
+/* ---------- Post cards (text first: posts have no images) ---------- */
+
+.post-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr));
+  gap: var(--space-5);
+}
+
+.post-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.post-card:hover {
+  border-color: var(--line-strong);
+}
+
+.post-card__kind {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 48px;
+  color: var(--text-2);
+  font-size: var(--text-xs);
+  font-weight: 700;
+}
+
+.post-card__thumb {
+  flex: none;
+  width: 36px;
+  height: 48px;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+}
+
+.post-card__badge {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 36px;
+  height: 48px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  color: var(--text-2);
+}
+
+.post-card__title {
+  font-size: var(--text-lg);
+}
+
+.post-card__title a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+/* The whole card is clickable, but only the title is the link (screen readers hear one link). */
+.post-card__title a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+}
+
+.post-card__title a:focus-visible {
+  outline: none;
+}
+
+.post-card__title a:focus-visible::after {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.post-card__excerpt {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--text-2);
+  font-size: var(--text-sm);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+}
+
+.post-card__footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-top: auto;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: var(--text-xs);
+}
+
+.post-card__footer strong {
+  color: var(--text-2);
+}
+
+/* ---------- Ratings (out of 10, with a little ruby) ---------- */
+
+.rating-group {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+
+.rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: var(--text-sm);
+}
+
+.rating svg {
+  color: var(--ruby);
+}
+
+.rating__out-of {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.recommend {
+  color: var(--text-2);
+  font-size: var(--text-xs);
+  font-weight: 700;
+}
+
+/* ---------- Game cards ----------
+   From my video_gameStore cards (cover art shown whole, over its own blurred,
+   darkened copy) mixed with the Xenoblade event card (small label on top,
+   title, description, and a footer line under a divider). */
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+  gap: var(--space-5);
+}
+
+.game-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.game-card:hover {
+  border-color: var(--line-strong);
+}
+
+.game-card__cover {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--bg-deep);
+}
+
+.game-card__cover::before {
+  content: "";
+  position: absolute;
+  inset: -20px;
+  background-image: var(--cover);
+  background-position: center;
+  background-size: cover;
+  filter: blur(18px) brightness(0.45) saturate(1.2);
+}
+
+.game-card__cover img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.game-card__fallback {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 100%;
+  color: var(--muted);
+  font-family: var(--font-display);
+  font-size: 3rem;
+}
+
+.game-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+  padding: var(--space-4);
+}
+
+.game-card__platform {
+  color: var(--ruby-text);
+  font-size: var(--text-xs);
+  font-weight: 700;
+}
+
+.game-card__title {
+  font-size: var(--text-lg);
+}
+
+.game-card__title a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.game-card__title a:hover {
+  text-decoration: underline;
+}
+
+.game-card__meta {
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+
+.game-card__description {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--text-2);
+  font-size: var(--text-sm);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.game-card__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-top: auto;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--line);
+  color: var(--text-2);
+  font-size: var(--text-xs);
+}
+
+.game-card__admin {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+/* ---------- Delete with confirmation (from my video_gameStore) ---------- */
+
+.confirm {
+  margin-top: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--danger);
+  border-radius: var(--radius);
+  background: var(--danger-wash);
+  color: var(--text);
+  font-size: var(--text-sm);
+}
+
+.confirm__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+/* ---------- Tabs (login / register) ---------- */
+
+.tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.tab {
+  min-height: 56px;
+  padding: var(--space-3) var(--space-4);
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface-2);
+  color: var(--text-2);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.tab[aria-selected="true"] {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: inset 0 3px 0 var(--ruby);
+  border-bottom-color: transparent;
+}
+
+.tab:hover {
+  color: var(--text);
+}
+
+/* ---------- Editor: form on the left, live preview on the right ---------- */
+
+.editor {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-6);
+}
+
+.editor__preview {
+  position: sticky;
+  top: calc(var(--header-h) + var(--space-5));
+  display: grid;
+  gap: var(--space-3);
+}
+
+.editor__preview-label {
+  font-family: var(--font-sans);
+  color: var(--muted);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+@media (max-width: 999px) {
+  .editor {
+    grid-template-columns: 1fr;
+  }
+
+  .editor__preview {
+    position: static;
+    max-width: 320px;
+  }
+}

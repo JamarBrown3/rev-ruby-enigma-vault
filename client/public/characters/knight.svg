@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+<!-- Placeholder character art for REV (original drawing). Replace with your own image: see src/data/characters.js -->
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22324A"/><stop offset="1" stop-color="#0E1520"/></linearGradient>
+<radialGradient id="glow" cx="50%" cy="38%" r="55%"><stop offset="0" stop-color="#E3245C" stop-opacity=".36"/><stop offset="1" stop-color="#E3245C" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="300" height="400" fill="url(#bg)"/>
+<rect width="300" height="400" fill="url(#glow)"/>
+<ellipse cx="150" cy="372" rx="92" ry="11" fill="#000" opacity=".4"/>
+<path d="M96 168 L204 168 L228 360 L72 360 Z" fill="#9E1240"/>
+<rect x="120" y="282" width="24" height="76" rx="6" fill="#56667E"/>
+<rect x="156" y="282" width="24" height="76" rx="6" fill="#56667E"/>
+<rect x="114" y="348" width="34" height="16" rx="5" fill="#3A475C"/>
+<rect x="152" y="348" width="34" height="16" rx="5" fill="#3A475C"/>
+<path d="M102 170 Q150 156 198 170 L186 290 L114 290 Z" fill="#8C9BB0"/>
+<path d="M126 178 Q150 170 174 178 L168 250 Q150 262 132 250 Z" fill="#C9D4E2"/>
+<rect x="112" y="276" width="76" height="14" rx="4" fill="#3A475C"/>
+<circle cx="150" cy="283" r="6" fill="#E3245C"/>
+<rect x="80" y="182" width="24" height="86" rx="10" fill="#8C9BB0"/>
+<rect x="196" y="182" width="24" height="86" rx="10" fill="#8C9BB0"/>
+<ellipse cx="100" cy="178" rx="28" ry="18" fill="#C9D4E2"/>
+<ellipse cx="200" cy="178" rx="28" ry="18" fill="#C9D4E2"/>
+<path d="M150 92 C160 60 190 50 208 62 C190 66 174 78 166 98 Z" fill="#E3245C"/>
+<rect x="116" y="88" width="68" height="84" rx="30" fill="#C9D4E2"/>
+<path d="M150 90 L150 170" stroke="#8C9BB0" stroke-width="4"/>
+<rect x="126" y="124" width="48" height="9" rx="4" fill="#0E1520"/>
+<circle cx="138" cy="128.5" r="2.5" fill="#FF7A9C"/><circle cx="162" cy="128.5" r="2.5" fill="#FF7A9C"/>
+<path d="M44 206 L112 206 L112 262 Q112 300 78 318 Q44 300 44 262 Z" fill="#3A475C" stroke="#C9D4E2" stroke-width="5"/>
+<path d="M78 222 L92 246 L78 270 L64 246 Z" fill="#E3245C"/>
+<rect x="214" y="104" width="10" height="158" rx="2" fill="#E9EEF5"/>
+<path d="M219 94 L224 106 L214 106 Z" fill="#E9EEF5"/>
+<rect x="198" y="262" width="42" height="9" rx="3" fill="#8C9BB0"/>
+<rect x="214" y="271" width="10" height="26" rx="3" fill="#56667E"/>
+<circle cx="219" cy="302" r="7" fill="#E3245C"/>
+</svg>

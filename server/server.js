@@ -11,6 +11,8 @@ import {
   disconnectDatabase,
   explainDatabaseError,
 } from "./config/database.js";
+import gameRoutes from "./routes/games.js";
+import postRoutes from "./routes/posts.js";
 
 let server;
 let stopping = false;
@@ -44,8 +46,12 @@ async function shutdown() {
   }
 }
 
-process.once("SIGINT", () => { void shutdown(); });
-process.once("SIGTERM", () => { void shutdown(); });
+process.once("SIGINT", () => {
+  void shutdown();
+});
+process.once("SIGTERM", () => {
+  void shutdown();
+});
 
 // REV-SEC-06: remember which startup step failed. Before, EVERY startup error
 // (including "Set a strong SESSION_SECRET") was printed as a MongoDB
@@ -63,31 +69,59 @@ try {
   await connectDatabase();
   await pingDatabase();
   // Do not accept registrations before unique account/token indexes exist.
-  await Promise.all([mongoose.model("User").init(), mongoose.model("PasswordResetToken").init()]);
+  await Promise.all([
+    mongoose.model("User").init(),
+    mongoose.model("PasswordResetToken").init(),
+  ]);
   console.log("MongoDB connection and ping succeeded.");
 
   stage = "authentication setup";
-  const service = createAuthService({ resetOrigin: process.env.CLIENT_ORIGIN || "http://localhost:5173" });
+  const service = createAuthService({
+    resetOrigin: process.env.CLIENT_ORIGIN || "http://localhost:5173",
+  });
   const auth = createAuth({ connection: mongoose.connection, service });
   // REV-SEC-24: establish shared-counter expiry before accepting logins.
   await auth.ready();
-  if (!process.env.SESSION_SECRET) console.warn("Development sessions use a temporary signing key; restarting requires signing in again. Set SESSION_SECRET before deployment.");
+  if (!process.env.SESSION_SECRET)
+    console.warn(
+      "Development sessions use a temporary signing key; restarting requires signing in again. Set SESSION_SECRET before deployment.",
+    );
   // REV-SEC-09: two-step codes for the admin account can't be checked without the key.
-  if (!service.mfaConfigured) console.warn("ADMIN_MFA_KEY is not set: an admin account with two-step sign-in turned on cannot sign in until it is.");
+  if (!service.mfaConfigured)
+    console.warn(
+      "ADMIN_MFA_KEY is not set: an admin account with two-step sign-in turned on cannot sign in until it is.",
+    );
 
   stage = "HTTP server";
   // REV-SEC-11: create the HTTP server with the slow-client limits above.
   // FUTURE ROUTES: pass mountRoutes to createApp, e.g.
   //   createApp({ auth, trustProxy, mountRoutes: (app) => app.use("/api/posts", postRoutes) })
-  server = http.createServer(HTTP_LIMITS, createApp({ auth, trustProxy }));
-  if (process.env.NODE_ENV === "production") server.keepAliveTimeout = PRODUCTION_KEEP_ALIVE_MS;
-  server.listen(port, process.env.NODE_ENV === "production" ? "0.0.0.0" : "127.0.0.1", () => {
-    console.log(`REV API listening on port ${port}.`);
-  });
+  server = http.createServer(
+    HTTP_LIMITS,
+    createApp({
+      auth,
+      trustProxy,
+      mountRoutes: (app, { auth }) => {
+        app.use("/api/games", gameRoutes(auth));
+        app.use("/api/posts", postRoutes(auth));
+      },
+    }),
+  );
+  if (process.env.NODE_ENV === "production")
+    server.keepAliveTimeout = PRODUCTION_KEEP_ALIVE_MS;
+  server.listen(
+    port,
+    process.env.NODE_ENV === "production" ? "0.0.0.0" : "127.0.0.1",
+    () => {
+      console.log(`REV API listening on port ${port}.`);
+    },
+  );
   server.on("error", async (error) => {
-    console.error(error.code === "EADDRINUSE"
-      ? "Port is already in use. Choose another PORT in server/.env."
-      : "HTTP server failed to start.");
+    console.error(
+      error.code === "EADDRINUSE"
+        ? "Port is already in use. Choose another PORT in server/.env."
+        : "HTTP server failed to start.",
+    );
     process.exitCode = 1;
     await shutdown();
   });

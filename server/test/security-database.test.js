@@ -315,8 +315,19 @@ test("REV-SEC database attack suite (isolated temporary collections)", {
         await assert.rejects(service.resetPassword({ token: randomBytes(32).toString("hex"), newPassword: password }), { status: 400 });
         fakeTimes.push(performance.now() - started);
       }
-      t.diagnostic(`one Argon2 hash ${hashTime.toFixed(1)} ms; fake-link rejection median ${median(fakeTimes).toFixed(1)} ms`);
-      assert.ok(median(fakeTimes) < hashTime, "a fake link should be cheaper than a hash");
+      // Atlas fix (2026-10-31): over the internet one database lookup can take
+      // longer than one Argon2 hash, so subtract the network round trip first.
+      // A fake link costs one lookup; if it ALSO hashed, the extra time would
+      // still be at least one hash and this check would fail.
+      const roundTrips = [];
+      for (let index = 0; index < 5; index += 1) {
+        started = performance.now();
+        await models.Tokens.exists({ tokenHash: "0".repeat(64) });
+        roundTrips.push(performance.now() - started);
+      }
+      const extra = median(fakeTimes) - median(roundTrips);
+      t.diagnostic(`one Argon2 hash ${hashTime.toFixed(1)} ms; fake-link rejection median ${median(fakeTimes).toFixed(1)} ms; database round trip ${median(roundTrips).toFixed(1)} ms`);
+      assert.ok(extra < hashTime, "a fake link should cost no more than a lookup, never a hash");
     });
 
     await t.test("REV-SEC-10: password-reset floods from 60 different IPs send at most 3 emails", async () => {
@@ -424,13 +435,23 @@ test("REV-SEC database attack suite (isolated temporary collections)", {
       const bot = browser(app.base, { "X-Forwarded-For": "203.0.113.66" });
       await bot("/api/auth/csrf");
       const statuses = {};
-      const attempts = Array.from({ length: 400 }, (_, index) => bot("/api/auth/login", { email: "victim@example.test", password: `guess-${index}` }));
-      // Meanwhile a real visitor from another network uses the site.
+      // Atlas/macOS fix (2026-10-31): a Mac refuses ~128+ brand-new local
+      // connections opened in the same instant (ECONNRESET from the TEST's own
+      // client), so the bot fires in waves of 50 at a time. The IP limit is
+      // the same, so 400 attempts still mean 20 processed and 380 refused.
       const visitor = browser(app.base, { "X-Forwarded-For": "192.0.2.10" });
-      const visitorStart = performance.now();
-      const visitorResult = await visitor("/api/auth/csrf");
-      const visitorMs = performance.now() - visitorStart;
-      for (const result of await Promise.all(attempts)) statuses[result.status] = (statuses[result.status] || 0) + 1;
+      let visitorResult;
+      let visitorMs = 0;
+      for (let wave = 0; wave < 8; wave += 1) {
+        const attempts = Array.from({ length: 50 }, (_, index) => bot("/api/auth/login", { email: "victim@example.test", password: `guess-${wave * 50 + index}` }));
+        if (wave === 1) {
+          // Meanwhile a real visitor from another network uses the site.
+          const visitorStart = performance.now();
+          visitorResult = await visitor("/api/auth/csrf");
+          visitorMs = performance.now() - visitorStart;
+        }
+        for (const result of await Promise.all(attempts)) statuses[result.status] = (statuses[result.status] || 0) + 1;
+      }
       t.diagnostic(`bot statuses ${JSON.stringify(statuses)}; visitor answered in ${visitorMs.toFixed(0)} ms`);
       assert.equal(visitorResult.status, 200);
       assert.equal((statuses[401] || 0) + (statuses[503] || 0), 20);
@@ -459,7 +480,14 @@ test("REV-SEC database attack suite (isolated temporary collections)", {
       const app = await boot({ rateLimitMax: 1000 });
       let ok = 0;
       for (let index = 0; index < 100; index += 1) if ((await fetch(`${app.base}/api/auth/csrf`)).status === 200) ok += 1;
-      const createdSessions = (await connection.db.collection(names.sessions).countDocuments()) - before;
+      // Atlas fix (2026-10-31): the reply can arrive before its session finishes
+      // saving over the internet, so wait (up to 10 s) for the saves to land,
+      // then check again a moment later that no extra sessions appear.
+      const countSessions = async () => (await connection.db.collection(names.sessions).countDocuments()) - before;
+      const deadline = Date.now() + 10000;
+      while ((await countSessions()) < ok && Date.now() < deadline) await new Promise((resolve) => setTimeout(resolve, 250));
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      const createdSessions = await countSessions();
       t.diagnostic(`100 cookie-less /csrf calls -> ${ok} answered, ${createdSessions} sessions stored`);
       assert.equal(createdSessions, 60);
       await app.close();

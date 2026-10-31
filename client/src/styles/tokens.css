@@ -1,0 +1,123 @@
+/*
+  REV design tokens: change colors, fonts and sizes here, not in each file.
+
+  Look: a Steam-style night-blue launcher (from the README), engraved serif
+  headings (from the Figma wireframe), and ruby only where something is
+  clickable, selected or focused. The character reels are the loud part;
+  everything else stays calm.
+
+  Contrast was checked: body text is 13:1 or better, small grey text at least
+  5:1, and white on the ruby button 5.3:1 (WCAG AA needs 4.5:1).
+*/
+
+:root {
+  /* Type */
+  --font-display: "Gloock", Georgia, "Times New Roman", serif;
+  --font-sans: "Schibsted Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --text-xs: 0.8125rem;  /* 13px: meta, captions */
+  --text-sm: 0.9375rem;  /* 15px: secondary text */
+  --text-md: 1.0625rem;  /* 17px: body */
+  --text-lg: 1.25rem;    /* 20px: card titles */
+  --text-xl: 1.625rem;   /* 26px */
+  --text-2xl: clamp(1.9rem, 1.4rem + 1.6vw, 2.6rem);  /* section headings */
+  --text-3xl: clamp(2.5rem, 1.6rem + 3.2vw, 4.25rem); /* page headings */
+
+  /* Space (4px steps) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+
+  /* Shape */
+  --radius-sm: 4px;
+  --radius: 8px;
+  --radius-lg: 14px;
+
+  /* Frame: header height, reel width and the readable middle column */
+  --header-h: 76px;
+  --reel-w: 176px;
+  --page-max: 1040px;
+  --gutter: clamp(16px, 3vw, 40px);
+}
+
+/* Dark: the default */
+:root,
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #101826;          /* page */
+  --bg-deep: #0b111c;     /* reels */
+  --surface: #172231;     /* panels and cards */
+  --surface-2: #1e2b3d;   /* raised: inputs, hovers */
+  --line: #2b3b52;        /* dividers */
+  --line-strong: #6a7f9e; /* input borders (3:1 against panels) */
+  --text: #e9eef5;
+  --text-2: #b4c1d1;
+  --muted: #8a9aaf;
+  --ruby: #d11b52;        /* buttons and selected things */
+  --ruby-hover: #e2295f;
+  --ruby-text: #ff7a9c;   /* ruby used as text/links on dark */
+  --ruby-wash: rgba(209, 27, 82, 0.14);
+  --on-ruby: #ffffff;
+  --focus: #ff8fae;
+  --danger: #ff7b7b;
+  --danger-wash: rgba(255, 92, 92, 0.12);
+  --success: #5ad48a;
+  --shade: rgba(5, 9, 16, 0.72); /* text panel over photos */
+
+  /* Charts (validated with the dataviz palette script against --surface) */
+  --series-1: #3987e5;
+  --series-2: #d95926;
+  --grid: #26354a;
+  --axis: #3b4d68;
+  --trend-up: #0ca30c;
+  --trend-down: #d03b3b;
+}
+
+/* Light: optional, from the toggle in the header */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #eef2f6;
+  --bg-deep: #e2e8ef;
+  --surface: #ffffff;
+  --surface-2: #f4f6f9;
+  --line: #cbd4df;
+  --line-strong: #7d8b9d;
+  --text: #121b28;
+  --text-2: #3d4b5c;
+  --muted: #5b6878;
+  --ruby: #d11b52;
+  --ruby-hover: #b8153f;
+  --ruby-text: #b0103f;
+  --ruby-wash: rgba(209, 27, 82, 0.09);
+  --on-ruby: #ffffff;
+  --focus: #b0103f;
+  --danger: #b42318;
+  --danger-wash: rgba(180, 35, 24, 0.08);
+  --success: #146c2e;
+  --shade: rgba(9, 14, 24, 0.66);
+
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --grid: #e3e8ee;
+  --axis: #c3ccd7;
+  --trend-up: #0ca30c;
+  --trend-down: #d03b3b;
+}
+
+@media (max-width: 1279px) {
+  :root {
+    --reel-w: 124px;
+  }
+}
+
+@media (max-width: 899px) {
+  :root {
+    --reel-w: 0px; /* side reels hide; the phone strip takes over */
+    --header-h: 64px;
+  }
+}

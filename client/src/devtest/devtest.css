@@ -1,0 +1,53 @@
+/* Route tester styles. Everything is scoped under .devtest so these rules
+   can never leak into the real site's pages. */
+.devtest {
+  --dt-bg: #14121a;
+  --dt-card: #1f1c28;
+  --dt-line: #34304a;
+  --dt-text: #ece9f5;
+  --dt-muted: #a39fb8;
+  --dt-ruby: #e0115f;
+  --dt-ok: #3fb950;
+  --dt-bad: #f85149;
+  min-height: 100vh;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 16px;
+  background: var(--dt-bg);
+  color: var(--dt-text);
+  font: 15px/1.45 system-ui, sans-serif;
+}
+.devtest * { box-sizing: border-box; }
+.devtest header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px; }
+.devtest h1 { margin: 0; font: 700 22px/1.2 system-ui, sans-serif; }
+.devtest h1 small { color: var(--dt-muted); font-weight: 400; font-size: 14px; }
+.devtest h2 { margin: 0; font: 700 17px/1.2 system-ui, sans-serif; }
+.devtest .who { color: var(--dt-muted); }
+.devtest nav { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0; }
+.devtest button { background: var(--dt-card); color: var(--dt-text); border: 1px solid var(--dt-line); border-radius: 6px; padding: 7px 12px; cursor: pointer; font: inherit; }
+.devtest button:hover:not(:disabled) { border-color: var(--dt-ruby); }
+.devtest button:disabled { opacity: .4; cursor: default; }
+.devtest nav button.active { background: var(--dt-ruby); border-color: var(--dt-ruby); }
+.devtest .panel { background: var(--dt-card); border: 1px solid var(--dt-line); border-radius: 10px; padding: 14px; display: grid; gap: 12px; }
+.devtest .panel form { display: grid; gap: 10px; }
+.devtest label { display: grid; gap: 4px; color: var(--dt-muted); font-size: 13px; }
+.devtest input, .devtest textarea { background: var(--dt-bg); color: var(--dt-text); border: 1px solid var(--dt-line); border-radius: 6px; padding: 7px 9px; font: 14px ui-monospace, monospace; max-width: 100%; }
+.devtest .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: end; }
+.devtest .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+.devtest .json textarea { width: 100%; margin-bottom: 6px; }
+.devtest .hint { color: var(--dt-muted); margin: 0; font-size: 13px; }
+.devtest .log { margin-top: 18px; display: grid; gap: 6px; }
+.devtest .log-head { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.devtest details { background: var(--dt-card); border: 1px solid var(--dt-line); border-left-width: 4px; border-radius: 6px; padding: 6px 10px; }
+.devtest details.good { border-left-color: var(--dt-ok); }
+.devtest details.bad { border-left-color: var(--dt-bad); }
+.devtest summary { cursor: pointer; display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; }
+.devtest summary i { color: var(--dt-muted); }
+.devtest pre { white-space: pre-wrap; word-break: break-word; margin: 8px 0 2px; font-size: 13px; color: var(--dt-muted); }
+.devtest .time { color: var(--dt-muted); font-size: 12px; }
+.devtest .dt-status { font-weight: 700; }
+.devtest .s2 { color: var(--dt-ok); }
+.devtest .s4, .devtest .s5, .devtest .s0 { color: var(--dt-bad); }
+.devtest .pass { color: var(--dt-ok); font-weight: 600; }
+.devtest .fail { color: var(--dt-bad); font-weight: 600; }
+.devtest .back { color: var(--dt-ruby); }

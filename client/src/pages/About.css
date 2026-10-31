@@ -1,0 +1,312 @@
+/*
+  About page (About.jsx). Written phone-first: the base rules are for small
+  screens (everything in one column), and the @media (min-width) rules add the
+  two-column layouts on tablets and laptops. Colors come from styles/tokens.css,
+  so the page follows REV's dark theme (and light, if a visitor switches).
+*/
+
+/* ---------- Hero ---------- */
+
+.about-hero {
+  display: grid;
+  gap: var(--space-6);
+  align-items: center;
+}
+
+.about-hero__title {
+  font-size: clamp(2.6rem, 1.6rem + 4vw, 4.75rem);
+  line-height: 0.98;
+}
+
+.about-hero__lead {
+  max-width: 46ch;
+  margin-top: var(--space-5);
+  color: var(--text-2);
+  font-size: 1.1875rem;
+  line-height: 1.6;
+}
+
+.about-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+/* Photo frame: a ruby edge offset behind the picture. */
+.about-hero__photo {
+  position: relative;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.about-hero__photo::before {
+  content: "";
+  position: absolute;
+  inset: 14px -14px -14px 14px;
+  border: 2px solid var(--ruby);
+  border-radius: var(--radius-lg);
+}
+
+.about-hero__photo img {
+  position: relative;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
+}
+
+@media (min-width: 900px) {
+  .about-hero {
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+    gap: var(--space-8);
+  }
+
+  .about-hero__photo {
+    margin: 0;
+  }
+}
+
+/* ---------- Bio ---------- */
+
+.about-bio {
+  display: grid;
+  gap: var(--space-6);
+  margin-top: var(--space-9);
+  padding-top: var(--space-7);
+  border-top: 1px solid var(--line);
+}
+
+.about-bio__photo {
+  max-width: 320px;
+}
+
+.about-bio__photo img {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+}
+
+.about-bio__copy {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.about-bio__part h3 {
+  margin-bottom: var(--space-2);
+  color: var(--ruby-text);
+  font-size: var(--text-md);
+}
+
+.about-bio__part p {
+  max-width: 62ch;
+  color: var(--text-2);
+}
+
+/* The mission gets a ruby rule so it stands out from the background details. */
+.about-bio__mission {
+  padding: var(--space-5);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--ruby);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.about-bio__mission p {
+  color: var(--text);
+}
+
+@media (min-width: 800px) {
+  .about-bio {
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+    align-items: start;
+    gap: var(--space-8);
+  }
+
+  .about-bio__photo {
+    position: sticky;
+    top: calc(var(--header-h) + var(--space-5));
+    max-width: none;
+  }
+}
+
+/* ---------- Sections: skills and projects ---------- */
+
+.about-section {
+  margin-top: var(--space-9);
+}
+
+.about-section__lead {
+  margin-top: var(--space-2);
+  color: var(--text-2);
+}
+
+/* ---------- Skills grid: one ruby gem badge per tool ---------- */
+
+.skill-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+  padding: 0;
+  list-style: none;
+}
+
+.skill {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--ruby);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  transition: border-color 160ms ease, transform 160ms ease;
+}
+
+.skill:hover {
+  border-color: var(--ruby);
+  transform: translateY(-2px);
+}
+
+/* The badge is cut like a gem (clip-path), echoing the REV logo. */
+.skill__badge {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 46px;
+  padding-bottom: 8px;
+  clip-path: polygon(22% 0, 78% 0, 100% 34%, 50% 100%, 0 34%);
+  background: linear-gradient(160deg, var(--ruby), #8f0f37);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  letter-spacing: 0.02em;
+}
+
+.skill__name {
+  font-size: var(--text-lg);
+}
+
+.skill__use {
+  color: var(--text-2);
+  font-size: var(--text-sm);
+}
+
+@media (min-width: 640px) {
+  .skill-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-4);
+  }
+
+  .skill {
+    padding: var(--space-5);
+  }
+}
+
+@media (min-width: 1100px) {
+  .skill-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skill {
+    transition: none;
+  }
+
+  .skill:hover {
+    transform: none;
+  }
+}
+
+/* ---------- Projects ---------- */
+
+.projects {
+  margin-top: var(--space-5);
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+
+.project {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-5) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.project__name {
+  font-size: var(--text-lg);
+}
+
+.project__stack {
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+
+.project__about {
+  max-width: 62ch;
+  color: var(--text-2);
+}
+
+.project__links {
+  display: flex;
+  gap: var(--space-4);
+  font-weight: 700;
+  font-size: var(--text-sm);
+}
+
+@media (min-width: 800px) {
+  .project {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.3fr) auto;
+    align-items: baseline;
+    gap: var(--space-2) var(--space-6);
+  }
+}
+
+/* ---------- Call to action ---------- */
+
+.about-cta {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-3);
+  margin-top: var(--space-9);
+  padding: var(--space-6);
+  border: 1px solid var(--ruby);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(circle at 100% 0%, var(--ruby-wash), transparent 55%),
+    var(--surface);
+}
+
+.about-cta p {
+  color: var(--text-2);
+}
+
+.about-cta__button {
+  margin-top: var(--space-3);
+  min-height: 52px;
+  padding-inline: 26px;
+  font-size: var(--text-md);
+}
+
+@media (min-width: 800px) {
+  .about-cta {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    padding: var(--space-7);
+  }
+
+  .about-cta h2,
+  .about-cta p {
+    grid-column: 1;
+  }
+
+  .about-cta__button {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    margin-top: 0;
+  }
+}

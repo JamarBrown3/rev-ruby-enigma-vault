@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+<!-- Placeholder character art for REV (original drawing). Replace with your own image: see src/data/characters.js -->
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22324A"/><stop offset="1" stop-color="#0E1520"/></linearGradient>
+<radialGradient id="glow" cx="50%" cy="38%" r="55%"><stop offset="0" stop-color="#E3245C" stop-opacity=".36"/><stop offset="1" stop-color="#E3245C" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="300" height="400" fill="url(#bg)"/>
+<rect width="300" height="400" fill="url(#glow)"/>
+<ellipse cx="150" cy="372" rx="92" ry="11" fill="#000" opacity=".4"/>
+<path d="M150 120 C108 128 92 180 86 240 L70 362 L150 342 L230 362 L214 240 C208 180 192 128 150 120 Z" fill="#2A3140"/>
+<path d="M122 186 L178 186 L172 296 L128 296 Z" fill="#3A475C"/>
+<path d="M126 244 L174 244" stroke="#0E1520" stroke-width="8"/>
+<rect x="128" y="292" width="20" height="68" rx="6" fill="#0E1520"/>
+<rect x="152" y="292" width="20" height="68" rx="6" fill="#0E1520"/>
+<g transform="rotate(-35 150 250)"><rect x="146" y="192" width="8" height="76" rx="2" fill="#E9EEF5"/><rect x="138" y="266" width="24" height="7" rx="2" fill="#8C9BB0"/><rect x="146" y="273" width="8" height="18" rx="2" fill="#E3245C"/></g>
+<g transform="rotate(35 150 250)"><rect x="146" y="192" width="8" height="76" rx="2" fill="#E9EEF5"/><rect x="138" y="266" width="24" height="7" rx="2" fill="#8C9BB0"/><rect x="146" y="273" width="8" height="18" rx="2" fill="#E3245C"/></g>
+<path d="M150 70 C112 74 100 110 104 142 C108 170 126 188 150 190 C174 188 192 170 196 142 C200 110 188 74 150 70 Z" fill="#343D50"/>
+<ellipse cx="150" cy="140" rx="27" ry="30" fill="#0E1520"/>
+<path d="M178 160 C200 168 214 184 228 208 C208 198 194 190 176 172 Z" fill="#E3245C"/>
+<path d="M120 148 C140 158 160 158 180 148 L182 170 C162 180 138 180 118 170 Z" fill="#E3245C"/>
+<path d="M134 134 L146 138 M154 138 L166 134" stroke="#FFB3C6" stroke-width="3" stroke-linecap="round"/>
+</svg>

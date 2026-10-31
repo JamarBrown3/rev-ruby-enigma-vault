@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+<!-- Placeholder character art for REV (original drawing). Replace with your own image: see src/data/characters.js -->
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22324A"/><stop offset="1" stop-color="#0E1520"/></linearGradient>
+<radialGradient id="glow" cx="50%" cy="38%" r="55%"><stop offset="0" stop-color="#E3245C" stop-opacity=".36"/><stop offset="1" stop-color="#E3245C" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="300" height="400" fill="url(#bg)"/>
+<rect width="300" height="400" fill="url(#glow)"/>
+<ellipse cx="150" cy="372" rx="92" ry="11" fill="#000" opacity=".4"/>
+<path d="M100 196 Q150 176 200 196 L192 300 L108 300 Z" fill="#2F5D9A"/>
+<path d="M150 192 L150 300" stroke="#C9D4E2" stroke-width="3"/>
+<path d="M172 228 L180 218 L188 228 L180 238 Z" fill="#E3245C"/>
+<rect x="78" y="200" width="26" height="92" rx="12" fill="#2F5D9A"/>
+<rect x="196" y="200" width="26" height="92" rx="12" fill="#2F5D9A"/>
+<circle cx="91" cy="296" r="13" fill="#3A475C"/><circle cx="209" cy="296" r="13" fill="#3A475C"/>
+<rect x="116" y="296" width="30" height="62" rx="8" fill="#56667E"/>
+<rect x="154" y="296" width="30" height="62" rx="8" fill="#56667E"/>
+<rect x="112" y="348" width="38" height="16" rx="6" fill="#0E1520"/>
+<rect x="150" y="348" width="38" height="16" rx="6" fill="#0E1520"/>
+<path d="M118 186 L150 214 L182 186" fill="none" stroke="#C9D4E2" stroke-width="6" stroke-linejoin="round"/>
+<rect x="124" y="172" width="52" height="18" rx="7" fill="#8C9BB0"/>
+<path d="M201 112 L216 64" stroke="#8C9BB0" stroke-width="4"/><circle cx="216" cy="60" r="6" fill="#E3245C"/>
+<circle cx="150" cy="124" r="56" fill="#C9D4E2"/>
+<rect x="90" y="110" width="16" height="32" rx="6" fill="#8C9BB0"/><rect x="194" y="110" width="16" height="32" rx="6" fill="#8C9BB0"/>
+<path d="M106 124 C106 98 124 86 150 86 C176 86 194 98 194 124 C194 146 182 158 150 158 C118 158 106 146 106 124 Z" fill="#E3245C"/>
+<path d="M120 110 C128 99 140 95 152 95" stroke="#FFB3C6" stroke-width="6" stroke-linecap="round" fill="none"/>
+</svg>

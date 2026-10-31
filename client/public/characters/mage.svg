@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+<!-- Placeholder character art for REV (original drawing). Replace with your own image: see src/data/characters.js -->
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22324A"/><stop offset="1" stop-color="#0E1520"/></linearGradient>
+<radialGradient id="glow" cx="50%" cy="38%" r="55%"><stop offset="0" stop-color="#E3245C" stop-opacity=".36"/><stop offset="1" stop-color="#E3245C" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="300" height="400" fill="url(#bg)"/>
+<rect width="300" height="400" fill="url(#glow)"/>
+<ellipse cx="150" cy="372" rx="92" ry="11" fill="#000" opacity=".4"/>
+<path d="M150 150 C120 150 104 170 98 200 L74 362 L226 362 L202 200 C196 170 180 150 150 150 Z" fill="#3B3A72"/>
+<path d="M74 362 L226 362 L222 340 L78 340 Z" fill="#E3245C"/>
+<path d="M150 160 L150 340" stroke="#2A2954" stroke-width="3"/>
+<path d="M104 196 C84 220 78 250 84 276 L112 276 C110 250 114 226 124 206 Z" fill="#4A4890"/>
+<path d="M196 196 C214 214 224 236 224 258 L202 262 C198 240 188 222 176 206 Z" fill="#4A4890"/>
+<rect x="112" y="238" width="76" height="10" rx="4" fill="#C9A45A"/>
+<ellipse cx="150" cy="140" rx="30" ry="26" fill="#0E1520"/>
+<circle cx="140" cy="140" r="3" fill="#FF7A9C"/><circle cx="160" cy="140" r="3" fill="#FF7A9C"/>
+<ellipse cx="150" cy="118" rx="80" ry="14" fill="#2A2954"/>
+<path d="M104 118 C116 90 128 62 150 36 C158 28 174 24 186 34 C172 36 166 48 168 62 C172 82 184 100 196 118 Z" fill="#3B3A72"/>
+<path d="M110 106 C136 98 166 98 190 106 L194 118 L106 118 Z" fill="#E3245C"/>
+<circle cx="228" cy="88" r="28" fill="#E3245C" opacity=".22"/>
+<rect x="224" y="98" width="8" height="266" rx="3" fill="#B08A5A"/>
+<circle cx="228" cy="88" r="15" fill="#E3245C"/>
+<circle cx="222" cy="82" r="4" fill="#FFB3C6"/>
+<circle cx="226" cy="256" r="10" fill="#8C9BB0"/>
+</svg>
