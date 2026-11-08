@@ -27,26 +27,30 @@ export default function About() {
           </div>
         </div>
         <figure className="about-hero__photo">
-          <img
-            src="/images/about/jamar-portrait.webp"
-            width="720"
-            height="1080"
-            alt="Jamar Brown smiling with his arms folded"
-            fetchPriority="high"
-          />
+          <span className="photo-shine">
+            <img
+              src="/images/about/jamar-portrait.webp"
+              width="720"
+              height="1080"
+              alt="Jamar Brown smiling with his arms folded"
+              fetchPriority="high"
+            />
+          </span>
         </figure>
       </section>
 
       {/* Bio: background, current focus, and the company-of-one mission */}
       <section className="about-bio" aria-labelledby="bio-title">
         <figure className="about-bio__photo">
-          <img
-            src="/images/about/jamar-about.webp"
-            width="600"
-            height="900"
-            alt="Jamar Brown smiling with a hand resting under his chin"
-            loading="lazy"
-          />
+          <span className="photo-shine">
+            <img
+              src="/images/about/jamar-about.webp"
+              width="600"
+              height="900"
+              alt="Jamar Brown smiling with a hand resting under his chin"
+              loading="lazy"
+            />
+          </span>
         </figure>
         <div className="about-bio__copy">
           <h2 id="bio-title">Curiosity is the common thread.</h2>

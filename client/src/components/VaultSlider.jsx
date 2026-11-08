@@ -86,7 +86,7 @@ export default function VaultSlider({ slides, label = "Featured", interval = 650
                 {slide.cta && <SlideLink cta={slide.cta} />}
               </div>
               {!slide.image && slide.character && (
-                <img className="slide__art" src={slide.character} alt="" width="300" height="400" />
+                <img className="slide__art" src={slide.character} alt={slide.alt ?? ""} width="300" height="400" />
               )}
             </div>
           );

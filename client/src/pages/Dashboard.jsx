@@ -1,4 +1,4 @@
-// Member dashboard (/dashboard): the demo of what REV builds for clients.
+// Sample dashboard (/dashboard, open to every visitor): the demo of what REV builds for clients.
 // Pick a pretend business and a date range; every number, chart and the
 // three-sentence summary update together. All data is sample data from
 // src/data/sampleBusiness.js, so the page costs nothing per click.
@@ -31,11 +31,16 @@ export default function Dashboard() {
         <div>
           <h1>Sample dashboard</h1>
           <p>
-            What a client dashboard looks like: the numbers, the trend, and three plain-English sentences about what
-            happened. Everything here is made-up data for pretend businesses.
+            What a client dashboard looks like: the numbers, the trend, and
+            three plain-English sentences about what happened. Everything here
+            is made-up data for pretend businesses.
           </p>
         </div>
-        <button type="button" className="button no-print" onClick={() => window.print()}>
+        <button
+          type="button"
+          className="button no-print"
+          onClick={() => window.print()}
+        >
           <PrintIcon /> Print or save as PDF
         </button>
       </header>
@@ -43,30 +48,66 @@ export default function Dashboard() {
       <div className="filters">
         <div className="field">
           <label htmlFor="business">Business</label>
-          <select id="business" className="select" value={business} onChange={(event) => setBusiness(event.target.value)}>
-            {Object.entries(BUSINESSES).map(([key, item]) => <option key={key} value={key}>{item.name}</option>)}
+          <select
+            id="business"
+            className="select"
+            value={business}
+            onChange={(event) => setBusiness(event.target.value)}
+          >
+            {Object.entries(BUSINESSES).map(([key, item]) => (
+              <option key={key} value={key}>
+                {item.name}
+              </option>
+            ))}
           </select>
         </div>
         <RangePicker value={range} options={[7, 30]} onChange={setRange} />
-        <p className="filters__period">{view.name}, {dayRange(view.days)}</p>
+        <p className="filters__period">
+          {view.name}, {dayRange(view.days)}
+        </p>
       </div>
 
       <section className="summary" aria-labelledby="summary-title">
-        <h2 id="summary-title" className="summary__title">What happened</h2>
+        <h2 id="summary-title" className="summary__title">
+          What happened
+        </h2>
         <ul className="summary__list">
-          {view.summary.map((sentence) => <li key={sentence}>{sentence}</li>)}
+          {view.summary.map((sentence) => (
+            <li key={sentence}>{sentence}</li>
+          ))}
         </ul>
         <p className="summary__note">
-          Written by AI (Claude) from this sample data and saved, so the demo is free to click around. On a client's
-          site, the server writes a new one each day from their real numbers.
+          Written by AI (Claude) from this sample data and saved, so the demo is
+          free to click around. On a client's site, the server writes a new one
+          each day from their real numbers.
         </p>
       </section>
 
       <div className="stats">
-        <StatTile label="Sales" value={money(view.totals.revenue)} change={view.changes.revenue} period={before} />
-        <StatTile label="Orders" value={fullNumber(view.totals.orders)} change={view.changes.orders} period={before} />
-        <StatTile label="Average order" value={money(view.totals.averageOrder, { cents: true })} change={view.changes.averageOrder} period={before} />
-        <StatTile label="Returning customers" value={`${Math.round(view.totals.returning * 100)}%`} change={view.changes.returning} period={before} />
+        <StatTile
+          label="Sales"
+          value={money(view.totals.revenue)}
+          change={view.changes.revenue}
+          period={before}
+        />
+        <StatTile
+          label="Orders"
+          value={fullNumber(view.totals.orders)}
+          change={view.changes.orders}
+          period={before}
+        />
+        <StatTile
+          label="Average order"
+          value={money(view.totals.averageOrder, { cents: true })}
+          change={view.changes.averageOrder}
+          period={before}
+        />
+        <StatTile
+          label="Returning customers"
+          value={`${Math.round(view.totals.returning * 100)}%`}
+          change={view.changes.returning}
+          period={before}
+        />
       </div>
 
       <div className="chart-grid">
@@ -75,12 +116,23 @@ export default function Dashboard() {
           title="Daily sales"
           subtitle={`Each day's sales, ${dayRange(view.days)}`}
           columns={["Day", "Sales", "Orders"]}
-          rows={view.days.map((day) => [longDate(day.date), money(day.revenue), fullNumber(day.orders)])}
+          rows={view.days.map((day) => [
+            longDate(day.date),
+            money(day.revenue),
+            fullNumber(day.orders),
+          ])}
         >
           <LineChart
             label={`Daily sales for ${view.name}`}
             dates={view.days.map((day) => day.date)}
-            series={[{ key: "sales", name: "Sales", color: "var(--series-1)", values: view.days.map((day) => day.revenue) }]}
+            series={[
+              {
+                key: "sales",
+                name: "Sales",
+                color: "var(--series-1)",
+                values: view.days.map((day) => day.revenue),
+              },
+            ]}
             formatValue={(value) => money(value)}
             formatTick={(value) => money(value, { compact: true })}
           />
@@ -92,20 +144,37 @@ export default function Dashboard() {
           columns={["Category", "Sales"]}
           rows={view.categories.map((item) => [item.label, money(item.value)])}
         >
-          <BarChart label={`Sales by category for ${view.name}`} items={view.categories} formatValue={(value) => money(value)} />
+          <BarChart
+            label={`Sales by category for ${view.name}`}
+            items={view.categories}
+            formatValue={(value) => money(value)}
+          />
         </ChartCard>
 
         <ChartCard
-          title={range === 7 ? "Sales by day of the week" : "Average day of the week"}
-          subtitle={range === 7 ? "Each day this week" : "Average sales for each weekday"}
+          title={
+            range === 7 ? "Sales by day of the week" : "Average day of the week"
+          }
+          subtitle={
+            range === 7
+              ? "Each day this week"
+              : "Average sales for each weekday"
+          }
           columns={["Day", "Sales"]}
           rows={view.weekdays.map((item) => [item.label, money(item.value)])}
         >
-          <BarChart label={`Sales by day of the week for ${view.name}`} items={view.weekdays} formatValue={(value) => money(value)} showShare={false} />
+          <BarChart
+            label={`Sales by day of the week for ${view.name}`}
+            items={view.weekdays}
+            formatValue={(value) => money(value)}
+            showShare={false}
+          />
         </ChartCard>
       </div>
 
-      <p className="print-only print-footer">Printed from REV by {user?.username}. Sample data only.</p>
+      <p className="print-only print-footer">
+        Printed from REV{user ? ` by ${user.username}` : ""}. Sample data only.
+      </p>
     </div>
   );
 }

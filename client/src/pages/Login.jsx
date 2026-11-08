@@ -1,7 +1,7 @@
 // Log in or register (the wireframe's "Enter the vault" page).
 // Members only need an email and password. The admin's 6-digit code lives on
 // a separate page (/admin/login), so nobody else ever sees a code box.
-import { useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { Link, Navigate, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext.jsx";
 import { safeReturnPath } from "../auth/guards.jsx";
@@ -13,7 +13,7 @@ const USERNAME_PATTERN = /^[A-Za-z0-9](?:[A-Za-z0-9_.-]*[A-Za-z0-9])?$/;
 
 function checkRegistration({ username, email, password, confirm }) {
   const problems = {};
-  if (username.length < 3 || username.length > 35) problems.username = "Use 3 to 35 characters.";
+  if (username.length < 3 || username.length > 20) problems.username = "Use 3 to 20 characters.";
   else if (!USERNAME_PATTERN.test(username)) problems.username = "Use letters, numbers, _ - or . and start and end with a letter or number.";
   if (!/^\S+@\S+\.\S+$/.test(email)) problems.email = "Enter an email address like name@example.com.";
   if (password.length < 15 || password.length > 128) problems.password = "Use 15 to 128 characters.";
@@ -109,6 +109,7 @@ function LoginForm({ onDone }) {
     <form onSubmit={handleSubmit}>
       <h2 className="access__title">Welcome back</h2>
       <fieldset disabled={pending}>
+        <legend className="visually-hidden">Log in details</legend>
         <div className="field">
           <label htmlFor="login-email">Email</label>
           <input id="login-email" className="input" type="email" autoComplete="email" required value={email} onChange={(event) => setEmail(event.target.value)} />
@@ -134,6 +135,14 @@ function RegisterForm({ onDone, onUseLogin }) {
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
   const inFlight = useRef(false);
+  const summaryRef = useRef(null);
+  // How many times the form was sent with mistakes; each try moves focus to the summary.
+  const [failedTries, setFailedTries] = useState(0);
+
+  // After a submit with mistakes, focus the summary so screen readers read it right away.
+  useEffect(() => {
+    if (failedTries > 0) summaryRef.current?.focus();
+  }, [failedTries]);
 
   function update(name, value) {
     setForm((previous) => ({ ...previous, [name]: value }));
@@ -146,7 +155,10 @@ function RegisterForm({ onDone, onUseLogin }) {
     const fields = { ...form, username: form.username.trim(), email: form.email.trim() };
     const found = checkRegistration(fields);
     setProblems(found);
-    if (Object.keys(found).length) return;
+    if (Object.keys(found).length) {
+      setFailedTries((count) => count + 1);
+      return;
+    }
 
     inFlight.current = true;
     setPending(true);
@@ -178,11 +190,28 @@ function RegisterForm({ onDone, onUseLogin }) {
   return (
     <form onSubmit={handleSubmit} noValidate>
       <h2 className="access__title">Create an account</h2>
+      {Object.keys(problems).some((name) => problems[name]) && failedTries > 0 && (
+        <div className="error-summary" ref={summaryRef} tabIndex={-1} aria-labelledby="register-summary-title">
+          <p id="register-summary-title" className="error-summary__title">
+            Fix {countProblems(problems)} {countProblems(problems) === 1 ? "thing" : "things"} to create your account:
+          </p>
+          <ul className="error-summary__list">
+            {REGISTER_FIELDS.filter(([name]) => problems[name]).map(([name, label]) => (
+              <li key={name}>
+                <a href={`#register-${name}`} onClick={(event) => { event.preventDefault(); document.getElementById(`register-${name}`)?.focus(); }}>
+                  {label}: {problems[name]}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       <fieldset disabled={pending}>
+        <legend className="visually-hidden">New account details</legend>
         <div className="field">
           <label htmlFor="register-username">Username</label>
           <input id="register-username" className="input" autoComplete="username" value={form.username} onChange={(event) => update("username", event.target.value)} aria-invalid={Boolean(problems.username)} aria-describedby={describe("username", "register-username-hint")} />
-          <p id="register-username-hint" className="field__hint">3 to 35 letters or numbers. You can also use _ - and .</p>
+          <p id="register-username-hint" className="field__hint">3 to 20 letters or numbers. You can also use _ - and . Keep it friendly: no offensive words, staff-sounding names or phone numbers.</p>
           {problems.username && <p id="register-username-error" className="field__error">{problems.username}</p>}
         </div>
         <div className="field">
@@ -214,6 +243,16 @@ function RegisterForm({ onDone, onUseLogin }) {
     </form>
   );
 }
+
+// The register fields in screen order, with the names used in the error summary.
+const REGISTER_FIELDS = [
+  ["username", "Username"],
+  ["email", "Email"],
+  ["password", "Password"],
+  ["confirm", "Type the password again"],
+];
+
+const countProblems = (problems) => Object.values(problems).filter(Boolean).length;
 
 // Password box with a Show/Hide button (handy for 15+ character passwords).
 export function PasswordInput({ id, value, onChange, autoComplete, invalid = false, describedBy }) {

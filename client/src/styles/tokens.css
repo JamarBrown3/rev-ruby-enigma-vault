@@ -59,7 +59,7 @@
   --text-2: #b4c1d1;
   --muted: #8a9aaf;
   --ruby: #d11b52;        /* buttons and selected things */
-  --ruby-hover: #e2295f;
+  --ruby-hover: #bd1749;  /* darker on hover: white text stays 6.2:1 (was #e2295f, 4.45:1) */
   --ruby-text: #ff7a9c;   /* ruby used as text/links on dark */
   --ruby-wash: rgba(209, 27, 82, 0.14);
   --on-ruby: #ffffff;
@@ -72,6 +72,9 @@
   /* Charts (validated with the dataviz palette script against --surface) */
   --series-1: #3987e5;
   --series-2: #d95926;
+  --series-3: #199e70;
+  --series-4: #c98500;
+  --series-5: #d55181;
   --grid: #26354a;
   --axis: #3b4d68;
   --trend-up: #0ca30c;
@@ -103,6 +106,9 @@
 
   --series-1: #2a78d6;
   --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --series-4: #eda100;
+  --series-5: #e87ba4;
   --grid: #e3e8ee;
   --axis: #c3ccd7;
   --trend-up: #0ca30c;

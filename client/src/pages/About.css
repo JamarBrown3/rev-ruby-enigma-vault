@@ -310,3 +310,45 @@
     margin-top: 0;
   }
 }
+
+/* ---------- Photo shine ----------
+   A soft light sweeps across each About photo about every 15 seconds.
+   .photo-shine wraps just the <img>, so the hero photo's ruby frame
+   (drawn outside the photo) isn't cut off. */
+.photo-shine {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+}
+
+.photo-shine img {
+  display: block;
+}
+
+.photo-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  transform: translateX(-150%) skewX(-20deg);
+  animation: photoShine 15s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* The bio photo starts its sweep later, so the two photos don't flash together. */
+.about-bio__photo .photo-shine::after {
+  animation-delay: 7s;
+}
+
+@keyframes photoShine {
+  0%   { transform: translateX(-150%) skewX(-20deg); }
+  10%  { transform: translateX(150%) skewX(-20deg); }
+  100% { transform: translateX(150%) skewX(-20deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo-shine::after {
+    display: none;
+  }
+}

@@ -13,6 +13,9 @@ import {
 } from "./config/database.js";
 import gameRoutes from "./routes/games.js";
 import postRoutes from "./routes/posts.js";
+import adminRoutes from "./routes/admin.js";
+import commentsRoutes from "./routes/comments.js";
+import votesRoutes from "./routes/votes.js";
 
 let server;
 let stopping = false;
@@ -103,7 +106,10 @@ try {
       trustProxy,
       mountRoutes: (app, { auth }) => {
         app.use("/api/games", gameRoutes(auth));
+        app.use("/api/posts/:postId/comments", commentsRoutes(auth));
         app.use("/api/posts", postRoutes(auth));
+        app.use("/api/admin", adminRoutes(auth));
+        app.use("/api/posts/:postId/votes", votesRoutes(auth));
       },
     }),
   );

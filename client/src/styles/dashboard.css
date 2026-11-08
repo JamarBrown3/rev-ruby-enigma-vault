@@ -463,6 +463,9 @@
     --ruby-text: #9e1240;
     --series-1: #2a78d6;
     --series-2: #eb6834;
+    --series-3: #1baf7a;
+    --series-4: #eda100;
+    --series-5: #e87ba4;
     --grid: #e3e8ee;
     --axis: #c3ccd7;
   }
@@ -474,12 +477,35 @@
   .no-print,
   .chart-card__switch,
   .filters .segmented,
+  .filters fieldset, /* the 7/30-day picker: the chosen range is printed as text beside it */
+  .tab-bar, /* the phone tab bar showed up because a printed page is phone-width */
   .back-link {
     display: none !important;
   }
 
   .site-main {
     padding: 0 !important;
+  }
+
+  /* Browsers skip background colors when printing unless told not to,
+     and the bars are background colors. This keeps them. */
+  *,
+  *::before,
+  *::after {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Keep each card, tile and the summary on one page instead of split across two. */
+  .chart-card,
+  .stat,
+  .summary {
+    break-inside: avoid;
+  }
+
+  /* No empty space left over from the phone tab bar. */
+  .site {
+    padding-bottom: 0 !important;
   }
 
   .page {
@@ -505,4 +531,57 @@
     color: inherit;
     text-decoration: none;
   }
+}
+
+/* Segmented bar ("slices of one whole", SegmentedBar.jsx) */
+.segbar {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.segbar__bar {
+  display: flex;
+  gap: 2px; /* thin gap so neighbouring colors never touch */
+  height: 56px;
+}
+
+.segbar__part {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 4px;
+  border-radius: 4px;
+  cursor: default;
+  transition: filter 120ms ease;
+}
+
+.segbar__part.is-active,
+.segbar__part:focus-visible {
+  filter: brightness(1.15);
+}
+
+.segbar__share {
+  color: #0b0b0b; /* dark text reads on all five colors */
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+.segbar__tooltip {
+  bottom: calc(100% + 8px);
+  left: 50%;
+  min-width: 0;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+
+.segbar__legend {
+  flex-wrap: wrap;
+}
+
+.segbar__swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
 }

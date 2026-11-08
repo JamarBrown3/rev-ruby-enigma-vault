@@ -1,6 +1,6 @@
 // Every page and who can see it.
-//   Public:          /  /games  /games/:id  /posts/:id  /about  /services  /contact  /login
-//   Signed in:       /posts/new  /posts/:id/edit  /dashboard  /profile
+//   Public:          /  /games  /games/:id  /posts/:id  /about  /services  /contact  /login  /dashboard (sample data, open to every visitor)
+//   Signed in:       /posts/new  /posts/:id/edit  /profile
 //   Admin (Jah):     /admin/dashboard  /admin/games/new  /admin/games/:id/edit
 //   Admin sign-in:   /admin/login (not linked anywhere; bookmark it)
 // The server checks every request again, so these guards are for showing the
@@ -27,7 +27,9 @@ import Contact from "./pages/Contact.jsx";
 
 // The route tester only exists while developing (npm run dev). `npm run build`
 // leaves it out of the real site completely.
-const DevTest = import.meta.env.DEV ? lazy(() => import("./devtest/DevTest.jsx")) : null;
+const DevTest = import.meta.env.DEV
+  ? lazy(() => import("./devtest/DevTest.jsx"))
+  : null;
 
 export default function App() {
   return (
@@ -36,19 +38,61 @@ export default function App() {
         <Route index element={<Home />} />
         <Route path="games" element={<Games />} />
         <Route path="games/:id" element={<GameDetail />} />
-        <Route path="posts/new" element={<RequireAuth><PostEditor /></RequireAuth>} />
+        <Route
+          path="posts/new"
+          element={
+            <RequireAuth>
+              <PostEditor />
+            </RequireAuth>
+          }
+        />
         <Route path="posts/:id" element={<PostDetail />} />
-        <Route path="posts/:id/edit" element={<RequireAuth><PostEditor /></RequireAuth>} />
+        <Route
+          path="posts/:id/edit"
+          element={
+            <RequireAuth>
+              <PostEditor />
+            </RequireAuth>
+          }
+        />
         <Route path="about" element={<About />} />
         <Route path="services" element={<Services />} />
         <Route path="contact" element={<Contact />} />
         <Route path="login" element={<Login />} />
-        <Route path="dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
-        <Route path="profile" element={<RequireAuth><Profile /></RequireAuth>} />
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route
+          path="profile"
+          element={
+            <RequireAuth>
+              <Profile />
+            </RequireAuth>
+          }
+        />
         <Route path="admin/login" element={<AdminLogin />} />
-        <Route path="admin/dashboard" element={<RequireAdmin><AdminDashboard /></RequireAdmin>} />
-        <Route path="admin/games/new" element={<RequireAdmin><GameEditor /></RequireAdmin>} />
-        <Route path="admin/games/:id/edit" element={<RequireAdmin><GameEditor /></RequireAdmin>} />
+        <Route
+          path="admin/dashboard"
+          element={
+            <RequireAdmin>
+              <AdminDashboard />
+            </RequireAdmin>
+          }
+        />
+        <Route
+          path="admin/games/new"
+          element={
+            <RequireAdmin>
+              <GameEditor />
+            </RequireAdmin>
+          }
+        />
+        <Route
+          path="admin/games/:id/edit"
+          element={
+            <RequireAdmin>
+              <GameEditor />
+            </RequireAdmin>
+          }
+        />
         <Route path="*" element={<NotFound />} />
       </Route>
 

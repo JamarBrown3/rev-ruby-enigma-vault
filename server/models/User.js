@@ -76,6 +76,24 @@ const userSchema = new mongoose.Schema(
       },
     },
 
+    // REV-SEC-27 (added 2026-11-07): earlier usernames, written only when the
+    // admin renames an account (PATCH /api/admin/users/:id/username). It's an
+    // audit trail: who had which name, when it changed, which admin changed it,
+    // and why. Hidden from ordinary queries like email is.
+    previousUsernames: {
+      type: [
+        {
+          _id: false,
+          username: { type: String, required: true, maxlength: 35 },
+          changedAt: { type: Date, required: true },
+          changedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+          reason: { type: String, maxlength: 200, default: "" },
+        },
+      ],
+      default: [],
+      select: false,
+    },
+
     // REV-SEC-09 (added 2026-10-26): two-step sign-in for the owner's admin
     // account. These fields are written ONLY by scripts/create-admin.js on
     // your own computer; no website route can set them.
@@ -100,6 +118,7 @@ const userSchema = new mongoose.Schema(
         // REV-SEC-07 / REV-SEC-09: never send email or two-step data to a browser by accident.
         delete result.email;
         delete result.mfa;
+        delete result.previousUsernames;
         return result;
       },
     },

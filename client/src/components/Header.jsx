@@ -1,6 +1,6 @@
 // Shared header: logo, the main links (each with the small sub-label from the
 // wireframe), and what you can do as a visitor, member or admin.
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext.jsx";
 import Logo from "./Logo.jsx";
@@ -13,6 +13,7 @@ const MAIN_LINKS = [
   { to: "/games", label: "Games", sub: "The library" },
   { to: "/about", label: "About", sub: "Meet the creator" },
   { to: "/services", label: "Services", sub: "What I build" },
+  { to: "/contact", label: "Contact", sub: "Start a project" },
 ];
 
 export default function Header() {
@@ -20,6 +21,7 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [logoutError, setLogoutError] = useState("");
   const [adminMenuOpen, setAdminMenuOpen] = useState(false);
+  const menuButtonRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
   const closeAdminMenu = useCallback(() => setAdminMenuOpen(false), []);
@@ -37,7 +39,11 @@ export default function Header() {
   useEffect(() => {
     if (!menuOpen) return undefined;
     const onKey = (event) => {
-      if (event.key === "Escape") setMenuOpen(false);
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+        // Put keyboard focus back on the Menu button so it isn't lost in the closed menu.
+        menuButtonRef.current?.focus();
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -45,8 +51,9 @@ export default function Header() {
 
   // Links that depend on who is signed in.
   const accountLinks = [];
+  // The sample dashboard is open to every visitor, so it is always in the menu.
+  accountLinks.push({ to: "/dashboard", label: "Dashboard", sub: "Try the demo" });
   if (!user) accountLinks.push({ to: "/login", label: "Log in", sub: "Join the vault" });
-  if (user) accountLinks.push({ to: "/dashboard", label: "Dashboard", sub: "Sample insights" });
   if (isAdmin) accountLinks.push({ to: "/admin/dashboard", label: "Admin", sub: "Control room" });
 
   async function handleLogout() {
@@ -87,6 +94,7 @@ export default function Header() {
 
         <button
           type="button"
+          ref={menuButtonRef}
           className="icon-button menu-toggle"
           aria-expanded={menuOpen}
           aria-controls="site-nav"

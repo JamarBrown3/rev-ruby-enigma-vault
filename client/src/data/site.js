@@ -1,7 +1,9 @@
 // Your contact links and portfolio projects, in one place.
 // Leave a link as "" and its button simply won't show (no dead links).
+// Contact page links. Empty ones are hidden. No email on purpose: clients use the
+// project form, so the inbox doesn't fill with spam.
 export const CONTACT = {
-  email: "", // e.g. "hello@yourdomain.com"
+  projectForm: "", // Calendly (or Google / Microsoft Forms) link, e.g. "https://calendly.com/your-name/project-call"
   linkedin: "", // e.g. "https://www.linkedin.com/in/your-name"
   github: "", // e.g. "https://github.com/your-name"
 };

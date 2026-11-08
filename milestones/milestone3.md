@@ -1,7 +1,8 @@
 # Milestone 3 — Implementation Planning and Core Workflows
 
 Project: REV — The Ruby Enigma Vault  
-Status: Working checklist; check items only after verifying them.
+Status: Working checklist; check items only after verifying them.  
+Last updated: November 5, 2026
 
 ## Checklist
 
@@ -14,6 +15,25 @@ Status: Working checklist; check items only after verifying them.
 - [ ] Update the [README](../README.md) to distinguish implemented features from planned features.
 - [ ] Add screenshots or short GIFs demonstrating completed workflows.
 - [ ] Complete the reflection after this phase.
+
+## Work Completed So Far (as of November 5, 2026)
+
+GitHub issues and a project board have not been set up yet, so this list stands in for them.
+Each line says how it was verified.
+
+| Date | Work | How it was verified |
+| --- | --- | --- |
+| Oct 19-26 | Express API set-up: security middleware, session login, Argon2id passwords, CSRF tokens, rate limits, admin 6-digit TOTP code | Automated tests in `server/test/` (offline and against Atlas); reports in `server/security-reports/` |
+| Oct 26 | Games API: list and view for everyone; create, update and delete for the admin only | Tests plus the dev route tester |
+| Oct 29-31 | Posts API: reviews and discussions with GET, POST, PATCH and DELETE; only the author can edit or delete (others get 404) | Tests plus the route tester (46 checks passing) |
+| Oct 31 | Atlas database tests fixed (IP allow-list; three timing and flood tests adjusted) | Full Atlas run passing; notes in `server/security-reports/week-of-2026-10-26/` |
+| Oct 31 | React frontend from the Figma wireframes: Home, Games, Game detail, Post detail, Post editor, About, Services, Contact, Login/Register, Profile, member dashboard, admin sign-in, admin dashboard, game editor, 404 | Playwright runs as visitor, member and admin; axe scan with no violations |
+| Oct 31 | Phone tab bar, admin slide-out menu, light/dark theme saved on the device, character reels with Pause, featured slider with Pause and arrow keys | Playwright keyboard, Escape and focus checks |
+| Nov 3 | Sample dashboard opened to every visitor (`/dashboard`) as a client demo | Manual check |
+| Nov 3-4 | Original REV art: AI-generated mascots and slide art replaced the copyrighted game characters | Manual review |
+| Nov 4 | Dashboard printing fixed (phone tab bar hidden, bar colors kept, cards not split); weekday chart tooltip added | Printed to PDF; mouse, tap and keyboard tooltip tests |
+| Nov 4 | End-to-end check: 15 pages at desktop and phone width, as visitor and admin | No JavaScript errors and no sideways scrolling (server answers were mocked) |
+| Nov 4-5 | Accessibility pass: alt text for the slide art, 200% zoom, keyboard navigation, WAVE | Jah's manual checks plus WAVE (Jah, with ChatGPT as QA) |
 
 ## Suggested Issue Backlog
 

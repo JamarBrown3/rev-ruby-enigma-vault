@@ -56,6 +56,7 @@ export default function AdminLogin() {
         <h1 className="owner-login__title">Owner sign-in</h1>
         <p className="owner-login__intro">For the site owner. You'll need the 6-digit code from your authenticator app.</p>
         <fieldset disabled={pending}>
+          <legend className="visually-hidden">Owner sign-in details</legend>
           <div className="field">
             <label htmlFor="owner-email">Email</label>
             <input id="owner-email" className="input" type="email" autoComplete="username" value={email} onChange={(event) => setEmail(event.target.value)} />

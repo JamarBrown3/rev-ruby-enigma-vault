@@ -5,7 +5,8 @@ current status.
 
 | Week | Contents |
 |---|---|
-| [`week-of-2026-10-26/`](week-of-2026-10-26/) | **Current status.** `security-hardening-2026-10-26.md` (what was found, what changed by `REV-SEC-##` tag, test results, still-open items, admin setup) and `route-and-dashboard-plan-2026-10-26.md` (ideas for routes, controllers and dashboards), plus today's raw test logs. |
+| [`week-of-2026-11-02/`](week-of-2026-11-02/) | **Newest.** `username-safety-2026-11-07.md`: REV-SEC-27 (offensive, staff-like, phone-number and website usernames blocked; admin rename with history) plus the week's other security-related frontend changes. |
+| [`week-of-2026-10-26/`](week-of-2026-10-26/) | Main hardening record (REV-SEC-01 to REV-SEC-26). `security-hardening-2026-10-26.md` (what was found, what changed by `REV-SEC-##` tag, test results, still-open items, admin setup) and `route-and-dashboard-plan-2026-10-26.md` (ideas for routes, controllers and dashboards), plus today's raw test logs. |
 | [`week-of-2026-10-19/`](week-of-2026-10-19/) | History: the 23 October reviews, written before the switch to Argon2. Superseded by the newest week. |
 
 ## Conventions

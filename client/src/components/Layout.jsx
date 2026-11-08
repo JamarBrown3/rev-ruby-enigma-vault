@@ -1,7 +1,7 @@
 // The frame every page sits in: header, the two character reels, the page
 // itself (<Outlet />), and the footer. The reels are here, not on each page,
 // so they show on every page, including login.
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext.jsx";
 import Header from "./Header.jsx";
@@ -13,9 +13,22 @@ export default function Layout() {
   const { pathname, hash } = useLocation();
   const { sessionEnded, dismissSessionEnded } = useAuth();
 
+  const firstLoad = useRef(true);
+
   // A new page starts at the top (unless the link points at a #section).
+  // After a page change (not the first load), move focus to the new page's main
+  // heading so screen readers start reading there instead of in the old menu.
   useEffect(() => {
-    if (!hash) window.scrollTo(0, 0);
+    if (hash) return;
+    window.scrollTo(0, 0);
+    if (firstLoad.current) {
+      firstLoad.current = false;
+      return;
+    }
+    const heading = document.querySelector("#main h1");
+    const target = heading || document.getElementById("main");
+    if (heading && !heading.hasAttribute("tabindex")) heading.setAttribute("tabindex", "-1");
+    target?.focus({ preventScroll: true });
   }, [pathname, hash]);
 
   return (

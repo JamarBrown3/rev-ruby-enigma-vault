@@ -387,3 +387,33 @@ fieldset {
     animation-duration: 3s;
   }
 }
+
+/* Headings and the main area get focus from code after a page change (Layout.jsx)
+   so screen readers start at the new page. They aren't buttons, so no focus ring. */
+[tabindex="-1"]:focus {
+  outline: none;
+}
+
+/* Register form: list of mistakes shown above the fields after a failed submit. */
+.error-summary {
+  margin-bottom: var(--space-5);
+  padding: var(--space-4);
+  border: 1px solid var(--danger);
+  border-left-width: 4px;
+  border-radius: var(--radius);
+  background: var(--danger-wash);
+  color: var(--text);
+}
+
+.error-summary__title {
+  font-weight: 700;
+}
+
+.error-summary__list {
+  margin: var(--space-2) 0 0;
+  padding-left: 1.2em;
+}
+
+.error-summary__list a {
+  color: var(--text);
+}

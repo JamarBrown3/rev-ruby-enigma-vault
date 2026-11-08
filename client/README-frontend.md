@@ -18,38 +18,38 @@ Seeing `401 (Unauthorized)` in the browser console while signed out is normal: i
 
 ## Pages and who can see them
 
-| Address | Who | What it does |
-|---|---|---|
-| `/` | Everyone | Slider, then community posts with search, filter, sort, load more |
-| `/games`, `/games/:id` | Everyone | Game library and one game with its reviews |
-| `/posts/:id` | Everyone | One post; its author also gets Edit and Delete |
-| `/posts/new`, `/posts/:id/edit` | Signed in | Write or edit your own post (review or discussion) |
-| `/about`, `/services` | Everyone | About you (photos, bio, skills grid, projects) and what you build for clients |
-| `/contact` | Everyone | Where "Let's Build Something" goes; shows the links filled in `src/data/site.js` |
-| `/login` | Everyone | Log in or register (email + password, no code box) |
-| `/dashboard` | Signed in | Sample business dashboard with the 3-sentence AI summary and print to PDF |
-| `/profile` | Signed in | Shortcuts, theme setting and Log out (the phone tab bar's Profile button) |
-| `/admin/login` | Bookmark it | Owner sign-in with the 6-digit code; sends you to the admin dashboard |
-| `/admin/dashboard` | Admin only | Community dashboard (sample charts + live newest posts) and admin tools |
-| `/admin/games/new`, `/admin/games/:id/edit` | Admin only | Add or edit a game, with a live card preview |
-| `/dev/routes` | Only during `npm run dev` | The route tester (left out of `npm run build`) |
+| Address                                     | Who                       | What it does                                                                     |
+| ------------------------------------------- | ------------------------- | -------------------------------------------------------------------------------- |
+| `/`                                         | Everyone                  | Slider, then community posts with search, filter, sort, load more                |
+| `/games`, `/games/:id`                      | Everyone                  | Game library and one game with its reviews                                       |
+| `/posts/:id`                                | Everyone                  | One post; its author also gets Edit and Delete                                   |
+| `/posts/new`, `/posts/:id/edit`             | Signed in                 | Write or edit your own post (review or discussion)                               |
+| `/about`, `/services`                       | Everyone                  | About you (photos, bio, skills grid, projects) and what you build for clients    |
+| `/contact`                                  | Everyone                  | Where "Let's Build Something" goes; shows the links filled in `src/data/site.js` |
+| `/login`                                    | Everyone                  | Log in or register (email + password, no code box)                               |
+| `/dashboard`                                | Everyone                  | Sample business dashboard with the 3-sentence AI summary and print to PDF        |
+| `/profile`                                  | Signed in                 | Shortcuts, theme setting and Log out (the phone tab bar's Profile button)        |
+| `/admin/login`                              | Bookmark it               | Owner sign-in with the 6-digit code; sends you to the admin dashboard            |
+| `/admin/dashboard`                          | Admin only                | Community dashboard (sample charts + live newest posts) and admin tools          |
+| `/admin/games/new`, `/admin/games/:id/edit` | Admin only                | Add or edit a game, with a live card preview                                     |
+| `/dev/routes`                               | Only during `npm run dev` | The route tester (left out of `npm run build`)                                   |
 
 Non-admins who open an admin address see the normal 404 page. The server checks every
 request again, so hiding pages is for tidiness, not security.
 
 ## Things you'll want to change
 
-| What | Where |
-|---|---|
-| The 5 character images in the reels | Put files in `public/characters/`, then edit `src/data/characters.js` |
-| Reel speed | `REEL_SECONDS` in `src/data/characters.js` |
-| Home slider text, buttons, banner photos | `src/data/slides.js` |
-| Email, LinkedIn, GitHub links, projects, skills grid | `src/data/site.js` (empty links are simply hidden) |
-| About photos | `public/images/about/` (from your portfolio zip, resized to WebP) |
-| About page layout and colors | `src/pages/About.jsx` and `src/pages/About.css` (phone-first) |
-| Phone tab bar buttons | the `tabs` list in `src/components/MobileNav.jsx` |
-| Admin menu links | `src/components/AdminSideMenu.jsx` |
-| Colors and fonts | `src/styles/tokens.css` |
+| What                                                 | Where                                                                 |
+| ---------------------------------------------------- | --------------------------------------------------------------------- |
+| The 5 character images in the reels                  | Put files in `public/characters/`, then edit `src/data/characters.js` |
+| Reel speed                                           | `REEL_SECONDS` in `src/data/characters.js`                            |
+| Home slider text, buttons, banner photos             | `src/data/slides.js`                                                  |
+| Email, LinkedIn, GitHub links, projects, skills grid | `src/data/site.js` (empty links are simply hidden)                    |
+| About photos                                         | `public/images/about/` (from your portfolio zip, resized to WebP)     |
+| About page layout and colors                         | `src/pages/About.jsx` and `src/pages/About.css` (phone-first)         |
+| Phone tab bar buttons                                | the `tabs` list in `src/components/MobileNav.jsx`                     |
+| Admin menu links                                     | `src/components/AdminSideMenu.jsx`                                    |
+| Colors and fonts                                     | `src/styles/tokens.css`                                               |
 
 ## How it's organized
 
@@ -70,6 +70,7 @@ src/
 ```
 
 Reused from your projects:
+
 - **Game cards**: the video_gameStore card (whole cover over a blurred copy of itself)
   mixed with the Xenoblade event card (label, title, description, footer under a divider).
 - **Delete with confirmation**: `DeleteGameButton.jsx` from video_gameStore, made generic.

@@ -1,17 +1,12 @@
-// The 5 characters in the side reels (and the slider art on the home page).
-//
-// TO USE YOUR OWN IMAGES:
-//   1. Put the files in client/public/characters/ (for example knight.webp).
-//   2. Change `image` below to "/characters/knight.webp" (and `name` if you like).
-// Tall portrait images look best: about 600 x 800 px, under 300 KB each
-// (.webp or .png). For a commercial site, use art you made, bought or have
-// permission to use; official game art usually belongs to the publisher.
+// Original REV mascots used by the character reels.
+// Add more entries here and place their images in public/characters/.
 export const CHARACTERS = [
-  { name: "The knight", image: "/characters/knight.svg" },
-  { name: "Forest mage", image: "/characters/mage.svg" },
-  { name: "Vault ranger", image: "/characters/ranger.svg" },
-  { name: "Arcade pilot", image: "/characters/pilot.svg" },
-  { name: "Ruby rogue", image: "/characters/rogue.svg" },
+  { name: "The Vault Keeper", image: "/characters/vault-keeper.jpg" },
+  { name: "The Data Witch", image: "/characters/data-witch.jpg" },
+  { name: "The Code Runner", image: "/characters/code-runner.jpg" },
+  { name: "The Shop Golem", image: "/characters/shop-golem.jpg" },
+  { name: "The Pixel Bard", image: "/characters/pixel-bard.jpg" },
+  { name: "The Night Analyst", image: "/characters/night-analyst.jpg" },
 ];
 
 // The left reel scrolls up and the right reel scrolls down. The right one
@@ -19,5 +14,5 @@ export const CHARACTERS = [
 export const LEFT_REEL = CHARACTERS;
 export const RIGHT_REEL = [...CHARACTERS.slice(2), ...CHARACTERS.slice(0, 2)];
 
-// Seconds for one full trip through the 5 characters. Bigger = slower.
+// Seconds for one full trip through the character lineup. Bigger = slower.
 export const REEL_SECONDS = 40;

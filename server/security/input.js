@@ -1,5 +1,6 @@
 // REV-SEC-08 / REV-SEC-21: shared username and email rules (also used by models/User.js).
 import { EMAIL_PATTERN, USERNAME_PATTERN } from "../models/validators.js";
+import { USERNAME_MAX, USERNAME_MIN, usernameProblem } from "./usernames.js";
 
 // Carry an intentional HTTP status to app.js's error handler, which will be used to set the response status code.
 export class HttpError extends Error {
@@ -153,39 +154,18 @@ export function readNewPassword(value) {
   return string(value, "Password", 15, 128);
 }
 
-// REV-SEC-08 (added 2026-10-26): names nobody can register, so no visitor can
-// pose as site staff. Comparison ignores capital letters and the separators
-// "_", ".", and "-", so "Ad_Min" counts as "admin". Add your own names (for
-// example your real username) in the RESERVED_USERNAMES environment setting:
-//   RESERVED_USERNAMES=jah,jamar
-// Reserved names only block NEW registrations; existing accounts keep theirs.
-const RESERVED_USERNAMES = [
-  "admin", "administrator", "root", "system", "support", "moderator", "mod",
-  "staff", "owner", "official", "security", "rev", "help", "api", "null",
-  "undefined",
-];
+// REV-SEC-08 / REV-SEC-27: reserved, offensive and phone-number usernames are
+// checked in security/usernames.js. isReservedUsername is re-exported here so
+// older imports keep working.
+export { isReservedUsername } from "./usernames.js";
 
-export function isReservedUsername(
-  username,
-  extra = process.env.RESERVED_USERNAMES,
-) {
-  const squash = (name) => name.trim().toLowerCase().replace(/[_.-]/g, "");
-  const reserved = new Set(
-    [...RESERVED_USERNAMES, ...String(extra ?? "").split(",")]
-      .map(squash)
-      .filter(Boolean),
-  );
-  return reserved.has(squash(username));
-}
+// REV-SEC-27 (added 2026-11-07): one username check used by registration AND
+// the admin rename route, so both follow exactly the same rules.
+export function readUsername(value) {
+  // Must be text, 3 to 20 characters, with spaces trimmed from the ends.
+  const username = string(value, "Username", USERNAME_MIN, USERNAME_MAX, true);
 
-// Validate registration fields and return only accepted values.
-export function parseRegistration(body) {
-  fields(body, ["username", "email", "password"]);
-
-  // Username validation: must be between 3 and 35 characters, and cannot contain control characters.
-  const username = string(body.username, "Username", 3, 35, true);
-
-  //  If the username contains any control characters (ASCII codes 0-31 and 127), throw an error to indicate that the username is invalid.
+  // No control characters (ASCII 0-31 and 127).
   if (/[\u0000-\u001f\u007f]/.test(username)) {
     throw new HttpError(400, "Username contains an unsupported character.");
   }
@@ -199,13 +179,26 @@ export function parseRegistration(body) {
     );
   }
 
-  // REV-SEC-08: staff-like names are not available to the public.
-  if (isReservedUsername(username)) {
+  const problem = usernameProblem(username);
+  // A phone number is personal information; saying so helps honest users.
+  if (problem === "phone") {
+    throw new HttpError(400, "Usernames can't include phone numbers.");
+  }
+  // Reserved and offensive names get the same answer as a taken name, so the
+  // filter can't be probed word by word.
+  if (problem) {
     throw new HttpError(409, "That username is not available.");
   }
+  return username;
+}
+
+// Validate registration fields and return only accepted values.
+export function parseRegistration(body) {
+  fields(body, ["username", "email", "password"]);
+
   // Return the validated username, normalized email, and unchanged password.
   return {
-    username,
+    username: readUsername(body.username),
     email: readEmail(body.email),
     password: readNewPassword(body.password),
   };
