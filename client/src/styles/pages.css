@@ -151,7 +151,9 @@
 .game-detail__banner {
   height: 180px;
   background-color: var(--bg-deep);
-  background-image: linear-gradient(to bottom, transparent 30%, var(--surface)), var(--banner, none);
+  background-image:
+    linear-gradient(to bottom, transparent 30%, var(--surface)),
+    var(--banner, none);
   background-position: center;
   background-size: cover;
 }
@@ -299,19 +301,180 @@
   overflow-wrap: anywhere;
 }
 
-.post-detail__later {
-  margin-top: var(--space-8);
-  padding: var(--space-5);
-  border: 1px dashed var(--line);
-  border-radius: var(--radius-lg);
+/* ---------- Likes (post page) ---------- 
+
+Pill buttons in  the Chairvana style: each button has its own color.
+Check contrast (WCAG AA needs 4.5:1 for text):
+  like:    #0b5132 on #d9f7e8 = 8.2:1    pressed: white on #0b6b3f = 6.6:1
+  dislike: #8a1c1c on #fde2e2 = 7.6:1    pressed: white on #b42318 = 6.6:1
+The pills are light in BOTH themes, so the same colors work in dark and light mode.
+*/
+
+.votes {
+  margin-top: var(--space-5);
+}
+
+.vote__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.votes__button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px; /* big enough to tap on a phone */
+  padding: 8px 18px;
+  border: 2px solid currentColor; /* the edge uses the text color, so it's visbile on white too */
+  border-radius: 999px; /* pill shape (Chairvana used 20px) */
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.votes__button--like {
+  background: #d9f7e8;
+  color: #0b5132;
+}
+
+.votes__button--dislike {
+  background: #fde2e2;
+  color: #8a1c1c;
+}
+
+/* Hover: a little darker + a small life (Chairvana's comment button did this) */
+.votes__button--like:hover {
+  background: #c3f0d9;
+}
+
+.votes__button--dislike:hover {
+  background: #fbcaca;
+}
+
+.votes__button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+/* Pressed (your vote): solid color + white text + a checkmark.
+Three changes, so it never depends on color alone. */
+
+.votes__button--like[aria-pressed="true"] {
+  background: #0b6b3f;
+  border-color: #0b6b3f;
+  color: #ffffff;
+}
+
+.votes__button--dislike[aria-pressed="true"] {
+  background: #b42318;
+  border-color: #b42318;
+  color: #ffffff;
+}
+
+.votes__button[aria-pressed="true"]::after {
+  content: "✔";
+  font-weight: 700;
+}
+
+.votes__button[aria-disabled="true"] {
+  opacity: 0.6;
+  cursor: wait;
+  transform: none;
+}
+
+.votes__count {
+  min-width: 1.5ch;
+  font-variant-numeric: tabular-nums; /* numbers don't jiggle as they change */
+}
+
+.votes__note {
+  margin-top: var(--space-5);
   color: var(--text-2);
 }
 
-.post-detail__later-title {
-  margin-bottom: var(--space-2);
+@media (prefers-reduced-motion: reduce) {
+  .votes__button,
+  .votes__button:hover {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* ---------- Comments (post page) ---------- */
+
+.comments {
+  margin-top: var(--space-8);
+}
+
+.comments__title {
+  margin-bottom: var(--space-4);
   font-family: var(--font-sans);
-  font-size: var(--text-lg);
+  font-size: var(--text-xl);
   font-weight: 700;
+}
+
+.comments__list {
+  margin: 0 0 var(--space-5);
+  padding: 0;
+  list-style: none;
+}
+
+.comment {
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.comment:focus-visible,
+.comment:focus {
+  outline: 3px solid var(--focus); /*show where focus landed after post/edit */
+  outline-offset: 4px;
+  border-radius: var(--radius-sm);
+}
+
+.comment__meta {
+  margin-bottom: var(--space-2);
+  color: var(--text-2);
+  font-size: var(--text-sm);
+}
+
+.comment__body {
+  white-space: pre-line; /* keep the line breaks people typed */
+  overflow-wrap: anywhere; /* long links can't break the layout on phones */
+}
+
+.comment__actions,
+.comment-form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.comment-form {
+  margin-top: var(--space-5);
+}
+
+.comment-form textarea {
+  width: 100%;
+  min-height: 7em;
+  resize: vertical;
+}
+
+.comment-form__over {
+  color: var(--danger);
+  font-weight: 700;
+}
+
+.comments__empty,
+.comments__signin {
+  margin-bottom: var(--space-4);
+  color: var(--text-2);
 }
 
 /* ---------- Services ---------- */

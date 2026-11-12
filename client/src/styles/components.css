@@ -30,7 +30,7 @@
   grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
   align-items: center;
   gap: var(--space-6);
-  padding: var(--space-7) var(--space-7) calc(var(--space-8) + var(--space-3));
+  padding: var(--space-7);
   background-position: center;
   background-size: cover;
   opacity: 0;
@@ -79,14 +79,14 @@
   color: #ffffff;
 }
 
+/* The controls sit BELOW the slide (normal flow), not on top of it, so a tall
+   slide can never push its button underneath them. */
 .slider__controls {
-  position: absolute;
-  left: var(--space-7);
-  bottom: var(--space-4);
-  z-index: 2;
   display: flex;
   align-items: center;
   gap: var(--space-1);
+  padding: var(--space-2) var(--space-7) var(--space-4);
+  border-top: 1px solid var(--line);
 }
 
 .slider__dots {
@@ -140,7 +140,7 @@
   .slide {
     grid-template-columns: 1fr;
     align-items: start;
-    padding: var(--space-6) var(--space-5) var(--space-8);
+    padding: var(--space-6) var(--space-5);
   }
 
   .slide__art {
@@ -148,7 +148,7 @@
   }
 
   .slider__controls {
-    left: var(--space-4);
+    padding-left: var(--space-4);
   }
 }
 
