@@ -1,66 +1,118 @@
-// Horizontal bars for comparing categories. One series = one color (no rainbow).
-// Bars are 20px thick with a rounded end and a square base, the value sits at
-// the tip, and hovering, tapping or tabbing to a row shows a tooltip:
-//   showShare (default): "38% of the total"  (bars are parts of one whole, like categories)
-//   showShare={false}:   "12% above the average" (bars are separate, like weekdays)
-import { useState } from "react";
+import {
+  Bar,
+  BarChart as RechartsBarChart,
+  LabelList,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
-// showShare: false when the bars aren't parts of one whole (like averages per weekday).
-export default function BarChart({ items, formatValue, color = "var(--series-1)", label, showShare = true }) {
-  const [active, setActive] = useState(null);
-  const max = Math.max(1, ...items.map((item) => item.value));
-  const total = items.reduce((sum, item) => sum + item.value, 0) || 1;
-  const average = total / (items.length || 1);
-  const min = Math.min(...items.map((item) => item.value));
+export default function BarChart({
+  items,
+  formatValue,
+  color = "var(--series-1)",
+  label,
+  showShare = true,
+}) {
+  if (!items.length) {
+    return <p>No data for this period.</p>;
+  }
+
+  const total = items.reduce((sum, item) => sum + item.value, 0);
+  const average = total / items.length;
+  const highest = Math.max(...items.map((item) => item.value));
+  const lowest = Math.min(...items.map((item) => item.value));
+
+  const rows = items.map((item) => {
+    const share = total ? Math.round((item.value / total) * 100) : 0;
+    const difference = average
+      ? Math.round(((item.value - average) / average) * 100)
+      : 0;
+
+    let comparison = "About the average";
+    if (difference > 0) comparison = `${difference}% above the average`;
+    if (difference < 0)
+      comparison = `${Math.abs(difference)}% below the average`;
+
+    let rank = "";
+
+    if (highest !== lowest && item.value === highest) {
+      rank = "Highest. ";
+    }
+    if (highest !== lowest && item.value === lowest) {
+      rank = "Lowest. ";
+    }
+
+    return {
+      ...item,
+      detail: showShare ? `${share}% of the total` : `${rank}${comparison}`,
+    };
+  });
 
   return (
-    <div className="bar-chart" role="list" aria-label={label}>
-      {items.map((item, index) => {
-        const share = Math.round((item.value / total) * 100);
-        // Compared with the average bar: +12 means 12% above it.
-        const vsAverage = Math.round(((item.value - average) / average) * 100);
-        const rank = item.value === max ? "Highest. " : item.value === min ? "Lowest. " : "";
-        const comparison =
-          vsAverage === 0 ? "About the average" : `${Math.abs(vsAverage)}% ${vsAverage > 0 ? "above" : "below"} the average`;
-        const detail = showShare ? `${share}% of the total` : `${rank}${comparison}`;
-        return (
-          <div
-            key={item.label}
-            className={`bar-row${active === index ? " is-active" : ""}`}
-            role="listitem"
-            tabIndex={0}
-            aria-label={`${item.label}: ${formatValue(item.value)}, ${detail}`}
-            onPointerEnter={() => setActive(index)}
-            onPointerLeave={() => setActive(null)}
-            onFocus={() => setActive(index)}
-            onBlur={() => setActive(null)}
-            onKeyDown={(event) => {
-              if (event.key === "Escape") setActive(null); // hide the tooltip, keep focus
-            }}
-          >
-            <span className="bar-row__label">{item.label}</span>
-            <span className="bar-row__track">
-              {/* Bars share the space left after room for the value label, so they stay in proportion. */}
-              <span className="bar-row__bar" style={{ width: `calc((100% - 84px) * ${item.value / max})`, background: color }} />
-              <span className="bar-row__value">{formatValue(item.value)}</span>
-              {active === index && (
-                <span className="chart-tooltip chart-tooltip--bar" aria-hidden="true">
-                  {showShare ? (
-                    <>
-                      <strong>{share}%</strong> of the total
-                    </>
-                  ) : (
-                    <>
-                      {rank}
-                      <strong>{comparison}</strong>
-                    </>
-                  )}
-                </span>
-              )}
-            </span>
-          </div>
-        );
-      })}
-    </div>
+    <RechartsBarChart
+      responsive
+      accessibilityLayer
+      title={label}
+      desc="Use the left and right arrow keys to explore the bars."
+      layout="vertical"
+      data={rows}
+      style={{ width: "100%", height: rows.length * 36 + 16 }}
+      margin={{ top: 8, right: 72, bottom: 8, left: 0 }}
+    >
+      <XAxis type="number" domain={[0, "auto"]} hide />
+
+      <YAxis
+        type="category"
+        dataKey="label"
+        width={112}
+        tick={{ fill: "var(--text-2)", fontSize: 12 }}
+        tickLine={false}
+        axisLine={{ stroke: "var(--axis)" }}
+      />
+
+      <Tooltip
+        wrapperClassName="no-print"
+        isAnimationActive={false}
+        cursor={{ fill: "var(--surface-2)" }}
+        content={({ active, payload }) => {
+          const item = payload?.[0]?.payload;
+          if (!active || !item) return null;
+
+          return (
+            <div
+              className="chart-tooltip"
+              style={{ position: "static" }}
+              role="status"
+              aria-atomic="true"
+            >
+              <p className="chart-tooltip__date">{item.label}</p>
+              <p>
+                <strong>{formatValue(item.value)}</strong>
+              </p>
+              <p>{item.detail}</p>
+            </div>
+          );
+        }}
+      />
+
+      <Bar
+        dataKey="value"
+        fill={color}
+        barSize={20}
+        radius={[0, 4, 4, 0]}
+        isAnimationActive={false}
+      >
+        <LabelList
+          dataKey="value"
+          position="right"
+          offset={8}
+          formatter={formatValue}
+          fill="var(--text)"
+          fontSize={12}
+          fontWeight={700}
+        />
+      </Bar>
+    </RechartsBarChart>
   );
 }

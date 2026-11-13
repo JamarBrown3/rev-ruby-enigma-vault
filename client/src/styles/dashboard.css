@@ -478,13 +478,14 @@
   .chart-card__switch,
   .filters .segmented,
   .filters fieldset, /* the 7/30-day picker: the chosen range is printed as text beside it */
+  .filters .field, /* the Business dropdown: the business name is printed as text too */
   .tab-bar, /* the phone tab bar showed up because a printed page is phone-width */
   .back-link {
-    display: none !important;
+    display: none;
   }
 
   .site-main {
-    padding: 0 !important;
+    padding: 0;
   }
 
   /* Browsers skip background colors when printing unless told not to,
@@ -505,7 +506,7 @@
 
   /* No empty space left over from the phone tab bar. */
   .site {
-    padding-bottom: 0 !important;
+    padding-bottom: 0;
   }
 
   .page {
@@ -530,6 +531,13 @@
   a {
     color: inherit;
     text-decoration: none;
+  }
+
+  /* Tighter table rows on paper: fewer pages, and a long table breaks
+     between rows (its column headings repeat on the next page). */
+  .data-table th,
+  .data-table td {
+    padding: 3px 8px;
   }
 }
 
@@ -584,4 +592,19 @@
   width: 12px;
   height: 12px;
   border-radius: 3px;
+}
+
+/* Recharts in print: hide the hover line, the highlighted dot and the focus outline,
+so a chart you were exploring prints clean. */
+
+@media print {
+  .recharts-tooltip-cursor,
+  .recharts-active-dot,
+  .recharts-tooltip-wrapper {
+    display: none;
+  }
+
+  .recharts-surface:focus {
+    outline: none;
+  }
 }
