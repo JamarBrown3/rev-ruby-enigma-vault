@@ -134,7 +134,6 @@ export default function Dashboard() {
               },
             ]}
             formatValue={(value) => money(value)}
-            formatTick={(value) => money(value, { compact: true })}
           />
         </ChartCard>
 
