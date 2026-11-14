@@ -13,7 +13,7 @@ import RangePicker from "../components/charts/RangePicker.jsx";
 import StatusMessage from "../components/StatusMessage.jsx";
 import { PrintIcon } from "../components/Icons.jsx";
 import { communityView, GAMES_IN_LIBRARY, TOP_RATED } from "../data/sampleCommunity.js";
-import { fullNumber, longDate, shortDate } from "../components/charts/scale.js";
+import { fullNumber, longDate, sayNumber, shortDate } from "../components/charts/scale.js";
 import { Count } from "../components/charts/Spoken.jsx";
 import postsApi from "../services/postsApi.js";
 import { authorName, formatDate } from "../utils/format.js";
@@ -101,11 +101,12 @@ export default function AdminDashboard() {
               { key: "reviews", name: "Reviews", color: "var(--series-2)", values: view.days.map((day) => day.reviews) },
             ]}
             formatValue={(value) => fullNumber(value)}
+            sayValue={(value) => sayNumber(value)}
           />
         </ChartCard>
 
         <ChartCard title="Reviews by platform" subtitle={`Last ${range} days`} columns={["Platform", "Reviews"]} rows={view.platforms.map((item) => [item.label, <Count value={item.value} />])}>
-          <BarChart label="Reviews by platform" items={view.platforms} formatValue={(value) => fullNumber(value)} />
+          <BarChart label="Reviews by platform" items={view.platforms} formatValue={(value) => fullNumber(value)} sayValue={(value) => sayNumber(value)} />
         </ChartCard>
 
         <section className="chart-card">

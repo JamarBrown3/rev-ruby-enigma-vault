@@ -6,10 +6,13 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { Spoken } from "./Spoken.jsx";
 
 export default function BarChart({
   items,
   formatValue,
+  // What screen readers hear, like "nineteen thousand dollars" (defaults to formatValue).
+  sayValue = formatValue,
   color = "var(--series-1)",
   label,
   showShare = true,
@@ -88,7 +91,9 @@ export default function BarChart({
             >
               <p className="chart-tooltip__date">{item.label}</p>
               <p>
-                <strong>{formatValue(item.value)}</strong>
+                <strong>
+                  <Spoken text={formatValue(item.value)} say={sayValue(item.value)} />
+                </strong>
               </p>
               <p>{item.detail}</p>
             </div>
@@ -103,7 +108,10 @@ export default function BarChart({
         radius={[0, 4, 4, 0]}
         isAnimationActive={false}
       >
+        {/* Bar-end amounts are for eyes only: screen readers get the same
+            number from the tooltip and the table, in words. */}
         <LabelList
+          aria-hidden="true"
           dataKey="value"
           position="right"
           offset={8}

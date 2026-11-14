@@ -8,11 +8,14 @@ import {
   YAxis,
 } from "recharts";
 import { longDate, niceTicks, shortDate } from "./scale.js";
+import { Spoken } from "./Spoken.jsx";
 
 export default function LineChart({
   dates,
   series,
   formatValue,
+  // What screen readers hear, like "three thousand dollars" (defaults to formatValue).
+  sayValue = formatValue,
   formatTick = formatValue,
   label,
 }) {
@@ -62,7 +65,8 @@ export default function LineChart({
         ticks={ticks}
         width={60}
         tickFormatter={formatTick}
-        tick={{ fill: "var(--muted)", fontSize: 12 }}
+        // Axis amounts are for eyes only; screen readers use the tooltip and table.
+        tick={{ fill: "var(--muted)", fontSize: 12, "aria-hidden": "true" }}
         tickLine={false}
         axisLine={false}
       />
@@ -74,7 +78,7 @@ export default function LineChart({
           const date = dates[index];
           return date ? longDate(date) : "";
         }}
-        formatter={(value, name) => [formatValue(value), name]}
+        formatter={(value, name) => [<Spoken text={formatValue(value)} say={sayValue(value)} />, name]}
         separator=": "
         contentStyle={{
           backgroundColor: "var(--bg)",

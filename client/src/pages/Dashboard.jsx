@@ -11,7 +11,7 @@ import StatTile from "../components/charts/StatTile.jsx";
 import RangePicker from "../components/charts/RangePicker.jsx";
 import { PrintIcon } from "../components/Icons.jsx";
 import { BUSINESSES, businessView } from "../data/sampleBusiness.js";
-import { longDate, money } from "../components/charts/scale.js";
+import { longDate, money, sayMoney } from "../components/charts/scale.js";
 import { Count, Money, SpokenSentence } from "../components/charts/Spoken.jsx";
 import usePageTitle from "../hooks/usePageTitle.js";
 
@@ -135,6 +135,7 @@ export default function Dashboard() {
               },
             ]}
             formatValue={(value) => money(value)}
+            sayValue={(value) => sayMoney(value)}
           />
         </ChartCard>
 
@@ -148,6 +149,7 @@ export default function Dashboard() {
             label={`Sales by category for ${view.name}`}
             items={view.categories}
             formatValue={(value) => money(value)}
+            sayValue={(value) => sayMoney(value)}
           />
         </ChartCard>
 
@@ -167,6 +169,7 @@ export default function Dashboard() {
             label={`Sales by day of the week for ${view.name}`}
             items={view.weekdays}
             formatValue={(value) => money(value)}
+            sayValue={(value) => sayMoney(value)}
             showShare={false}
           />
         </ChartCard>
