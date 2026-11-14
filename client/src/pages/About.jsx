@@ -109,8 +109,16 @@ export default function About() {
               <p className="project__about">{project.about}</p>
               {(project.url || project.code) && (
                 <p className="project__links">
-                  {project.url && <a href={project.url} target="_blank" rel="noreferrer">Live site</a>}
-                  {project.code && <a href={project.code} target="_blank" rel="noreferrer">Code</a>}
+                  {project.url && (
+                    <a href={project.url} target="_blank" rel="noreferrer">
+                      Live site<span className="visually-hidden"> for {project.name} (opens in a new tab)</span>
+                    </a>
+                  )}
+                  {project.code && (
+                    <a href={project.code} target="_blank" rel="noreferrer">
+                      Code<span className="visually-hidden"> for {project.name} (opens in a new tab)</span>
+                    </a>
+                  )}
                 </p>
               )}
             </li>
