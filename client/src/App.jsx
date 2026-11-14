@@ -24,6 +24,7 @@ import GameEditor from "./pages/GameEditor.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import Profile from "./pages/Profile.jsx";
 import Contact from "./pages/Contact.jsx";
+import Privacy from "./pages/Privacy.jsx";
 
 // The route tester only exists while developing (npm run dev). `npm run build`
 // leaves it out of the real site completely.
@@ -58,6 +59,7 @@ export default function App() {
         <Route path="about" element={<About />} />
         <Route path="services" element={<Services />} />
         <Route path="contact" element={<Contact />} />
+        <Route path="privacy" element={<Privacy />} />
         <Route path="login" element={<Login />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route
