@@ -11,7 +11,8 @@ import StatTile from "../components/charts/StatTile.jsx";
 import RangePicker from "../components/charts/RangePicker.jsx";
 import { PrintIcon } from "../components/Icons.jsx";
 import { BUSINESSES, businessView } from "../data/sampleBusiness.js";
-import { fullNumber, longDate, money } from "../components/charts/scale.js";
+import { longDate, money } from "../components/charts/scale.js";
+import { Count, Money, SpokenSentence } from "../components/charts/Spoken.jsx";
 import usePageTitle from "../hooks/usePageTitle.js";
 
 const dayRange = (days) =>
@@ -73,7 +74,7 @@ export default function Dashboard() {
         </h2>
         <ul className="summary__list">
           {view.summary.map((sentence) => (
-            <li key={sentence}>{sentence}</li>
+            <li key={sentence}><SpokenSentence text={sentence} /></li>
           ))}
         </ul>
         <p className="summary__note">
@@ -86,19 +87,19 @@ export default function Dashboard() {
       <div className="stats">
         <StatTile
           label="Sales"
-          value={money(view.totals.revenue)}
+          value={<Money value={view.totals.revenue} />}
           change={view.changes.revenue}
           period={before}
         />
         <StatTile
           label="Orders"
-          value={fullNumber(view.totals.orders)}
+          value={<Count value={view.totals.orders} />}
           change={view.changes.orders}
           period={before}
         />
         <StatTile
           label="Average order"
-          value={money(view.totals.averageOrder, { cents: true })}
+          value={<Money value={view.totals.averageOrder} cents />}
           change={view.changes.averageOrder}
           period={before}
         />
@@ -118,8 +119,8 @@ export default function Dashboard() {
           columns={["Day", "Sales", "Orders"]}
           rows={view.days.map((day) => [
             longDate(day.date),
-            money(day.revenue),
-            fullNumber(day.orders),
+            <Money value={day.revenue} />,
+            <Count value={day.orders} />,
           ])}
         >
           <LineChart
@@ -141,7 +142,7 @@ export default function Dashboard() {
           title="Sales by category"
           subtitle="Where the money came from"
           columns={["Category", "Sales"]}
-          rows={view.categories.map((item) => [item.label, money(item.value)])}
+          rows={view.categories.map((item) => [item.label, <Money value={item.value} />])}
         >
           <BarChart
             label={`Sales by category for ${view.name}`}
@@ -160,7 +161,7 @@ export default function Dashboard() {
               : "Average sales for each weekday"
           }
           columns={["Day", "Sales"]}
-          rows={view.weekdays.map((item) => [item.label, money(item.value)])}
+          rows={view.weekdays.map((item) => [item.label, <Money value={item.value} />])}
         >
           <BarChart
             label={`Sales by day of the week for ${view.name}`}

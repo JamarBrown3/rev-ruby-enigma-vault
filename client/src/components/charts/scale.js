@@ -31,6 +31,46 @@ export function money(value, { compact = false, cents = false } = {}) {
   }).format(value);
 }
 
+// Numbers in words, for screen readers: 1956 -> "one thousand nine hundred fifty-six".
+// VoiceOver misread "$1,956" as about one dollar, so tables give screen readers
+// the words instead. Words can't be misread by any voice or setting.
+const ONES = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
+  "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
+const TENS = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
+const SCALES = [[1e9, "billion"], [1e6, "million"], [1e3, "thousand"]];
+
+function underThousand(n) {
+  if (n < 20) return ONES[n];
+  if (n < 100) return TENS[Math.floor(n / 10)] + (n % 10 ? `-${ONES[n % 10]}` : "");
+  const rest = n % 100;
+  return `${ONES[Math.floor(n / 100)]} hundred${rest ? ` ${underThousand(rest)}` : ""}`;
+}
+
+export function sayNumber(value) {
+  let n = Math.round(Math.abs(value));
+  if (n === 0) return "zero";
+  const parts = [];
+  for (const [size, name] of SCALES) {
+    if (n >= size) {
+      parts.push(`${underThousand(Math.floor(n / size))} ${name}`);
+      n %= size;
+    }
+  }
+  if (n) parts.push(underThousand(n));
+  return (value < 0 ? "minus " : "") + parts.join(" ");
+}
+
+// 1956 -> "one thousand nine hundred fifty-six dollars"
+// 42.5 with cents -> "forty-two dollars and fifty cents"
+export function sayMoney(value, { cents = false } = {}) {
+  const total = Math.round(Math.abs(value) * (cents ? 100 : 1));
+  const dollars = cents ? Math.floor(total / 100) : total;
+  const change = cents ? total % 100 : 0;
+  let text = `${sayNumber(dollars)} ${dollars === 1 ? "dollar" : "dollars"}`;
+  if (change) text += ` and ${sayNumber(change)} ${change === 1 ? "cent" : "cents"}`;
+  return (value < 0 ? "minus " : "") + text;
+}
+
 export function shortDate(date) {
   return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }

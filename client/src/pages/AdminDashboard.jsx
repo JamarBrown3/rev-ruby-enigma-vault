@@ -14,6 +14,7 @@ import StatusMessage from "../components/StatusMessage.jsx";
 import { PrintIcon } from "../components/Icons.jsx";
 import { communityView, GAMES_IN_LIBRARY, TOP_RATED } from "../data/sampleCommunity.js";
 import { fullNumber, longDate, shortDate } from "../components/charts/scale.js";
+import { Count } from "../components/charts/Spoken.jsx";
 import postsApi from "../services/postsApi.js";
 import { authorName, formatDate } from "../utils/format.js";
 import usePageTitle from "../hooks/usePageTitle.js";
@@ -78,10 +79,10 @@ export default function AdminDashboard() {
       </section>
 
       <div className="stats">
-        <StatTile label="New posts" value={fullNumber(view.totals.posts)} change={view.changes.posts} period={before} />
-        <StatTile label="New reviews" value={fullNumber(view.totals.reviews)} change={view.changes.reviews} period={before} />
-        <StatTile label="New members" value={fullNumber(view.totals.members)} change={view.changes.members} period={before} />
-        <StatTile label="Games in library" value={fullNumber(GAMES_IN_LIBRARY.total)} note={`${GAMES_IN_LIBRARY.added[range]} added in the last ${range} days`} />
+        <StatTile label="New posts" value={<Count value={view.totals.posts} />} change={view.changes.posts} period={before} />
+        <StatTile label="New reviews" value={<Count value={view.totals.reviews} />} change={view.changes.reviews} period={before} />
+        <StatTile label="New members" value={<Count value={view.totals.members} />} change={view.changes.members} period={before} />
+        <StatTile label="Games in library" value={<Count value={GAMES_IN_LIBRARY.total} />} note={`${GAMES_IN_LIBRARY.added[range]} added in the last ${range} days`} />
       </div>
 
       <div className="chart-grid">
@@ -90,7 +91,7 @@ export default function AdminDashboard() {
           title="New posts per day"
           subtitle="Discussions and reviews, counted separately"
           columns={["Day", "Discussions", "Reviews"]}
-          rows={view.days.map((day) => [longDate(day.date), day.discussions, day.reviews])}
+          rows={view.days.map((day) => [longDate(day.date), <Count value={day.discussions} />, <Count value={day.reviews} />])}
         >
           <LineChart
             label="New posts per day"
@@ -103,7 +104,7 @@ export default function AdminDashboard() {
           />
         </ChartCard>
 
-        <ChartCard title="Reviews by platform" subtitle={`Last ${range} days`} columns={["Platform", "Reviews"]} rows={view.platforms.map((item) => [item.label, item.value])}>
+        <ChartCard title="Reviews by platform" subtitle={`Last ${range} days`} columns={["Platform", "Reviews"]} rows={view.platforms.map((item) => [item.label, <Count value={item.value} />])}>
           <BarChart label="Reviews by platform" items={view.platforms} formatValue={(value) => fullNumber(value)} />
         </ChartCard>
 
@@ -122,7 +123,7 @@ export default function AdminDashboard() {
               </thead>
               <tbody>
                 {TOP_RATED.map((game) => (
-                  <tr key={game.title}><th scope="row">{game.title}</th><td>{game.rating.toFixed(1)}</td><td>{game.reviews}</td></tr>
+                  <tr key={game.title}><th scope="row">{game.title}</th><td>{game.rating.toFixed(1)}</td><td><Count value={game.reviews} /></td></tr>
                 ))}
               </tbody>
             </table>
