@@ -1,4 +1,12 @@
-# REV security fixes: verified current status
+# REV security fixes (October 23, 2026)
+
+> **Historical record from October 23, 2026.** Kept as written. Since then:
+> - New passwords are hashed with **Argon2id**. scrypt is kept only to check passwords saved before the switch (`server/security/passwords.js`).
+> - Production now **requires `TRUST_PROXY_HOPS`**; the server refuses to start without it.
+> - Post, comment, and vote routes are built and tested. The server suite is 773 tests (766 pass, 7 opt-in Atlas tests skipped).
+> - Password-reset email delivery is still not configured.
+>
+> Current setup and settings: [README](../../README.md) and [server/README.md](../../server/README.md). Later security reports: `server/security-reports/`.
 
 Date: 23 October 2026. This supersedes the earlier pre-fix review/checklist.
 

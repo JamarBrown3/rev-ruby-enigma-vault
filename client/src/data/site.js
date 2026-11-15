@@ -36,7 +36,7 @@ export const PROJECTS = [
     about:
       "Create a custom game: pick its genre, setting, platform and cover color, and watch the price and preview update as you choose.",
     url: "",
-    code: "https://github.com/JamarBrown3/CodePath_Web103_Projects/tree/main/video_gameStore",
+    code: "https://github.com/JamarBrown3/web-projects/tree/main/video_gameStore",
   },
   {
     name: "Xenoblade locations",
@@ -44,15 +44,15 @@ export const PROJECTS = [
     about:
       "Locations from Xenoblade Chronicles and the events held at each one, with live countdowns and a location filter.",
     url: "",
-    code: "https://github.com/JamarBrown3/CodePath_Web103_Projects/tree/main/xenoblade1_Locations",
+    code: "https://github.com/JamarBrown3/web-projects/tree/main/xenoblade1_Locations",
   },
   {
     name: "On the Fly",
     stack: "React, Express, PostgreSQL, OAuth",
     about:
-      "A trip-planning app for organizing destinations and activities, built in CodePath's web development course. Uses GitHub sign-in.",
+      "A trip-planning app for organizing destinations and activities. Uses GitHub sign-in.",
     url: "",
-    code: "https://github.com/JamarBrown3/CodePath_Web103_Projects/tree/main/onthefly",
+    code: "https://github.com/JamarBrown3/web-projects/tree/main/onthefly",
   },
 ];
 // The skills grid on the About page. `code` is the short label on the ruby

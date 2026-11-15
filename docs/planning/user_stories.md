@@ -75,3 +75,30 @@
 29. As an **admin**, I want to download a PDF report of the dashboard, so that I can share insights with clients or save them for later.
 
 30. As an **admin**, I want to see loading indicators during data fetches, so that I know the system is working and not frozen.
+
+## Story Status (November 15, 2026)
+
+How the prototype turned out. "Changed" means the story was met a different way than written; "Not built" items are candidates for later versions.
+
+| # | Status | Notes |
+| --- | --- | --- |
+| 1 | Done | Game library at `/games` |
+| 2 | Changed | Filter by platform and genre, plus search. No release-year filter. |
+| 3 | Changed | Sort by title, newest release, or most played. No sort by rating. |
+| 4–7 | Done | Game details with reviews; projects are on the About page; fixed header with sub-labels |
+| 8 | Done | Featured carousel and character reels, both with Pause controls |
+| 9 | Done | Phone tab bar; layouts tested at 320–1440px |
+| 10 | Done | Writing a post sends visitors to `/login` and back afterward |
+| 11–13 | Done | Registration needs a username, email, and a 15–128 character password |
+| 14 | Done | Reviews are rated 1–10; discussions have no rating |
+| 15–16 | Done | Author-only edit and delete; other accounts get a 404 |
+| 17 | Not built | `/profile` shows the account and shortcuts, not a list of your reviews |
+| 18–20 | Done | Logout, in-page form errors, and login redirects |
+| 21 | Done | Admin sign-in at `/admin/login` also needs a 6-digit authenticator code |
+| 22 | Done | Admin game editor at `/admin/games/new` |
+| 23–24 | Changed | Admins manage games. Posts stay author-only by design; there is no admin override to edit or delete other people's reviews. |
+| 25–26 | Not built | Admins can rename a username but cannot list or ban users from the app |
+| 27 | Done | Admin dashboard with charts, tables, and live newest posts. Chart numbers are sample data. |
+| 28 | Not built | Variance and standard deviation were part of the deferred Python analytics |
+| 29 | Changed | Print / Save as PDF from the browser, with print styles, instead of a generated PDF |
+| 30 | Done | Loading states, disabled buttons while saving, and screen reader announcements |

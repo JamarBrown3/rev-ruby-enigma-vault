@@ -23,7 +23,7 @@ The public dashboard also uses sample data and saved summaries. Community posts,
 | --- | --- |
 | [client/](client/) | React, React Router, Vite, CSS, and Recharts |
 | [server/](server/) | Node.js, Express, Mongoose, and MongoDB Atlas. Accounts use Argon2id password hashing, MongoDB-backed sessions, CSRF protection, and rate limits. The admin account uses an authenticator code. |
-| [planning/](planning/) | Wireframes, user stories, and data design |
+| [docs/](docs/README.md) | Milestones, wireframes, user stories, data design, and security records |
 | [qa-reports/](qa-reports/) | Browser test results and screenshots |
 
 ## Run locally
@@ -79,6 +79,6 @@ On November 14, 2026, a manual test with two demo member accounts published one 
 
 ## Deployment status
 
-REV runs locally. Hosting is the next milestone: one Render web service where Express serves the built React app, MongoDB Atlas, and a custom domain. Secrets live only in Render's environment settings, never in the repository.
+REV runs locally. Hosting is the next milestone: one Render web service where Express serves the built React app, MongoDB Atlas, and the custom domain `rubyenigmavault.com`. Secrets live only in Render's environment settings, never in the repository. Production also needs `NODE_ENV=production`, `CLIENT_ORIGIN` set to the site's HTTPS address, and `TRUST_PROXY_HOPS`; the server refuses to start without a strong `SESSION_SECRET` or `TRUST_PROXY_HOPS`. See [Milestone 5](docs/milestones/milestone5.md) for the full plan.
 
 During deployment, verify that the public frontend can reach the API, session cookies work over HTTPS, and direct links such as `/games` and `/privacy` load when refreshed.

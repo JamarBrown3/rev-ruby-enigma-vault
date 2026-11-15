@@ -55,7 +55,7 @@ function Greeting({ name }) {          // the component receives "name"
 }
 
 <Greeting name="Jah" />                // you hand it "Jah"
-<Greeting name="Dr. Lisa" />           // same component, different input
+<Greeting name="Sam" />                // same component, different input
 ```
 
 Every chart works this way. You hand it data through props, and it draws:

@@ -1,4 +1,4 @@
-// Home page slider. It works like the Nivo slider from my CIS485 store
+// Home page slider. It works like the Nivo slider from my JB Computer Parts store
 // (fade between slides, caption on the slide, arrows, dots, auto-advance that
 // pauses on hover) but rebuilt in React with no jQuery and no template files.
 // Added on top: swipe on phones, arrow keys, a Pause button, and it starts

@@ -17,9 +17,9 @@ Contact’s live booking and inquiry pages opened correctly in Brave. All five p
 | 2.1 | Read Things I've built on About | Five Code links and zero Live site links | The five project cards each had a Code link. No Live site link appeared. | Pass |
 | 2.2a | Opened the REV Code link in Brave | JamarBrown3/rev-ruby-enigma-vault in a new tab | Repository loaded with the GitHub Sign in link present. The About tab stayed open. | Pass |
 | 2.2b | Opened the JB Computer Parts Code link | JamarBrown3/JB-Computer-Parts in a new tab | Repository loaded signed out. | Pass |
-| 2.2c | Opened the Video game store Code link | CodePath_Web103_Projects/tree/main/video_gameStore in a new tab | Folder loaded with the Files heading and a GitHub Sign in link. | Pass |
-| 2.2d | Opened the Xenoblade locations Code link | CodePath_Web103_Projects/tree/main/xenoblade1_Locations in a new tab | GitHub’s page title showed xenoblade1_Locations at main. | Pass |
-| 2.2e | Opened the On the Fly Code link | CodePath_Web103_Projects/tree/main/onthefly in a new tab | Folder loaded with the Files heading and a GitHub Sign in link. | Pass |
+| 2.2c | Opened the Video game store Code link | web-projects/tree/main/video_gameStore in a new tab | Folder loaded with the Files heading and a GitHub Sign in link. | Pass |
+| 2.2d | Opened the Xenoblade locations Code link | web-projects/tree/main/xenoblade1_Locations in a new tab | GitHub’s page title showed xenoblade1_Locations at main. | Pass |
+| 2.2e | Opened the On the Fly Code link | web-projects/tree/main/onthefly in a new tab | Folder loaded with the Files heading and a GitHub Sign in link. | Pass |
 | 3.1 | Followed the About footer Privacy link in Brave and checked the shared footer across eight public routes | Link goes to /privacy and title is Privacy &#124; REV | Privacy link was present on Home, Games, About, Services, Contact, Dashboard, Log in, and Privacy. Following it reached the Privacy page with the expected title. | Pass on sampled public routes |
 | 3.2 | Read the Privacy heading hierarchy | One h1, four named h2s, and four named h3s under What REV stores | All headings and levels matched the checklist. | Pass |
 | 3.3 | Proofread Privacy, including the text around inline links | Correct spacing and no typos | “on the Contact page are run by Google” and “follows Google's privacy policy” had the intended spaces. No typo found. | Pass |

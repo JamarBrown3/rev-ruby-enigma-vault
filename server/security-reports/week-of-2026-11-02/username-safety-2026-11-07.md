@@ -39,7 +39,7 @@ Every new test name starts with `REV-SEC-27`.
 
 Usernames appear next to every review, discussion and (soon) comment on a public
 portfolio site. A slur, a fake "REV Support" account, or someone's phone number
-next to a post would be seen by clients and Dr. Lisa.
+next to a post would be seen by clients.
 
 ### What changed
 

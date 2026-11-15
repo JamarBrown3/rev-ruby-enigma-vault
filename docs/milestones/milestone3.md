@@ -1,8 +1,8 @@
 # Milestone 3 — Implementation Planning and Core Workflows
 
 Project: REV — The Ruby Enigma Vault  
-Status: Working checklist; check items only after verifying them.  
-Last updated: November 5, 2026
+Status: Core workflows complete and verified locally. GitHub issue tracking was never set up; the work log below replaces it.  
+Last updated: November 15, 2026
 
 ## Checklist
 
@@ -12,11 +12,11 @@ Last updated: November 5, 2026
 - [ ] Keep issue statuses current as work progresses.
 - [ ] If using GitHub Milestones, create the five project phases listed below and assign issues.
 - [ ] Review milestone progress using completed issues; close a milestone only when its acceptance criteria are met.
-- [ ] Update the [README](../README.md) to distinguish implemented features from planned features.
-- [ ] Add screenshots or short GIFs demonstrating completed workflows.
+- [x] Update the [README](../../README.md) to distinguish implemented features from planned features. *(Nov 14)*
+- [x] Add screenshots demonstrating completed workflows. *(Every browser QA report in [qa-reports/](../../qa-reports/README.md) includes screenshots. No GIFs yet.)*
 - [ ] Complete the reflection after this phase.
 
-## Work Completed So Far (as of November 5, 2026)
+## Work Completed (October 19 – November 15, 2026)
 
 GitHub issues and a project board have not been set up yet, so this list stands in for them.
 Each line says how it was verified.
@@ -34,10 +34,17 @@ Each line says how it was verified.
 | Nov 4 | Dashboard printing fixed (phone tab bar hidden, bar colors kept, cards not split); weekday chart tooltip added | Printed to PDF; mouse, tap and keyboard tooltip tests |
 | Nov 4 | End-to-end check: 15 pages at desktop and phone width, as visitor and admin | No JavaScript errors and no sideways scrolling (server answers were mocked) |
 | Nov 4-5 | Accessibility pass: alt text for the slide art, 200% zoom, keyboard navigation, WAVE | Jah's manual checks plus WAVE (Jah, with ChatGPT as QA) |
+| Nov 7 | Comments and like/dislike votes: models, routes, controllers and UI; username safety rules | Server tests (`comments.test.js`, `votes.test.js`, `usernames.test.js`) |
+| Nov 10 | Like/dislike UI | [Voting QA](../../qa-reports/2026/11-november/week-of-2026-11-09/REV-voting-QA-2026-11-10.md); the focus bug (3.4) was fixed and has a UI test |
+| Nov 11 | Comments UI and home slider overlap fix | [Comments QA](../../qa-reports/2026/11-november/week-of-2026-11-09/REV-comments-QA-2026-11-11.md) with two member accounts |
+| Nov 12 | Dashboards rebuilt with Recharts: line and bar charts, legend, keyboard tooltips, print styles | [Recharts QA](../../qa-reports/2026/11-november/week-of-2026-11-09/REV-recharts-QA-2026-11-12.md) |
+| Nov 13 | Contact links (Google booking and inquiry form), Privacy page, project GitHub links | [Contact and Privacy QA](../../qa-reports/2026/11-november/week-of-2026-11-09/REV-contact-privacy-QA-2026-11-13.md); UI tests |
+| Nov 14 | VoiceOver pass: dashboard amounts now read as words; About links announce new tabs | Jah's VoiceOver test; 37 UI tests |
+| Nov 14 | Domain `rubyenigmavault.com` registered on Cloudflare | Registry lookup |
 
 ## Suggested Issue Backlog
 
-These are proposed issue titles, not claims that GitHub issues already exist.
+These were proposed issue titles. GitHub issues were never created, but items 1–5 were all built and tested (see the work table above).
 
 1. Verify authentication and session behavior end to end.
 2. Implement and test post CRUD with author-only updates and deletion.

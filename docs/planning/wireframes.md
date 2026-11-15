@@ -2,13 +2,13 @@
 
 Developer: Jamar Brown  
 Design snapshot: October 24, 2026  
-Source: nine screenshots saved in the [wireframes folder](../wireframes/).
+Source: nine screenshots saved in the [wireframes folder](wireframes/).
 
 These low-fidelity screenshots document layout and intended interactions. Grayscale blocks, character illustrations, names, dates, counts, charts, and portfolio examples are placeholders, not final assets or live application data. Static screenshots do not verify animation or working backend features.
 
 ## Five Primary Pages
 
-The paths below are proposed frontend routes, not a claim that the React pages have been implemented.
+The paths below were the proposed frontend routes. All five are now built; see [What changed from the wireframes](#what-changed-from-the-wireframes) at the end.
 
 | Page | Proposed route | Access | Screenshot coverage |
 | --- | --- | --- | --- |
@@ -43,11 +43,11 @@ Visitors can read public content. Publishing, commenting, and voting require log
 
 ### Hero reference
 
-![Home hero with shared navigation, side character reels, manual carousel controls, and sign-in-to-post link](<../wireframes/Screenshot 2026-10-24 at 9.11.26 AM.png>)
+![Home hero with shared navigation, side character reels, manual carousel controls, and sign-in-to-post link](wireframes/home-hero.png)
 
 ### Post-grid reference
 
-![Community archive with post search, Top voted sorting, three sample post cards, and footer](<../wireframes/Screenshot 2026-10-24 at 9.11.34 AM.png>)
+![Community archive with post search, Top voted sorting, three sample post cards, and footer](wireframes/home-post-grid.png)
 
 ### Data and feedback
 
@@ -63,11 +63,11 @@ The screenshot's “Player one: Ruby,” sample skill bars, and fictional projec
 
 ### Introduction reference
 
-![About introduction with creator heading, portrait placeholder, biography, and contact links](<../wireframes/Screenshot 2026-10-24 at 9.11.46 AM.png>)
+![About introduction with creator heading, portrait placeholder, biography, and contact links](wireframes/about-intro.png)
 
 ### Skills and projects reference
 
-![About page continuation with portrait, contact controls, skills list, and selected project entries](<../wireframes/Screenshot 2026-10-24 at 9.11.56 AM.png>)
+![About page continuation with portrait, contact controls, skills list, and selected project entries](wireframes/about-skills-projects.png)
 
 ### Data
 
@@ -83,11 +83,11 @@ A lower call to action, “Start a conversation,” should lead to a real contac
 
 ### Overview reference
 
-![Services heading and three cards for Websites, Storefronts, and Dashboards](<../wireframes/Screenshot 2026-10-24 at 9.12.08 AM.png>)
+![Services heading and three cards for Websites, Storefronts, and Dashboards](wireframes/services-overview.png)
 
 ### Contact reference
 
-![Services card details, Start a conversation call to action, and shared footer](<../wireframes/Screenshot 2026-10-24 at 9.12.15 AM.png>)
+![Services card details, Start a conversation call to action, and shared footer](wireframes/services-contact.png)
 
 ## 4. Login / Register
 
@@ -99,11 +99,11 @@ The saved screenshots capture the Login panel twice, with different simulated ro
 
 ### Visitor-state reference
 
-![Login layout with email and password fields, Register tab, visitor continuation, and prototype-only login shortcuts](<../wireframes/Screenshot 2026-10-24 at 9.12.23 AM.png>)
+![Login layout with email and password fields, Register tab, visitor continuation, and prototype-only login shortcuts](wireframes/login-visitor.png)
 
 ### Simulated-user reference
 
-![Same login layout with the prototype USER state selected; this is not evidence of a real authenticated session](<../wireframes/Screenshot 2026-10-24 at 9.13.02 AM.png>)
+![Same login layout with the prototype USER state selected; this is not evidence of a real authenticated session](wireframes/login-user-simulated.png)
 
 ### Production requirements
 
@@ -124,7 +124,7 @@ The screenshot includes a Dashboard heading, Download report button, date-range 
 
 All dates, counts, percentages, and chart lines are mock data. Their presence does not mean analytics or report export already work.
 
-![Administrator dashboard wireframe with date filters, sample summary cards, two charts, report-download control, and a mock moderation queue](<../wireframes/Screenshot 2026-10-24 at 9.13.46 AM.png>)
+![Administrator dashboard wireframe with date filters, sample summary cards, two charts, report-download control, and a mock moderation queue](wireframes/admin-dashboard.png)
 
 ### Data and scope decisions
 
@@ -172,14 +172,26 @@ Phone/tablet behavior is a plan, not something verified by these desktop screens
 
 ## Remaining Design Work
 
+Status as of November 15, 2026 (prototype complete, running locally).
+
 - [x] Capture the five main page layouts.
 - [x] Document all nine screenshots and their intended behavior.
-- [ ] Refine registration, password recovery, post details, and create/edit form states.
-- [ ] Decide game catalog placement and finalize dashboard metrics within the existing data model.
-- [ ] Replace fictional biography, projects, and sample text with Jamar's actual content.
-- [ ] Choose final colors, fonts, and appropriately licensed assets.
-- [ ] Sketch compact navigation and narrow-screen layouts.
-- [ ] Design loading, empty, validation, error, confirmation, and success states.
-- [ ] Verify the implemented UI against these references as each workflow is built.
+- [x] Refine registration, post details, and create/edit form states. *(Built: `/login` with a Register tab, `/posts/:id`, `/posts/new`, `/posts/:id/edit`.)*
+- [ ] Password recovery states. *(The server side is built and tested, but no email service sends the link, so the flow is not release-ready.)*
+- [x] Decide game catalog placement. *(Its own page at `/games`, with `/games/:id` details.)*
+- [x] Finalize dashboard metrics. *(Public sample dashboard at `/dashboard`; admin community dashboard at `/admin/dashboard`. Charts use sample data; the admin Newest posts table is live.)*
+- [x] Replace fictional biography, projects, and sample text with Jamar's actual content. *(About page and `client/src/data/site.js`.)*
+- [x] Choose final colors, fonts, and appropriately licensed assets. *(Dark/light ruby theme, self-hosted fonts, original AI-generated REV characters instead of copyrighted game art.)*
+- [x] Compact navigation and narrow-screen layouts. *(Phone tab bar, Menu button, and layouts tested at 320–1440px.)*
+- [x] Loading, empty, validation, error, confirmation, and success states. *(In-page messages, disabled buttons while saving, in-page delete confirmation, `role="status"` announcements.)*
+- [x] Verify the implemented UI against these references. *(Browser QA reports in [qa-reports/](../../qa-reports/README.md).)*
+
+### What changed from the wireframes
+
+- The admin dashboard's "Download report" became the browser's Print / Save as PDF, with print styles. Python analytics were deferred.
+- The flagged-items moderation queue was not built; the admin dashboard shows a live Newest posts table instead.
+- The single up-vote became one like or dislike per signed-in account per post.
+- The prototype-only VISITOR / USER / ADMIN switcher and "simulate login" buttons were not carried into the real app. Admin sign-in also needs a 6-digit authenticator code.
+- Contact and Privacy pages were added. "Start a conversation" goes to a Google Calendar booking page and a Google Form.
 
 Related planning: [User stories](user_stories.md) · [MongoDB ERD notes](entity_relationship_diagram.md) · [ERD image](REV_MongoDB_ERD.png).

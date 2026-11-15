@@ -8,7 +8,7 @@ REV is the portfolio and flagship project for Jah's company-of-one web developme
 - **ChatGPT:** browser QA (WAVE, layout, flows) and AI images. Writes dated reports in `qa-reports/YEAR/MM-month/week-of-YYYY-MM-DD/`.
 - **DeepSeek:** co-founder and brainstorming.
 
-History lives in `qa-reports/` and `milestones/`. Read the latest QA report before starting new UI work, and don't assume a report passed: check its Pass/Fail column.
+History lives in `qa-reports/` (with a follow-up table in its README) and `docs/` (milestones, planning, security records). Read the latest QA report before starting new UI work, and don't assume a report passed: check its Pass/Fail column.
 
 ## How to work with Jah
 
@@ -49,6 +49,6 @@ History lives in `qa-reports/` and `milestones/`. Read the latest QA report befo
 ## Roadmap
 
 - **Deploy:** one Render free web service (Express serves the built React app from `server/public` with an SPA fallback), MongoDB Atlas M0, `NODE_ENV=production`, env vars only in Render's dashboard, Atlas network access, and a custom domain. The plan is in the claude.ai project doc `REV-deploy-plan.md`.
-- **Deadline:** Nov 30, 2026 prototype for Dr. Lisa.
+- **Deadline:** Nov 30, 2026 prototype review with a client.
 - **Bonus:** an R Shiny forecasting dashboard on shinyapps.io (`shinymanager` login) using the same sample data.
 - **v2 (2027):** Next.js, TypeScript, Postgres, Google/GitHub sign-in (Better Auth), a cookie consent banner, a live AI summary via n8n, and SEO. Notes are in `Documents/REV/REV v2/`.

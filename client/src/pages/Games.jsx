@@ -1,6 +1,6 @@
 // The game library. Anyone can browse; only the admin sees Add/Edit/Delete.
 // Platform and genre filters are built from the games that loaded, the same
-// way my Xenoblade events filter and CIS485 product filter build theirs.
+// way my Xenoblade events filter and JB Computer Parts product filter build theirs.
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext.jsx";

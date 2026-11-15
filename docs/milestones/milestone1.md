@@ -33,9 +33,11 @@ Games, categories, and portfolio projects support the content and analytics. Adm
 
 This is a solo project targeting roughly two months of development, not a guarantee that every planned enhancement will fit. TypeScript migration and Shopify learning come afterward. Email newsletters and unsubscribe functionality are deferred until a later release, tentatively January 2027. The Services page describes capabilities; it does not require building an actual checkout or Shopify integration in this release.
 
+**Later scope changes** (recorded November 15, 2026): Python analytics and PDF generation were deferred; reports use the browser's Print / Save as PDF instead (see [Milestone 4](milestone4.md)). Hosting moved to a single Render service with a custom domain (see [Milestone 5](milestone5.md)).
+
 ## Checklist
 
-- [x] Choose the project name and identify the developer in the [README](../README.md).
+- [x] Choose the project name and identify the developer in the [README](../../README.md).
 - [x] Describe the purpose, inspiration, and planned feature list.
 - [x] Define Visitor, User, and Admin roles in the [user stories](../planning/user_stories.md).
 - [x] Establish the initial technology stack and scope boundaries.

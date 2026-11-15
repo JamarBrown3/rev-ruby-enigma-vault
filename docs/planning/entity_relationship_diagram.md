@@ -4,9 +4,28 @@ Revision 2 · 22 October 2026 · MongoDB + Mongoose planning document
 
 REV (The Ruby Enigma Vault) combines a gaming community, portfolio, public services information, account authentication, and a private administration dashboard. This document describes the planned data model; it does not implement the database or certify that security features are complete.
 
+## Implementation Status (November 15, 2026)
+
+This plan was written before the code. Here is how it turned out; the Mongoose models in `server/models/` are the source of truth.
+
+| Collection | Status |
+| --- | --- |
+| `users` | Built. Passwords are hashed with Argon2id. `status` (`active`/`banned`) and `sessionVersion` are in the model. Admins can rename a username; there is no admin ban screen yet. |
+| `posts` | Built. Reviews and discussions with author-only edit and delete (other accounts get 404). |
+| `comments` | Built. Flat comments, author-only edit and delete, tested and browser-QA'd. |
+| `votes` | Built. Unique `{ postId, userId }` index; switching sides updates the vote; a duplicate-key race is retried, not a 500. |
+| `games` | Built. Public reads, admin-only writes at `/admin/games`. |
+| `categories` | Model exists. No API routes or admin screen yet. |
+| `projects` | Model exists, but portfolio projects are still written in `client/src/data/site.js`, not managed through the app. |
+| `passwordResetTokens` | Built and tested. No email service is connected, so recovery is not release-ready. |
+| `sessions` | Built (`connect-mongo`, 30-minute idle timeout). |
+| `aiUsage` | Added after this plan: daily counters to cap future AI-summary requests. No route uses it yet. |
+
+Post deletion removes the post's comments and votes (`server/controllers/posts.js`). There is no automated test for that cleanup yet.
+
 ## List of Collections (MongoDB Equivalent of Tables)
 
-The course template says “tables,” but REV uses **collections** containing **documents**. Documents use `_id` identifiers, normally MongoDB `ObjectId` values. A reference stores another document's identifier; it is **not** an automatically enforced SQL foreign key.
+A relational database would call these “tables,” but REV uses **collections** containing **documents**. Documents use `_id` identifiers, normally MongoDB `ObjectId` values. A reference stores another document's identifier; it is **not** an automatically enforced SQL foreign key.
 
 | Collection | Purpose | Ownership / access |
 | --- | --- | --- |
@@ -26,7 +45,7 @@ The game catalog and portfolio entities are retained from revision 1. They are n
 
 ![REV MongoDB ERD, revision 2](./REV_MongoDB_ERD.png)
 
-[Editable/scalable SVG](./REV_MongoDB_ERD.svg) · [Mermaid relationship source](./REV_MongoDB_ERD.mmd) · [Previous diagram](./REV_MongoDB_ERD_v1.png)
+[Editable/scalable SVG](./REV_MongoDB_ERD.svg)
 
 Crow's foot notation: `||` = exactly one; `o|` = zero or one; `o{` = zero or many. The session and reset-token account references are documented as fields rather than drawn across the whole image.
 
@@ -214,14 +233,16 @@ MongoDB does not automatically cascade document-reference deletions. The applica
 
 ## Implementation and Test Checklist
 
-- [ ] Confirm proposed comment/catalog permissions and optional review fields before writing schemas.
-- [ ] Verify schemas, reference validation, and indexes against the actual MongoDB deployment.
-- [ ] Test registration, duplicate email, login, logout, expiry, and role restrictions.
-- [ ] Test public read, authenticated creation, own edits/deletes, and rejection of another account's mutations.
-- [ ] Test repeated votes, switching sides, guest rejection, and concurrent duplicate requests.
-- [ ] Test comments surviving reload and removal of comments/votes when their parent post is deleted.
-- [ ] Test expired/used reset tokens, concurrent reset attempts, and invalidation of prior sessions.
-- [ ] Test admin-only dashboard endpoints directly in Postman and session-cookie behavior in the browser.
+Updated November 15, 2026. Server suite: 773 tests (766 pass, 7 opt-in Atlas tests skipped, 0 fail).
+
+- [x] Confirm comment/catalog permissions and review fields before writing schemas.
+- [x] Verify schemas, reference validation, and indexes. *(Atlas integration tests, opt-in with `REV_SECURITY_ATLAS=1`.)*
+- [x] Test registration, duplicate email, login, logout, expiry, and role restrictions. *(`auth*.test.js`)*
+- [x] Test public read, authenticated creation, own edits/deletes, and rejection of another account's changes. *(Server tests plus the Nov 11 comments QA with two accounts.)*
+- [x] Test repeated votes, switching sides, guest rejection, and concurrent duplicate requests. *(`votes.test.js`, Nov 10 voting QA.)*
+- [ ] Test comments surviving reload *(done: Nov 11 QA)* and removal of comments/votes when their parent post is deleted *(code written, no test yet)*.
+- [x] Test expired/used reset tokens, concurrent reset attempts, and invalidation of prior sessions. *(`auth-atlas.test.js`, part of the opt-in Atlas run; last full run October 23.)*
+- [x] Test admin-only endpoints and session-cookie behavior. *(Server tests and the dev route tester.)*
 
 ## Technical References
 
@@ -233,4 +254,3 @@ MongoDB does not automatically cascade document-reference deletions. The applica
 - [express-session documentation](https://expressjs.com/en/resources/middleware/session.html)
 - [connect-mongo documentation](https://github.com/jdesboeufs/connect-mongo)
 
-This adapts the course's relational ERD exercise to REV's MongoDB plan; it is not a claim of compliance with an unreviewed SQL-specific rubric.

@@ -1,6 +1,6 @@
 # REV frontend (React + Vite)
 
-Built 31 October 2026 from the Figma wireframe (`wireframes/`, `planning/wireframes.md`)
+Built 31 October 2026 from the Figma wireframe (`docs/planning/wireframes/`, `docs/planning/wireframes.md`)
 and the README's Steam-style dark look. Pages that have a backend route use the real
 API; the two dashboards use saved sample data.
 
@@ -74,14 +74,14 @@ Reused from your projects:
 - **Game cards**: the video_gameStore card (whole cover over a blurred copy of itself)
   mixed with the Xenoblade event card (label, title, description, footer under a divider).
 - **Delete with confirmation**: `DeleteGameButton.jsx` from video_gameStore, made generic.
-- **Filters built from the data**: the Xenoblade events filter and the CIS485 product filter.
-- **Slider**: works like the Nivo slider from the CIS485 store (fade, caption, arrows,
+- **Filters built from the data**: the Xenoblade events filter and the JB Computer Parts product filter.
+- **Slider**: works like the Nivo slider from my JB Computer Parts store (fade, caption, arrows,
   dots, auto-advance that pauses on hover), rebuilt in React with no jQuery and none of
   the Red Leaves template's files, plus swipe, arrow keys and a Pause button.
 
 Licenses: fonts are Gloock and Schibsted Grotesk (SIL Open Font License, fine for
 commercial use), installed with npm. The placeholder character art in
-`public/characters/` was drawn for REV. Nothing comes from the CIS485 CSS template.
+`public/characters/` was drawn for REV. Nothing comes from the JB Computer Parts CSS template.
 
 ## Menus
 

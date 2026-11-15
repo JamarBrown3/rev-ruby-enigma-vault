@@ -5,10 +5,10 @@ Developer: Jamar Brown
 Design documentation updated: October 24, 2026  
 Status: Initial design documented; implementation details will continue to evolve.
 
-## Design Deliverables
+## Design Work
 
 - [x] Document the five primary pages in [wireframes.md](../planning/wireframes.md).
-- [x] Include the nine saved prototype screenshots from the [wireframes folder](../wireframes/).
+- [x] Include the nine saved prototype screenshots from the [wireframes folder](../planning/wireframes/).
 - [x] Explain navigation, shared layout, intended interactions, and role restrictions.
 - [x] Identify supporting views and missing states that need refinement before implementation.
 - [x] Document the MongoDB collections and relationships in the [ERD notes](../planning/entity_relationship_diagram.md).
