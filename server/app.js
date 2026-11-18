@@ -1,4 +1,5 @@
 import express from "express";
+import path from "node:path";
 import cors from "cors";
 import helmet from "helmet";
 import { randomUUID } from "node:crypto";
@@ -21,6 +22,9 @@ export function createApp({
   //   mountRoutes: (app) => { app.use("/api/posts", postRoutes); }
   // It runs AFTER all the security middleware below and BEFORE the 404 handler.
   mountRoutes = null,
+  // The built React app (client/dist). When set, Express serves the website
+  // too, so the site and the API share one address. null = API only.
+  clientDir = null,
 } = {}) {
   const app = express();
   app.disable("x-powered-by");
@@ -42,7 +46,33 @@ export function createApp({
     next();
   });
 
-  app.use(helmet());
+  app.use(helmet({
+    contentSecurityPolicy: {
+      directives: {
+        // Game covers and post images are linked from other https sites
+        // (Steam, Nintendo...). Helmet's default only allows this site's own
+        // images. Scripts stay locked to this site.
+        "img-src": ["'self'", "data:", "https:"],
+      },
+    },
+  }));
+
+  // The website's files (JavaScript, CSS, fonts, images). They come BEFORE the
+  // rate limit and sessions: one page loads dozens of files, and none of them
+  // need a database lookup. express.static only answers GET/HEAD for files
+  // that exist, so every other request moves on to the API below.
+  if (clientDir) {
+    app.use(express.static(clientDir, {
+      index: false, // "/" goes to the page fallback at the bottom
+      setHeaders(res, filePath) {
+        // Vite puts a content hash in every /assets file name, so a changed
+        // file gets a new name. Browsers can keep these for a year.
+        if (filePath.includes(`${path.sep}assets${path.sep}`)) {
+          res.set("Cache-Control", "public, max-age=31536000, immutable");
+        }
+      },
+    }));
+  }
 
   // REV-SEC-23: compare against the normalized origin (scheme://host:port),
   // matching what security/auth.js does. Before, a CLIENT_ORIGIN written with
@@ -108,9 +138,11 @@ export function createApp({
     app.use(["/api/account", "/api/demo"], auth.requireAuth);
   }
 
-  app.get("/", (req, res) => {
-    res.json({ message: "REV API is running." });
-  });
+  if (!clientDir) {
+    app.get("/", (req, res) => {
+      res.json({ message: "REV API is running." });
+    });
+  }
 
   // Liveness checks Express. Readiness below also checks MongoDB.
   app.get("/api/health", (req, res) => {
@@ -135,6 +167,16 @@ export function createApp({
   if (mountRoutes) {
     if (!auth) throw new Error("mountRoutes requires authentication middleware (auth).");
     mountRoutes(app, { auth });
+  }
+
+  // Page fallback: any other GET address that isn't /api (/, /about,
+  // /games/123) gets index.html, and React Router shows the right page.
+  // no-cache: browsers check for a new index.html after every deploy.
+  if (clientDir) {
+    app.get(/^(?!\/api(?:\/|$)).*/, (req, res) => {
+      res.set("Cache-Control", "no-cache");
+      res.sendFile(path.join(clientDir, "index.html"));
+    });
   }
 
   app.use((req, res) => {

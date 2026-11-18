@@ -1,4 +1,6 @@
 import http from "node:http";
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import { createApp } from "./app.js";
 // REV-SEC-06: getTrustProxy validates TRUST_PROXY_HOPS (required in production).
 import { getPort, getTrustProxy } from "./config/env.js";
@@ -19,6 +21,10 @@ import votesRoutes from "./routes/votes.js";
 
 let server;
 let stopping = false;
+
+// The built React app (npm run build in client/). In production Express
+// serves it; in development Vite serves the pages on port 5173 instead.
+const CLIENT_DIR = fileURLToPath(new URL("../client/dist", import.meta.url));
 
 // REV-SEC-11 (added 2026-10-26): limits for slow or stalled clients.
 // A "Slowloris" bot opens connections and sends its request a few bytes at a
@@ -67,6 +73,10 @@ try {
   // REV-SEC-06: replaces the old inline TRUST_PROXY_HOPS parsing; production
   // now refuses to start without an explicit value.
   const trustProxy = getTrustProxy();
+  const isProduction = process.env.NODE_ENV === "production";
+  if (isProduction && !existsSync(`${CLIENT_DIR}/index.html`)) {
+    throw new Error("client/dist is missing. Run npm run build in client/ first.");
+  }
 
   stage = "database";
   await connectDatabase();
@@ -104,6 +114,7 @@ try {
     createApp({
       auth,
       trustProxy,
+      clientDir: isProduction ? CLIENT_DIR : null,
       mountRoutes: (app, { auth }) => {
         app.use("/api/games", gameRoutes(auth));
         app.use("/api/posts/:postId/comments", commentsRoutes(auth));
