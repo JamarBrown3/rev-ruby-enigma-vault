@@ -470,8 +470,14 @@
     --axis: #c3ccd7;
   }
 
+  /* Reels are hidden, not display: none. display: none would restart their
+     scroll animation when the print preview closes. They're position: fixed,
+     so hiding them leaves no gap on the page. */
+  .reel {
+    visibility: hidden;
+  }
+
   .site-header,
-  .reel,
   .site-footer,
   .skip-link,
   .no-print,
