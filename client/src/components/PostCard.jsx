@@ -3,7 +3,8 @@
 // a plain marker instead.
 import { Link } from "react-router-dom";
 import Rating from "./Rating.jsx";
-import { ChatIcon, GemIcon } from "./Icons.jsx";
+import { ChatIcon } from "./Icons.jsx";
+import Ruby from "./Ruby.jsx";
 import { authorName, excerpt, formatDate } from "../utils/format.js";
 
 export default function PostCard({ post }) {
@@ -16,7 +17,7 @@ export default function PostCard({ post }) {
         {isReview && game?.coverImage ? (
           <img className="post-card__thumb" src={game.coverImage} alt="" loading="lazy" />
         ) : (
-          <span className="post-card__badge" aria-hidden="true">{isReview ? <GemIcon /> : <ChatIcon />}</span>
+          <span className="post-card__badge" aria-hidden="true">{isReview ? <Ruby size={22} /> : <ChatIcon />}</span>
         )}
         <span>{isReview ? `Review of ${game?.title ?? "a game"}` : "Discussion"}</span>
       </p>

@@ -1,4 +1,4 @@
-import { GemIcon } from "./Icons.jsx";
+import Ruby from "./Ruby.jsx";
 
 // "8/10" with a small ruby. `recommend` is optional (true, false or undefined).
 export default function Rating({ value, recommend }) {
@@ -6,7 +6,7 @@ export default function Rating({ value, recommend }) {
   return (
     <span className="rating-group">
       <span className="rating">
-        <GemIcon width={16} height={16} />
+        <Ruby size={16} />
         <span>
           {value}
           <span className="rating__out-of">/10</span>

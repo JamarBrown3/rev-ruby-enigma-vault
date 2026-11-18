@@ -55,30 +55,26 @@ export const PROJECTS = [
     code: "https://github.com/JamarBrown3/web-projects/tree/main/onthefly",
   },
 ];
-// The skills grid on the About page. `code` is the short label on the ruby
-// badge (no official logos, so nothing here needs a trademark license).
+// The skills grid on the About page. Each card gets a ruby, not an official
+// logo, so nothing here needs a trademark license.
 export const SKILLS = [
   {
     name: "React",
-    code: "Rx",
     use: "Interfaces like this site, built from reusable components.",
   },
   {
     name: "Node.js",
-    code: "Nd",
     use: "APIs and servers with Express, sessions and secure logins.",
   },
   {
     name: "MongoDB",
-    code: "Mo",
     use: "REV's accounts, posts and games, through Mongoose.",
   },
-  { name: "Python", code: "Py", use: "Cleaning, analyzing and charting data." },
-  { name: "R", code: "R", use: "Statistics and data visualization." },
-  { name: "SQL", code: "Sq", use: "Queries and reports in PostgreSQL." },
+  { name: "Python", use: "Cleaning, analyzing and charting data." },
+  { name: "R", use: "Statistics and data visualization." },
+  { name: "SQL", use: "Queries and reports in PostgreSQL." },
   {
     name: "Java",
-    code: "Jv",
     use: "Object-oriented programming fundamentals.",
   },
 ];

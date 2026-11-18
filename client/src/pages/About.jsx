@@ -4,6 +4,7 @@
 // Skills, projects and contact links are edited in src/data/site.js.
 // Styles: About.css (written phone-first: one column, then two on wider screens).
 import { Link } from "react-router-dom";
+import Ruby from "../components/Ruby.jsx";
 import { PROJECTS, SKILLS } from "../data/site.js";
 import usePageTitle from "../hooks/usePageTitle.js";
 import "./About.css";
@@ -88,7 +89,7 @@ export default function About() {
         <ul className="skill-grid">
           {SKILLS.map((skill) => (
             <li key={skill.name} className="skill">
-              <span className="skill__badge" aria-hidden="true">{skill.code}</span>
+              <Ruby size={52} />
               <h3 className="skill__name">{skill.name}</h3>
               <p className="skill__use">{skill.use}</p>
             </li>

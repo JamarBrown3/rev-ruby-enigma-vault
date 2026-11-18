@@ -48,14 +48,6 @@ export const CloseIcon = (props) => (
   <svg {...base} {...props}><path d="M6 6l12 12M18 6L6 18" /></svg>
 );
 
-// A small cut ruby, used for ratings.
-export const GemIcon = (props) => (
-  <svg {...base} viewBox="0 0 24 24" {...props}>
-    <path d="M6 3h12l4 6-10 12L2 9z" fill="currentColor" stroke="none" />
-    <path d="M2 9h20M9 3l3 6 3-6M7.5 9 12 21l4.5-12" stroke="rgba(255,255,255,0.45)" strokeWidth="1.2" />
-  </svg>
-);
-
 export const TrendUp = (props) => (
   <svg {...base} {...props}><path d="M12 5l7 9H5z" fill="currentColor" stroke="none" /></svg>
 );

@@ -309,10 +309,6 @@
   font-size: var(--text-sm);
 }
 
-.rating svg {
-  color: var(--ruby);
-}
-
 .rating__out-of {
   color: var(--muted);
   font-weight: 500;
@@ -523,5 +519,47 @@
   .editor__preview {
     position: static;
     max-width: 320px;
+  }
+}
+
+/* ---------- Ruby gems (logo, ratings, review badges, skills) ---------- */
+
+/* ruby_gem.png has no see-through parts, so as a mask by itself it would
+   just show a rectangle. Instead the gem SHAPE is the mask, and the picture
+   is the background that shows through it. The first background layer is a
+   white glint that sweeps across when you hover the card or link. */
+.ruby {
+  display: inline-block;
+  flex: none;
+  width: var(--ruby-size, 24px);
+  aspect-ratio: 52 / 46;
+  background-image:
+    linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, 0.6) 50%, transparent 60%),
+    url("/images/about/ruby_gem.png");
+  background-size: 300% 100%, 400% auto;
+  background-position: 100% 0, center;
+  -webkit-mask-image: url("/images/gem-mask.svg");
+  mask-image: url("/images/gem-mask.svg");
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  transition: background-position 700ms ease;
+}
+
+.ruby--diamond {
+  aspect-ratio: 1;
+  -webkit-mask-image: url("/images/diamond-mask.svg");
+  mask-image: url("/images/diamond-mask.svg");
+}
+
+a:hover .ruby,
+.post-card:hover .ruby,
+.skill:hover .ruby {
+  background-position: 0 0, center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ruby {
+    transition: none;
   }
 }

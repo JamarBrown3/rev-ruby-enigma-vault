@@ -170,21 +170,6 @@
   transform: translateY(-2px);
 }
 
-/* The badge is cut like a gem (clip-path), echoing the REV logo. */
-.skill__badge {
-  display: grid;
-  place-items: center;
-  width: 52px;
-  height: 46px;
-  padding-bottom: 8px;
-  clip-path: polygon(22% 0, 78% 0, 100% 34%, 50% 100%, 0 34%);
-  background: linear-gradient(160deg, var(--ruby), #8f0f37);
-  color: #ffffff;
-  font-weight: 700;
-  font-size: 0.9375rem;
-  letter-spacing: 0.02em;
-}
-
 .skill__name {
   font-size: var(--text-lg);
 }
