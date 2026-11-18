@@ -311,12 +311,21 @@
   display: block;
 }
 
+/* The shine layer covers exactly the photo and never moves. Only its
+   gradient slides (background-position), like the ruby glint. Before, the
+   layer itself slid off the photo with transform and relied on overflow:
+   hidden to hide it, and iPhone Safari doesn't always clip an animated
+   child inside rounded corners, so the shine got stuck on the photo.
+   The gradient is 3 photos wide: at 100% the light band sits off the left
+   edge, at 0% off the right edge, so at rest there's nothing to see. */
 .photo-shine::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-  transform: translateX(-150%) skewX(-20deg);
+  border-radius: inherit;
+  background: linear-gradient(110deg, transparent 40%, rgba(255, 255, 255, 0.25) 50%, transparent 60%) no-repeat;
+  background-size: 300% 100%;
+  background-position: 100% 0;
   animation: photoShine 15s ease-in-out infinite;
   pointer-events: none;
 }
@@ -327,9 +336,9 @@
 }
 
 @keyframes photoShine {
-  0%   { transform: translateX(-150%) skewX(-20deg); }
-  10%  { transform: translateX(150%) skewX(-20deg); }
-  100% { transform: translateX(150%) skewX(-20deg); }
+  0%   { background-position: 100% 0; }
+  10%  { background-position: 0 0; }
+  100% { background-position: 0 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
